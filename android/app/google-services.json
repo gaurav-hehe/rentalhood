@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "941043922916",
+    "project_id": "rentalhood-lol",
+    "storage_bucket": "rentalhood-lol.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:941043922916:android:c6d83a0caa799dbdee79f1",
+        "android_client_info": {
+          "package_name": "com.flutterflow.rentalhood1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "941043922916-00tdjmfbpmdr32d9fgkdd4qnlscqt0rp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flutterflow.rentalhood1",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "941043922916-nl6a70mojufrpr4ekcsp44l5ib064jgv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKPbL-SHAE3_r4MNgvxrViJPVmAtbOZjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "941043922916-nl6a70mojufrpr4ekcsp44l5ib064jgv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "941043922916-jj9aie75egsrq35hfda0kefq0n6hv02q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flutterflow.rentalhood1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
