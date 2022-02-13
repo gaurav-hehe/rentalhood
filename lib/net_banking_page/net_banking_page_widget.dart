@@ -3,14 +3,14 @@ import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ReportProblemWidget extends StatefulWidget {
-  const ReportProblemWidget({Key key}) : super(key: key);
+class NetBankingPageWidget extends StatefulWidget {
+  const NetBankingPageWidget({Key key}) : super(key: key);
 
   @override
-  _ReportProblemWidgetState createState() => _ReportProblemWidgetState();
+  _NetBankingPageWidgetState createState() => _NetBankingPageWidgetState();
 }
 
-class _ReportProblemWidgetState extends State<ReportProblemWidget> {
+class _NetBankingPageWidgetState extends State<NetBankingPageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override

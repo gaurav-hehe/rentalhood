@@ -45,14 +45,15 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: Color(0xFFF5F5F5),
-        body: SafeArea(
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
+    return Scaffold(
+      key: scaffoldKey,
+      backgroundColor: Color(0xFFF5F5F5),
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.disabled,
             child: SingleChildScrollView(
               primary: false,
               child: Column(
@@ -66,12 +67,12 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(15, 0, 0, 0),
                           child: Text(
-                            'Add Property',
-                            style: FlutterFlowTheme.title1.override(
-                              fontFamily: 'Open Sans',
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            'Add Product',
+                            style: FlutterFlowTheme.of(context).title1.override(
+                                  fontFamily: 'Open Sans',
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ),
                       ],
@@ -97,12 +98,14 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                     EdgeInsetsDirectional.fromSTEB(10, 8, 0, 0),
                                 child: Text(
                                   'BASIC INFORMATION  ',
-                                  style: FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF777171),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        color: Color(0xFF777171),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                               ),
                               Padding(
@@ -129,12 +132,14 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       10, 0, 0, 0),
                                   child: Text(
-                                    'Give a brief  but detailed information about the product',
-                                    style: FlutterFlowTheme.bodyText1.override(
-                                      fontFamily: 'Open Sans',
-                                      color: Color(0xFF545252),
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                    'Give a brief  but detailed information about the product.',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Open Sans',
+                                          color: Color(0xFF545252),
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                   ),
                                 ),
                               ),
@@ -173,6 +178,13 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                       obscureText: false,
                                       decoration: InputDecoration(
                                         hintText: 'TITLE',
+                                        hintStyle: FlutterFlowTheme.of(context)
+                                            .subtitle2
+                                            .override(
+                                              fontFamily: 'Open Sans',
+                                              color: Color(0xFF5D5E60),
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                         enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Color(0xFF616161),
@@ -197,12 +209,13 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                             EdgeInsetsDirectional.fromSTEB(
                                                 10, 0, 0, 0),
                                       ),
-                                      style:
-                                          FlutterFlowTheme.subtitle2.override(
-                                        fontFamily: 'Open Sans',
-                                        color: Color(0xFF616161),
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Color(0xFF616161),
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                       validator: (val) {
                                         if (val.isEmpty) {
                                           return 'Field is required';
@@ -230,6 +243,13 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                       decoration: InputDecoration(
                                         labelText: 'PRICE',
                                         hintText: 'PRICE PER DAY',
+                                        hintStyle: FlutterFlowTheme.of(context)
+                                            .bodyText1
+                                            .override(
+                                              fontFamily: 'Open Sans',
+                                              color: Color(0xFF5D5E60),
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                         enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Color(0xFF545252),
@@ -254,12 +274,13 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                             EdgeInsetsDirectional.fromSTEB(
                                                 10, 0, 0, 0),
                                       ),
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Open Sans',
-                                        color: Color(0xFF616161),
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Color(0xFF616161),
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                       validator: (val) {
                                         if (val.isEmpty) {
                                           return 'Field is required';
@@ -296,6 +317,14 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                         decoration: InputDecoration(
                                           labelText: 'DESCRIPTION',
                                           hintText: 'DESCRIPTION',
+                                          hintStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyText1
+                                                  .override(
+                                                    fontFamily: 'Open Sans',
+                                                    color: Color(0xFF5D5E60),
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                           enabledBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
                                               color: Color(0xFF616161),
@@ -322,14 +351,14 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   10, 0, 0, 0),
                                         ),
-                                        style:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Open Sans',
-                                          color: Color(0xFF616161),
-                                          fontWeight: FontWeight.w600,
-                                          lineHeight: 4,
-                                        ),
-                                        maxLines: 1,
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyText1
+                                            .override(
+                                              fontFamily: 'Open Sans',
+                                              color: Color(0xFF616161),
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                        maxLines: 2,
                                         validator: (val) {
                                           if (val.isEmpty) {
                                             return 'Field is required';
@@ -363,13 +392,15 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                     child: Text(
                                       'Please enter the description to get best possible response. Tell other users what you love about the product.',
                                       textAlign: TextAlign.start,
-                                      style:
-                                          FlutterFlowTheme.bodyText2.override(
-                                        fontFamily: 'Open Sans',
-                                        color: FlutterFlowTheme.secondaryColor,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w300,
-                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText2
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w300,
+                                          ),
                                     ),
                                   ),
                                 ),
@@ -426,7 +457,8 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                           setState(() => dropDownValue = val),
                                       width: MediaQuery.of(context).size.width,
                                       height: 50,
-                                      textStyle: FlutterFlowTheme.bodyText1,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .bodyText1,
                                       hintText: 'PRODUCT TYPE',
                                       fillColor: Color(0xFFEEEEEE),
                                       elevation: 4,
@@ -445,46 +477,51 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                               child: Text(
                                 'PRODUCT CONDITION',
                                 textAlign: TextAlign.start,
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Open Sans',
-                                  color: Color(0xFF545252),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFF545252),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                             ),
                             Padding(
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(20, 5, 10, 0),
                               child: FlutterFlowChoiceChips(
-                                initialOption: choiceChipsValue ??= 'New',
+                                initiallySelected: [choiceChipsValue],
                                 options: [ChipData('New'), ChipData('Used')],
-                                onChanged: (val) =>
-                                    setState(() => choiceChipsValue = val),
+                                onChanged: (val) => setState(
+                                    () => choiceChipsValue = val.first),
                                 selectedChipStyle: ChipStyle(
-                                  backgroundColor:
-                                      FlutterFlowTheme.secondaryColor,
-                                  textStyle:
-                                      FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    color: Colors.white,
-                                  ),
+                                  backgroundColor: FlutterFlowTheme.of(context)
+                                      .secondaryColor,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        color: Colors.white,
+                                      ),
                                   iconColor: Colors.white,
                                   iconSize: 18,
                                   elevation: 4,
                                 ),
                                 unselectedChipStyle: ChipStyle(
                                   backgroundColor: Colors.white,
-                                  textStyle:
-                                      FlutterFlowTheme.bodyText2.override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF262D34),
-                                  ),
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyText2
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        color: Color(0xFF262D34),
+                                      ),
                                   iconColor: Color(0xFF262D34),
                                   iconSize: 18,
                                   elevation: 4,
                                 ),
                                 chipSpacing: 20,
+                                multiselect: false,
                               ),
                             ),
                           ],
@@ -530,6 +567,13 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                       decoration: InputDecoration(
                                         labelText: 'AVAILABILITY',
                                         hintText: 'AVAILABILITY in DAYS',
+                                        hintStyle: FlutterFlowTheme.of(context)
+                                            .bodyText1
+                                            .override(
+                                              fontFamily: 'Open Sans',
+                                              color: Color(0xFF5D5E60),
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                         enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Color(0xFF616161),
@@ -554,12 +598,13 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                             EdgeInsetsDirectional.fromSTEB(
                                                 10, 0, 0, 0),
                                       ),
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Open Sans',
-                                        color: Color(0xFF616161),
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Color(0xFF616161),
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                       validator: (val) {
                                         if (val.isEmpty) {
                                           return 'Field is required';
@@ -587,6 +632,13 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                       decoration: InputDecoration(
                                         labelText: 'IDENTIFIER',
                                         hintText: 'UNIQUE IDENTIFIER',
+                                        hintStyle: FlutterFlowTheme.of(context)
+                                            .bodyText1
+                                            .override(
+                                              fontFamily: 'Open Sans',
+                                              color: Color(0xFF5D5E60),
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                         enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Color(0xFF616161),
@@ -611,12 +663,13 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                             EdgeInsetsDirectional.fromSTEB(
                                                 10, 0, 0, 0),
                                       ),
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Open Sans',
-                                        color: Color(0xFF616161),
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Color(0xFF616161),
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                       validator: (val) {
                                         if (val.isEmpty) {
                                           return 'Field is required';
@@ -648,7 +701,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                         width: MediaQuery.of(context).size.width * 0.95,
                         height: 80,
                         decoration: BoxDecoration(
-                          color: FlutterFlowTheme.primaryColor,
+                          color: FlutterFlowTheme.of(context).primaryColor,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
                             color: Color(0xFF545252),
@@ -666,12 +719,14 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                       10, 0, 0, 0),
                                   child: Text(
                                     'IMAGES',
-                                    style: FlutterFlowTheme.bodyText1.override(
-                                      fontFamily: 'Open Sans',
-                                      color: Color(0xFF616161),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Open Sans',
+                                          color: Color(0xFF616161),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
                                 ),
                                 Padding(
@@ -692,8 +747,9 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       10, 0, 0, 0),
                                   child: Text(
-                                    'Select at least 3 images, and a maximum of 10',
-                                    style: FlutterFlowTheme.bodyText1,
+                                    'Upload at least 1 image of the product below.',
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyText1,
                                   ),
                                 ),
                               ],
@@ -713,7 +769,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                       ),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.95,
-                        height: 180,
+                        height: 280,
                         decoration: BoxDecoration(
                           color: Color(0xFFEEEEEE),
                           borderRadius: BorderRadius.circular(0),
@@ -746,13 +802,14 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                   0, 4, 0, 0),
                                           child: Text(
                                             'Upload Photos',
-                                            style: FlutterFlowTheme.title1
+                                            style: FlutterFlowTheme.of(context)
+                                                .title1
                                                 .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF616161),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                            ),
+                                                  fontFamily: 'Open Sans',
+                                                  color: Color(0xFF616161),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
                                           ),
                                         ),
                                         Align(
@@ -772,7 +829,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 10, 0, 15),
+                                          0, 40, 0, 15),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
@@ -818,24 +875,33 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                 }
                                               }
                                             },
-                                            text: 'Upload Photo 1',
+                                            text: '',
+                                            icon: Icon(
+                                              Icons.add,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryColor,
+                                              size: 40,
+                                            ),
                                             options: FFButtonOptions(
-                                              width: 150,
-                                              height: 50,
-                                              color: Color(0xFF57636C),
-                                              textStyle: FlutterFlowTheme
-                                                  .bodyText1
-                                                  .override(
-                                                fontFamily: 'Open Sans',
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                              width: 130,
+                                              height: 90,
+                                              color: Color(0xFFEEEEEE),
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Open Sans',
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
                                               elevation: 5,
                                               borderSide: BorderSide(
-                                                color: Colors.transparent,
+                                                color: Color(0xFF010101),
                                                 width: 1,
                                               ),
-                                              borderRadius: 40,
+                                              borderRadius: 0,
                                             ),
                                           ),
                                           FFButtonWidget(
@@ -878,35 +944,45 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                 }
                                               }
                                             },
-                                            text: 'Upload Photo 2',
+                                            text: '',
+                                            icon: Icon(
+                                              Icons.add,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryColor,
+                                              size: 40,
+                                            ),
                                             options: FFButtonOptions(
-                                              width: 150,
-                                              height: 50,
-                                              color: Color(0xFF57636C),
-                                              textStyle: FlutterFlowTheme
-                                                  .bodyText1
-                                                  .override(
-                                                fontFamily: 'Open Sans',
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                              width: 130,
+                                              height: 90,
+                                              color: Color(0xFFEEEEEE),
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Open Sans',
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
                                               elevation: 5,
                                               borderSide: BorderSide(
-                                                color: Colors.transparent,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .tertiaryColor,
                                                 width: 1,
                                               ),
-                                              borderRadius: 40,
+                                              borderRadius: 0,
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    FFButtonWidget(
-                                      onPressed: () async {
-                                        if (!formKey.currentState.validate()) {
-                                          return;
-                                        }
-                                        if ((uploadedFileUrl1) != 'null') {
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 20, 0, 0),
+                                      child: FFButtonWidget(
+                                        onPressed: () async {
                                           final productsCreateData =
                                               createProductsRecordData(
                                             name: textController1.text,
@@ -922,69 +998,76 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                             uploadedBy: currentUserReference,
                                             image1: uploadedFileUrl1,
                                             image2: uploadedFileUrl2,
+                                            location:
+                                                currentUserDocument?.location,
+                                            status: false,
+                                            ownerName: currentUserDisplayName,
                                           );
                                           await ProductsRecord.collection
                                               .doc()
                                               .set(productsCreateData);
-                                        }
-                                        await showDialog(
-                                          context: context,
-                                          builder: (alertDialogContext) {
-                                            return AlertDialog(
-                                              title: Text(
-                                                  'Do you want to Submit?'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
+                                          await showDialog(
+                                            context: context,
+                                            builder: (alertDialogContext) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    'Do you want to Submit?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            alertDialogContext),
+                                                    child: Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
                                                       Navigator.pop(
-                                                          alertDialogContext),
-                                                  child: Text('Cancel'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () async {
-                                                    Navigator.pop(
-                                                        alertDialogContext);
-                                                    await Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            MyAdsPageWidget(),
-                                                      ),
-                                                    );
-                                                    ;
-                                                  },
-                                                  child: Text('Submit'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                        setState(() {
-                                          textController1.clear();
-                                          priceController.clear();
-                                          availabilityController.clear();
-                                          identifierController.clear();
-                                          descriptionController.clear();
-                                        });
-                                      },
-                                      text: 'Submit Ad',
-                                      options: FFButtonOptions(
-                                        width: 150,
-                                        height: 50,
-                                        color: FlutterFlowTheme.secondaryColor,
-                                        textStyle:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Open Sans',
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
+                                                          alertDialogContext);
+                                                      await Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              MyAdsPageWidget(),
+                                                        ),
+                                                      );
+                                                      ;
+                                                    },
+                                                    child: Text('Submit'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                          setState(() {
+                                            textController1.clear();
+                                            priceController.clear();
+                                            availabilityController.clear();
+                                            identifierController.clear();
+                                            descriptionController.clear();
+                                          });
+                                        },
+                                        text: 'Submit Ad',
+                                        options: FFButtonOptions(
+                                          width: 150,
+                                          height: 50,
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryColor,
+                                          textStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyText1
+                                                  .override(
+                                                    fontFamily: 'Open Sans',
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                          elevation: 5,
+                                          borderSide: BorderSide(
+                                            color: Colors.transparent,
+                                            width: 1,
+                                          ),
+                                          borderRadius: 40,
                                         ),
-                                        elevation: 5,
-                                        borderSide: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 1,
-                                        ),
-                                        borderRadius: 40,
                                       ),
                                     ),
                                   ],

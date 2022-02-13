@@ -1,8 +1,9 @@
-import '../ad_details_page/ad_details_page_widget.dart';
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../product_detail_page/product_detail_page_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -56,10 +57,10 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                     children: [
                       Text(
                         'My Ads',
-                        style: FlutterFlowTheme.title1.override(
-                          fontFamily: 'Open Sans',
-                          fontSize: 30,
-                        ),
+                        style: FlutterFlowTheme.of(context).title1.override(
+                              fontFamily: 'Open Sans',
+                              fontSize: 30,
+                            ),
                       ),
                     ],
                   ),
@@ -67,7 +68,7 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                 Divider(
                   height: 5,
                   thickness: 5,
-                  color: FlutterFlowTheme.secondaryColor,
+                  color: FlutterFlowTheme.of(context).secondaryColor,
                 ),
                 Expanded(
                   child: Padding(
@@ -86,7 +87,8 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                               width: 50,
                               height: 50,
                               child: CircularProgressIndicator(
-                                color: FlutterFlowTheme.primaryColor,
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
                               ),
                             ),
                           );
@@ -114,7 +116,8 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                         width: 50,
                                         height: 50,
                                         child: CircularProgressIndicator(
-                                          color: FlutterFlowTheme.primaryColor,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
                                         ),
                                       ),
                                     );
@@ -126,9 +129,8 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              AdDetailsPageWidget(
-                                            productId: containerProductsRecord
-                                                .reference,
+                                              ProductDetailPageWidget(
+                                            productRef: containerProductsRecord,
                                           ),
                                         ),
                                       );
@@ -184,32 +186,91 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                                     Text(
                                                       containerProductsRecord
                                                           .price,
-                                                      style: FlutterFlowTheme
-                                                          .subtitle1
-                                                          .override(
-                                                        fontFamily:
-                                                            'Lexend Deca',
-                                                        color: FlutterFlowTheme
-                                                            .secondaryColor,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .subtitle1
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Lexend Deca',
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .secondaryColor,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(120, 0,
+                                                                  10, 0),
+                                                      child: InkWell(
+                                                        onTap: () async {
+                                                          await showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (alertDialogContext) {
+                                                              return AlertDialog(
+                                                                title: Text(
+                                                                    'Confirm Delete?'),
+                                                                content: Text(
+                                                                    'The product will be deleted from your favourites list.'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            alertDialogContext),
+                                                                    child: Text(
+                                                                        'Cancel'),
+                                                                  ),
+                                                                  TextButton(
+                                                                    onPressed:
+                                                                        () async {
+                                                                      Navigator.pop(
+                                                                          alertDialogContext);
+
+                                                                      final productsUpdateData =
+                                                                          createProductsRecordData();
+                                                                      await containerProductsRecord
+                                                                          .reference
+                                                                          .update(
+                                                                              productsUpdateData);
+                                                                      ;
+                                                                    },
+                                                                    child: Text(
+                                                                        'Confirm'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                        child: Icon(
+                                                          Icons.delete_forever,
+                                                          color:
+                                                              Color(0xFFC80C0D),
+                                                          size: 30,
+                                                        ),
                                                       ),
                                                     ),
                                                     Text(
                                                       containerProductsRecord
                                                           .name,
                                                       style: FlutterFlowTheme
+                                                              .of(context)
                                                           .subtitle1
                                                           .override(
-                                                        fontFamily:
-                                                            'Lexend Deca',
-                                                        color:
-                                                            Color(0xFF090F13),
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                                            fontFamily:
+                                                                'Lexend Deca',
+                                                            color: Color(
+                                                                0xFF090F13),
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
                                                     ),
                                                     Padding(
                                                       padding:
@@ -223,8 +284,10 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                                           maxChars: 1,
                                                           replacement: '…',
                                                         ),
-                                                        style: FlutterFlowTheme
-                                                            .bodyText1,
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyText1,
                                                       ),
                                                     ),
                                                     Align(
@@ -241,9 +304,9 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                                               'relative',
                                                               containerProductsRecord
                                                                   .uploadedAt),
-                                                          style:
-                                                              FlutterFlowTheme
-                                                                  .bodyText1,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyText1,
                                                         ),
                                                       ),
                                                     ),

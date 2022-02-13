@@ -14,8 +14,8 @@ import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.da
 import 'home_page/home_page_widget.dart';
 import 'favourites_page/favourites_page_widget.dart';
 import 'post_ad_page/post_ad_page_widget.dart';
-import 'morepage_page/morepage_page_widget.dart';
 import 'messages_page/messages_page_widget.dart';
+import 'more_options_page/more_options_page_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,12 +35,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale;
+  ThemeMode _themeMode = ThemeMode.system;
   Stream<RentalHood1FirebaseUser> userStream;
   RentalHood1FirebaseUser initialUser;
   bool displaySplashImage = true;
   final authUserSub = authenticatedUserStream.listen((_) {});
 
   void setLocale(Locale value) => setState(() => _locale = value);
+  void setThemeMode(ThemeMode mode) => setState(() {
+        _themeMode = mode;
+      });
 
   @override
   void initState() {
@@ -70,14 +74,16 @@ class _MyAppState extends State<MyApp> {
       ],
       locale: _locale,
       supportedLocales: const [Locale('en', '')],
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(brightness: Brightness.light),
+      darkTheme: ThemeData(brightness: Brightness.dark),
+      themeMode: _themeMode,
       home: initialUser == null || displaySplashImage
-          ? const Center(
+          ? Center(
               child: SizedBox(
                 width: 50,
                 height: 50,
                 child: CircularProgressIndicator(
-                  color: FlutterFlowTheme.primaryColor,
+                  color: FlutterFlowTheme.of(context).primaryColor,
                 ),
               ),
             )
@@ -113,8 +119,8 @@ class _NavBarPageState extends State<NavBarPage> {
       'HomePage': HomePageWidget(),
       'FavouritesPage': FavouritesPageWidget(),
       'PostAdPage': PostAdPageWidget(),
-      'MorepagePage': MorepagePageWidget(),
       'MessagesPage': MessagesPageWidget(),
+      'MoreOptionsPage': MoreOptionsPageWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPage);
     return Scaffold(
@@ -124,9 +130,9 @@ class _NavBarPageState extends State<NavBarPage> {
         currentIndex: currentIndex,
         onTap: (i) => setState(() => _currentPage = tabs.keys.toList()[i]),
         backgroundColor: Colors.white,
-        selectedItemColor: FlutterFlowTheme.secondaryColor,
+        selectedItemColor: FlutterFlowTheme.of(context).secondaryColor,
         unselectedItemColor: Color(0xFF616161),
-        selectedBackgroundColor: FlutterFlowTheme.primaryColor,
+        selectedBackgroundColor: FlutterFlowTheme.of(context).primaryColor,
         borderRadius: 8,
         itemBorderRadius: 10,
         margin: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
@@ -141,7 +147,7 @@ class _NavBarPageState extends State<NavBarPage> {
                 Icon(
                   currentIndex == 0 ? Icons.home : Icons.home_outlined,
                   color: currentIndex == 0
-                      ? FlutterFlowTheme.secondaryColor
+                      ? FlutterFlowTheme.of(context).secondaryColor
                       : Color(0xFF616161),
                   size: 24,
                 ),
@@ -150,7 +156,7 @@ class _NavBarPageState extends State<NavBarPage> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: currentIndex == 0
-                        ? FlutterFlowTheme.secondaryColor
+                        ? FlutterFlowTheme.of(context).secondaryColor
                         : Color(0xFF616161),
                     fontSize: 11.0,
                   ),
@@ -165,7 +171,7 @@ class _NavBarPageState extends State<NavBarPage> {
                 Icon(
                   currentIndex == 1 ? Icons.favorite : Icons.favorite_border,
                   color: currentIndex == 1
-                      ? FlutterFlowTheme.secondaryColor
+                      ? FlutterFlowTheme.of(context).secondaryColor
                       : Color(0xFF616161),
                   size: 24,
                 ),
@@ -174,7 +180,7 @@ class _NavBarPageState extends State<NavBarPage> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: currentIndex == 1
-                        ? FlutterFlowTheme.secondaryColor
+                        ? FlutterFlowTheme.of(context).secondaryColor
                         : Color(0xFF616161),
                     fontSize: 11.0,
                   ),
@@ -189,7 +195,7 @@ class _NavBarPageState extends State<NavBarPage> {
                 Icon(
                   currentIndex == 2 ? Icons.file_upload : Icons.upload_outlined,
                   color: currentIndex == 2
-                      ? FlutterFlowTheme.secondaryColor
+                      ? FlutterFlowTheme.of(context).secondaryColor
                       : Color(0xFF616161),
                   size: 24,
                 ),
@@ -198,7 +204,7 @@ class _NavBarPageState extends State<NavBarPage> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: currentIndex == 2
-                        ? FlutterFlowTheme.secondaryColor
+                        ? FlutterFlowTheme.of(context).secondaryColor
                         : Color(0xFF616161),
                     fontSize: 11.0,
                   ),
@@ -211,35 +217,11 @@ class _NavBarPageState extends State<NavBarPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  currentIndex == 3 ? Icons.settings : Icons.settings,
-                  color: currentIndex == 3
-                      ? FlutterFlowTheme.secondaryColor
-                      : Color(0xFF616161),
-                  size: 24,
-                ),
-                Text(
-                  'More',
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: currentIndex == 3
-                        ? FlutterFlowTheme.secondaryColor
-                        : Color(0xFF616161),
-                    fontSize: 11.0,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          FloatingNavbarItem(
-            customWidget: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  currentIndex == 4
+                  currentIndex == 3
                       ? Icons.chat_bubble_rounded
                       : Icons.chat_bubble_outline,
-                  color: currentIndex == 4
-                      ? FlutterFlowTheme.secondaryColor
+                  color: currentIndex == 3
+                      ? FlutterFlowTheme.of(context).secondaryColor
                       : Color(0xFF616161),
                   size: 24,
                 ),
@@ -247,8 +229,32 @@ class _NavBarPageState extends State<NavBarPage> {
                   'Chats',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
+                    color: currentIndex == 3
+                        ? FlutterFlowTheme.of(context).secondaryColor
+                        : Color(0xFF616161),
+                    fontSize: 11.0,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          FloatingNavbarItem(
+            customWidget: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  currentIndex == 4 ? Icons.settings : Icons.settings,
+                  color: currentIndex == 4
+                      ? FlutterFlowTheme.of(context).secondaryColor
+                      : Color(0xFF616161),
+                  size: 24,
+                ),
+                Text(
+                  'More',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
                     color: currentIndex == 4
-                        ? FlutterFlowTheme.secondaryColor
+                        ? FlutterFlowTheme.of(context).secondaryColor
                         : Color(0xFF616161),
                     fontSize: 11.0,
                   ),

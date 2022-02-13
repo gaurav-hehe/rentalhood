@@ -1,7 +1,9 @@
 import '../auth/auth_util.dart';
+import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../login_page/login_page_widget.dart';
 import '../register_page/register_page_widget.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -27,14 +29,41 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: Color(0xFFF5F5F5),
-        body: SafeArea(
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Color(0xFFEEEEEE),
+        automaticallyImplyLeading: false,
+        leading: FlutterFlowIconButton(
+          borderColor: Colors.transparent,
+          borderRadius: 30,
+          borderWidth: 1,
+          buttonSize: 60,
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.black,
+            size: 24,
+          ),
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginPageWidget(),
+              ),
+            );
+          },
+        ),
+        actions: [],
+        centerTitle: false,
+        elevation: 2,
+      ),
+      backgroundColor: Color(0xFFF5F5F5),
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.disabled,
             child: Container(
               width: double.infinity,
               height: double.infinity,
@@ -51,7 +80,7 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
                       children: [
                         Text(
                           'Forgot Password?',
-                          style: FlutterFlowTheme.title1,
+                          style: FlutterFlowTheme.of(context).title1,
                         ),
                       ],
                     ),
@@ -68,9 +97,14 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
                       obscureText: false,
                       decoration: InputDecoration(
                         hintText: 'Email',
+                        hintStyle:
+                            FlutterFlowTheme.of(context).subtitle2.override(
+                                  fontFamily: 'Open Sans',
+                                  color: Color(0xFF5D5E60),
+                                ),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: FlutterFlowTheme.tertiaryColor,
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
                             width: 1,
                           ),
                           borderRadius: const BorderRadius.only(
@@ -80,7 +114,7 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
                         ),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: FlutterFlowTheme.tertiaryColor,
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
                             width: 1,
                           ),
                           borderRadius: const BorderRadius.only(
@@ -104,7 +138,7 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
                               )
                             : null,
                       ),
-                      style: FlutterFlowTheme.subtitle2,
+                      style: FlutterFlowTheme.of(context).subtitle2,
                       keyboardType: TextInputType.emailAddress,
                       validator: (val) {
                         if (val.isEmpty) {
@@ -119,9 +153,6 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(20, 50, 20, 0),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        if (!formKey.currentState.validate()) {
-                          return;
-                        }
                         if (emailController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -159,13 +190,14 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
                       options: FFButtonOptions(
                         width: double.infinity,
                         height: 40,
-                        color: FlutterFlowTheme.secondaryColor,
-                        textStyle: FlutterFlowTheme.subtitle2.override(
-                          fontFamily: 'Open Sans',
-                          color: Colors.white,
-                        ),
+                        color: FlutterFlowTheme.of(context).secondaryColor,
+                        textStyle:
+                            FlutterFlowTheme.of(context).subtitle2.override(
+                                  fontFamily: 'Open Sans',
+                                  color: Colors.white,
+                                ),
                         borderSide: BorderSide(
-                          color: FlutterFlowTheme.tertiaryColor,
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
                           width: 1,
                         ),
                         borderRadius: 5,
@@ -180,7 +212,7 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
                       children: [
                         Text(
                           'Don\'t have an Account?',
-                          style: FlutterFlowTheme.bodyText1,
+                          style: FlutterFlowTheme.of(context).bodyText1,
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
@@ -196,10 +228,13 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
                             child: Text(
                               'SIGNUP',
                               textAlign: TextAlign.center,
-                              style: FlutterFlowTheme.bodyText1.override(
-                                fontFamily: 'Open Sans',
-                                color: FlutterFlowTheme.secondaryColor,
-                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryColor,
+                                  ),
                             ),
                           ),
                         ),

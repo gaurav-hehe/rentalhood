@@ -48,6 +48,20 @@ abstract class ProductsRecord
   String get image2;
 
   @nullable
+  LatLng get location;
+
+  @nullable
+  bool get status;
+
+  @nullable
+  @BuiltValueField(wireName: 'owner_name')
+  String get ownerName;
+
+  @nullable
+  @BuiltValueField(wireName: 'transaction_ref')
+  DocumentReference get transactionRef;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
@@ -59,7 +73,9 @@ abstract class ProductsRecord
     ..availability = ''
     ..price = ''
     ..image1 = ''
-    ..image2 = '';
+    ..image2 = ''
+    ..status = false
+    ..ownerName = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('products');
@@ -94,6 +110,10 @@ Map<String, dynamic> createProductsRecordData({
   DocumentReference rentedBy,
   String image1,
   String image2,
+  LatLng location,
+  bool status,
+  String ownerName,
+  DocumentReference transactionRef,
 }) =>
     serializers.toFirestore(
         ProductsRecord.serializer,
@@ -108,4 +128,8 @@ Map<String, dynamic> createProductsRecordData({
           ..uploadedBy = uploadedBy
           ..rentedBy = rentedBy
           ..image1 = image1
-          ..image2 = image2));
+          ..image2 = image2
+          ..location = location
+          ..status = status
+          ..ownerName = ownerName
+          ..transactionRef = transactionRef));

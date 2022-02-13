@@ -12,9 +12,6 @@ abstract class TransactionsRecord
       _$transactionsRecordSerializer;
 
   @nullable
-  int get id;
-
-  @nullable
   @BuiltValueField(wireName: 'renter_name')
   String get renterName;
 
@@ -34,14 +31,6 @@ abstract class TransactionsRecord
   LatLng get pickupLoc;
 
   @nullable
-  @BuiltValueField(wireName: 'pickup_date')
-  String get pickupDate;
-
-  @nullable
-  @BuiltValueField(wireName: 'pickup_time')
-  String get pickupTime;
-
-  @nullable
   @BuiltValueField(wireName: 'renter_id')
   DocumentReference get renterId;
 
@@ -50,17 +39,23 @@ abstract class TransactionsRecord
   DocumentReference get ownerId;
 
   @nullable
+  @BuiltValueField(wireName: 'pickup_dt')
+  String get pickupDt;
+
+  @nullable
+  @BuiltValueField(wireName: 'product_ref')
+  DocumentReference get productRef;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
   static void _initializeBuilder(TransactionsRecordBuilder builder) => builder
-    ..id = 0
     ..renterName = ''
     ..ownerName = ''
     ..paymentMode = ''
     ..price = ''
-    ..pickupDate = ''
-    ..pickupTime = '';
+    ..pickupDt = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('transactions');
@@ -85,27 +80,25 @@ abstract class TransactionsRecord
 }
 
 Map<String, dynamic> createTransactionsRecordData({
-  int id,
   String renterName,
   String ownerName,
   String paymentMode,
   String price,
   LatLng pickupLoc,
-  String pickupDate,
-  String pickupTime,
   DocumentReference renterId,
   DocumentReference ownerId,
+  String pickupDt,
+  DocumentReference productRef,
 }) =>
     serializers.toFirestore(
         TransactionsRecord.serializer,
         TransactionsRecord((t) => t
-          ..id = id
           ..renterName = renterName
           ..ownerName = ownerName
           ..paymentMode = paymentMode
           ..price = price
           ..pickupLoc = pickupLoc
-          ..pickupDate = pickupDate
-          ..pickupTime = pickupTime
           ..renterId = renterId
-          ..ownerId = ownerId));
+          ..ownerId = ownerId
+          ..pickupDt = pickupDt
+          ..productRef = productRef));

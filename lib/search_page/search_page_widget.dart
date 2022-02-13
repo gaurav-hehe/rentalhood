@@ -1,5 +1,7 @@
+import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,15 +31,41 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      autovalidateMode: AutovalidateMode.always,
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: Color(0xFFF5F5F5),
-        body: SafeArea(
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Color(0xFFEEEEEE),
+        automaticallyImplyLeading: false,
+        leading: FlutterFlowIconButton(
+          borderColor: Colors.transparent,
+          borderRadius: 30,
+          borderWidth: 1,
+          buttonSize: 60,
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.black,
+            size: 24,
+          ),
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NavBarPage(initialPage: 'HomePage'),
+              ),
+            );
+          },
+        ),
+        actions: [],
+        centerTitle: false,
+        elevation: 2,
+      ),
+      backgroundColor: Color(0xFFF5F5F5),
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.always,
             child: Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
               child: Container(
@@ -103,15 +131,9 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                         size: 15,
                                       ),
                                     ),
-                                    style: FlutterFlowTheme.bodyText1,
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyText1,
                                     keyboardType: TextInputType.multiline,
-                                    validator: (val) {
-                                      if (val.isEmpty) {
-                                        return 'Field is required';
-                                      }
-
-                                      return null;
-                                    },
                                   ),
                                 ),
                               ],

@@ -21,6 +21,13 @@ class _MessagesPageWidgetState extends State<MessagesPageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+        automaticallyImplyLeading: true,
+        actions: [],
+        centerTitle: true,
+        elevation: 4,
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -38,13 +45,18 @@ class _MessagesPageWidgetState extends State<MessagesPageWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
                     child: Text(
                       'Messages',
-                      style: FlutterFlowTheme.title1.override(
-                        fontFamily: 'Open Sans',
-                        fontSize: 30,
-                      ),
+                      style: FlutterFlowTheme.of(context).title1.override(
+                            fontFamily: 'Open Sans',
+                            fontSize: 30,
+                          ),
                     ),
                   ),
                 ],
+              ),
+              Divider(
+                height: 5,
+                thickness: 5,
+                color: FlutterFlowTheme.of(context).secondaryColor,
               ),
               Expanded(
                 child: Padding(
@@ -63,7 +75,7 @@ class _MessagesPageWidgetState extends State<MessagesPageWidget> {
                             width: 50,
                             height: 50,
                             child: CircularProgressIndicator(
-                              color: FlutterFlowTheme.primaryColor,
+                              color: FlutterFlowTheme.of(context).primaryColor,
                             ),
                           ),
                         );
@@ -111,7 +123,8 @@ class _MessagesPageWidgetState extends State<MessagesPageWidget> {
                                   title: chatInfo.chatPreviewTitle(),
                                   userProfilePic: chatInfo.chatPreviewPic(),
                                   color: Color(0xFFF3F3F4),
-                                  unreadColor: FlutterFlowTheme.secondaryColor,
+                                  unreadColor: FlutterFlowTheme.of(context)
+                                      .secondaryColor,
                                   titleTextStyle: GoogleFonts.getFont(
                                     'Open Sans',
                                     color: Colors.black,

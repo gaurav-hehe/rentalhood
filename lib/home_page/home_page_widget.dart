@@ -1,51 +1,40 @@
-import '../ad_details_page/ad_details_page_widget.dart';
+import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_animations.dart';
+import '../components/filter_widget.dart';
+import '../flutter_flow/flutter_flow_place_picker.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../flutter_flow/lat_lng.dart';
+import '../flutter_flow/place.dart';
+import '../product_detail_page/product_detail_page_widget.dart';
 import '../search_page/search_page_widget.dart';
+import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({Key key}) : super(key: key);
+  const HomePageWidget({
+    Key key,
+    this.userLoc,
+  }) : super(key: key);
+
+  final LatLng userLoc;
 
   @override
   _HomePageWidgetState createState() => _HomePageWidgetState();
 }
 
-class _HomePageWidgetState extends State<HomePageWidget>
-    with TickerProviderStateMixin {
+class _HomePageWidgetState extends State<HomePageWidget> {
   TextEditingController textController;
+  var placePickerValue = FFPlace();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final animationsMap = {
-    'containerOnActionTriggerAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onActionTrigger,
-      duration: 600,
-      initialState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 0,
-      ),
-      finalState: AnimationState(
-        offset: Offset(0, 0),
-        scale: 1,
-        opacity: 1,
-      ),
-    ),
-  };
 
   @override
   void initState() {
     super.initState();
-    setupTriggerAnimations(
-      animationsMap.values
-          .where((anim) => anim.trigger == AnimationTrigger.onActionTrigger),
-      this,
-    );
-
     textController = TextEditingController();
   }
 
@@ -61,42 +50,102 @@ class _HomePageWidgetState extends State<HomePageWidget>
             width: MediaQuery.of(context).size.width * 0.95,
             height: MediaQuery.of(context).size.height * 0.9,
             decoration: BoxDecoration(
-              color: FlutterFlowTheme.primaryColor,
+              color: FlutterFlowTheme.of(context).primaryColor,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(15, 40, 15, 10),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          height: 55,
+                Container(
+                  width: double.infinity,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: Color(0x00EEEEEE),
+                  ),
+                  alignment: AlignmentDirectional(0, 0),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(5, 20, 5, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 80,
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 3,
-                                color: Color(0x39000000),
-                                offset: Offset(0, 1),
-                                spreadRadius: 2,
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(30),
+                            color: FlutterFlowTheme.of(context).primaryColor,
                           ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              FlutterFlowPlacePicker(
+                                iOSGoogleMapsApiKey: '',
+                                androidGoogleMapsApiKey: '',
+                                webGoogleMapsApiKey: '',
+                                onSelect: (place) =>
+                                    setState(() => placePickerValue = place),
+                                defaultText: '',
+                                icon: Icon(
+                                  Icons.place,
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryColor,
+                                  size: 25,
+                                ),
+                                buttonOptions: FFButtonOptions(
+                                  width: 50,
+                                  height: 40,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryColor,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .subtitle2
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        color: Colors.white,
+                                      ),
+                                  borderSide: BorderSide(
+                                    color: Colors.transparent,
+                                    width: 1,
+                                  ),
+                                  borderRadius: 0,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  final usersUpdateData = createUsersRecordData(
+                                    location: placePickerValue.latLng,
+                                  );
+                                  await currentUserReference
+                                      .update(usersUpdateData);
+                                },
+                                child: Text(
+                                  'Update',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 4),
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(10, 4, 0, 4),
                             child: Container(
                               width: double.infinity,
+                              height: 60,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
                               ),
                               alignment: AlignmentDirectional(0, 0),
                               child: Row(
-                                mainAxisSize: MainAxisSize.max,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Expanded(
                                     child: Padding(
@@ -106,22 +155,27 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         controller: textController,
                                         obscureText: false,
                                         decoration: InputDecoration(
-                                          labelText: 'Address, city, state...',
-                                          labelStyle: FlutterFlowTheme.bodyText1
-                                              .override(
-                                            fontFamily: 'Lexend Deca',
-                                            color: Color(0xFF57636C),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
+                                          labelStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyText1
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF57636C),
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                  ),
                                           hintText: 'Samsung Phone...',
-                                          hintStyle: FlutterFlowTheme.bodyText1
-                                              .override(
-                                            fontFamily: 'Lexend Deca',
-                                            color: Color(0xFF4C4C4C),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
+                                          hintStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyText1
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF4C4C4C),
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                  ),
                                           enabledBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
                                               color: Color(0x00000000),
@@ -144,13 +198,16 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                             size: 16,
                                           ),
                                         ),
-                                        style:
-                                            FlutterFlowTheme.bodyText1.override(
-                                          fontFamily: 'Lexend Deca',
-                                          color: FlutterFlowTheme.tertiaryColor,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                        ),
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyText1
+                                            .override(
+                                              fontFamily: 'Lexend Deca',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .tertiaryColor,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                            ),
                                       ),
                                     ),
                                   ),
@@ -167,22 +224,31 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                           ),
                                         );
                                       },
-                                      text: 'Search',
+                                      text: '',
+                                      icon: Icon(
+                                        Icons.search,
+                                        size: 15,
+                                      ),
                                       options: FFButtonOptions(
-                                        width: 100,
+                                        width: 45,
                                         height: 40,
-                                        color: FlutterFlowTheme.secondaryColor,
-                                        textStyle:
-                                            FlutterFlowTheme.title3.override(
-                                          fontFamily: 'Open Sans',
-                                          color: FlutterFlowTheme.primaryColor,
-                                        ),
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryColor,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .title3
+                                            .override(
+                                              fontFamily: 'Open Sans',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryColor,
+                                              fontSize: 17,
+                                            ),
                                         elevation: 2,
                                         borderSide: BorderSide(
                                           color: Colors.transparent,
                                           width: 1,
                                         ),
-                                        borderRadius: 50,
+                                        borderRadius: 20,
                                       ),
                                     ),
                                   ),
@@ -190,11 +256,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               ),
                             ),
                           ),
-                        ).animated([
-                          animationsMap['containerOnActionTriggerAnimation']
-                        ]),
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Padding(
@@ -204,7 +268,7 @@ class _HomePageWidgetState extends State<HomePageWidget>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.95,
+                        width: MediaQuery.of(context).size.width * 0.9,
                         height: MediaQuery.of(context).size.height * 0.07,
                         decoration: BoxDecoration(
                           color: Color(0xFFECEBEB),
@@ -217,18 +281,52 @@ class _HomePageWidgetState extends State<HomePageWidget>
                           borderRadius: BorderRadius.circular(2),
                         ),
                         alignment: AlignmentDirectional(-1, 0),
-                        child: Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(12, 10, 10, 10),
-                          child: AutoSizeText(
-                            'Recently added',
-                            textAlign: TextAlign.start,
-                            style: FlutterFlowTheme.title1.override(
-                              fontFamily: 'Open Sans',
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  12, 10, 10, 10),
+                              child: AutoSizeText(
+                                'Recently added',
+                                textAlign: TextAlign.start,
+                                style: FlutterFlowTheme.of(context)
+                                    .title1
+                                    .override(
+                                      fontFamily: 'Open Sans',
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
                             ),
-                          ),
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 0, 15, 0),
+                              child: InkWell(
+                                onTap: () async {
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding:
+                                            MediaQuery.of(context).viewInsets,
+                                        child: FilterWidget(),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Icon(
+                                  Icons.filter_alt,
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryColor,
+                                  size: 40,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -247,7 +345,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                               width: 50,
                               height: 50,
                               child: CircularProgressIndicator(
-                                color: FlutterFlowTheme.primaryColor,
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
                               ),
                             ),
                           );
@@ -275,7 +374,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         width: 50,
                                         height: 50,
                                         child: CircularProgressIndicator(
-                                          color: FlutterFlowTheme.primaryColor,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
                                         ),
                                       ),
                                     );
@@ -287,9 +387,8 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              AdDetailsPageWidget(
-                                            productId: containerProductsRecord
-                                                .reference,
+                                              ProductDetailPageWidget(
+                                            productRef: containerProductsRecord,
                                           ),
                                         ),
                                       );
@@ -303,10 +402,9 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                         color: Colors.white,
                                         boxShadow: [
                                           BoxShadow(
-                                            blurRadius: 7,
+                                            blurRadius: 5,
                                             color: Color(0x32171717),
-                                            offset: Offset(0, 3),
-                                            spreadRadius: 10,
+                                            spreadRadius: 5,
                                           )
                                         ],
                                         borderRadius: BorderRadius.circular(16),
@@ -346,34 +444,45 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      'Rs ${listViewProductsRecord.price}',
-                                                      style: FlutterFlowTheme
-                                                          .subtitle1
-                                                          .override(
-                                                        fontFamily:
-                                                            'Lexend Deca',
-                                                        color: FlutterFlowTheme
-                                                            .secondaryColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0, 5, 0, 0),
+                                                      child: Text(
+                                                        'Rs ${listViewProductsRecord.price}',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .subtitle1
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Lexend Deca',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryColor,
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
                                                       ),
                                                     ),
                                                     Text(
                                                       listViewProductsRecord
                                                           .name,
                                                       style: FlutterFlowTheme
+                                                              .of(context)
                                                           .subtitle1
                                                           .override(
-                                                        fontFamily:
-                                                            'Lexend Deca',
-                                                        color:
-                                                            Color(0xFF090F13),
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                                            fontFamily:
+                                                                'Lexend Deca',
+                                                            color: Color(
+                                                                0xFF090F13),
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
                                                     ),
                                                     Padding(
                                                       padding:
@@ -387,13 +496,15 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           maxChars: 30,
                                                           replacement: '…',
                                                         ),
-                                                        style: FlutterFlowTheme
-                                                            .subtitle1
-                                                            .override(
-                                                          fontFamily:
-                                                              'Open Sans',
-                                                          fontSize: 14,
-                                                        ),
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .subtitle1
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Open Sans',
+                                                                  fontSize: 14,
+                                                                ),
                                                       ),
                                                     ),
                                                     Align(
@@ -409,16 +520,17 @@ class _HomePageWidgetState extends State<HomePageWidget>
                                                           'Posted: ${dateTimeFormat('relative', listViewProductsRecord.uploadedAt)}',
                                                           textAlign:
                                                               TextAlign.end,
-                                                          style:
-                                                              FlutterFlowTheme
-                                                                  .bodyText2
-                                                                  .override(
-                                                            fontFamily:
-                                                                'Open Sans',
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w300,
-                                                          ),
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyText2
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Open Sans',
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300,
+                                                              ),
                                                         ),
                                                       ),
                                                     ),

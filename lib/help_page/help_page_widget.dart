@@ -61,10 +61,10 @@ class _HelpPageWidgetState extends State<HelpPageWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(20, 30, 0, 0),
                         child: Text(
                           'Help',
-                          style: FlutterFlowTheme.title1.override(
-                            fontFamily: 'Open Sans',
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: FlutterFlowTheme.of(context).title1.override(
+                                fontFamily: 'Open Sans',
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
                       ),
                     ],
@@ -90,10 +90,11 @@ class _HelpPageWidgetState extends State<HelpPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                             child: Text(
                               'What is RentalHood?',
-                              style: FlutterFlowTheme.title2.override(
-                                fontFamily: 'Open Sans',
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style:
+                                  FlutterFlowTheme.of(context).title2.override(
+                                        fontFamily: 'Open Sans',
+                                        fontWeight: FontWeight.w600,
+                                      ),
                             ),
                           ),
                           Padding(
@@ -101,7 +102,7 @@ class _HelpPageWidgetState extends State<HelpPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                             child: Text(
                               'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text .',
-                              style: FlutterFlowTheme.bodyText1,
+                              style: FlutterFlowTheme.of(context).bodyText1,
                             ),
                           ),
                         ],
@@ -129,10 +130,11 @@ class _HelpPageWidgetState extends State<HelpPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                             child: Text(
                               'What is RentalHood?',
-                              style: FlutterFlowTheme.title2.override(
-                                fontFamily: 'Open Sans',
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style:
+                                  FlutterFlowTheme.of(context).title2.override(
+                                        fontFamily: 'Open Sans',
+                                        fontWeight: FontWeight.w600,
+                                      ),
                             ),
                           ),
                           Padding(
@@ -140,7 +142,7 @@ class _HelpPageWidgetState extends State<HelpPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                             child: Text(
                               'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text .',
-                              style: FlutterFlowTheme.bodyText1,
+                              style: FlutterFlowTheme.of(context).bodyText1,
                             ),
                           ),
                         ],
@@ -168,10 +170,11 @@ class _HelpPageWidgetState extends State<HelpPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                             child: Text(
                               'What is RentalHood?',
-                              style: FlutterFlowTheme.title2.override(
-                                fontFamily: 'Open Sans',
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style:
+                                  FlutterFlowTheme.of(context).title2.override(
+                                        fontFamily: 'Open Sans',
+                                        fontWeight: FontWeight.w600,
+                                      ),
                             ),
                           ),
                           Padding(
@@ -179,7 +182,7 @@ class _HelpPageWidgetState extends State<HelpPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                             child: Text(
                               'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text .',
-                              style: FlutterFlowTheme.bodyText1,
+                              style: FlutterFlowTheme.of(context).bodyText1,
                             ),
                           ),
                         ],
@@ -207,10 +210,11 @@ class _HelpPageWidgetState extends State<HelpPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                             child: Text(
                               'What is RentalHood?',
-                              style: FlutterFlowTheme.title2.override(
-                                fontFamily: 'Open Sans',
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style:
+                                  FlutterFlowTheme.of(context).title2.override(
+                                        fontFamily: 'Open Sans',
+                                        fontWeight: FontWeight.w600,
+                                      ),
                             ),
                           ),
                           Padding(
@@ -218,7 +222,7 @@ class _HelpPageWidgetState extends State<HelpPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                             child: Text(
                               'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text .',
-                              style: FlutterFlowTheme.bodyText1,
+                              style: FlutterFlowTheme.of(context).bodyText1,
                             ),
                           ),
                         ],
@@ -246,10 +250,11 @@ class _HelpPageWidgetState extends State<HelpPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                             child: Text(
                               'What is RentalHood?',
-                              style: FlutterFlowTheme.title2.override(
-                                fontFamily: 'Open Sans',
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style:
+                                  FlutterFlowTheme.of(context).title2.override(
+                                        fontFamily: 'Open Sans',
+                                        fontWeight: FontWeight.w600,
+                                      ),
                             ),
                           ),
                           Padding(
@@ -257,7 +262,7 @@ class _HelpPageWidgetState extends State<HelpPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                             child: Text(
                               'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text .',
-                              style: FlutterFlowTheme.bodyText1,
+                              style: FlutterFlowTheme.of(context).bodyText1,
                             ),
                           ),
                         ],

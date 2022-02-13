@@ -50,13 +50,14 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: Color(0xFFF5F5F5),
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
+    return Scaffold(
+      key: scaffoldKey,
+      backgroundColor: Color(0xFFF5F5F5),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Form(
+          key: formKey,
+          autovalidateMode: AutovalidateMode.disabled,
           child: Container(
             width: double.infinity,
             height: double.infinity,
@@ -75,10 +76,10 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
                         child: Text(
                           'Create Account ',
-                          style: FlutterFlowTheme.title1.override(
-                            fontFamily: 'Open Sans',
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: FlutterFlowTheme.of(context).title1.override(
+                                fontFamily: 'Open Sans',
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
                       ),
                     ],
@@ -91,7 +92,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(20, 3, 0, 0),
                       child: Text(
                         'Products are waiting for you.',
-                        style: FlutterFlowTheme.bodyText1,
+                        style: FlutterFlowTheme.of(context).bodyText1,
                       ),
                     ),
                   ],
@@ -103,9 +104,14 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                     obscureText: false,
                     decoration: InputDecoration(
                       hintText: 'Full Name',
+                      hintStyle:
+                          FlutterFlowTheme.of(context).subtitle2.override(
+                                fontFamily: 'Open Sans',
+                                color: Color(0xFF5D5E60),
+                              ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: FlutterFlowTheme.tertiaryColor,
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
                           width: 1,
                         ),
                         borderRadius: const BorderRadius.only(
@@ -115,7 +121,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: FlutterFlowTheme.tertiaryColor,
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
                           width: 1,
                         ),
                         borderRadius: const BorderRadius.only(
@@ -125,9 +131,10 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       prefixIcon: Icon(
                         Icons.person_outlined,
+                        color: Color(0xFF5D5E60),
                       ),
                     ),
-                    style: FlutterFlowTheme.subtitle2,
+                    style: FlutterFlowTheme.of(context).subtitle2,
                     keyboardType: TextInputType.name,
                     validator: (val) {
                       if (val.isEmpty) {
@@ -145,9 +152,14 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                     obscureText: false,
                     decoration: InputDecoration(
                       hintText: 'Email',
+                      hintStyle:
+                          FlutterFlowTheme.of(context).subtitle2.override(
+                                fontFamily: 'Open Sans',
+                                color: Color(0xFF5D5E60),
+                              ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: FlutterFlowTheme.tertiaryColor,
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
                           width: 1,
                         ),
                         borderRadius: const BorderRadius.only(
@@ -157,7 +169,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: FlutterFlowTheme.tertiaryColor,
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
                           width: 1,
                         ),
                         borderRadius: const BorderRadius.only(
@@ -167,9 +179,10 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       prefixIcon: Icon(
                         Icons.mail_outlined,
+                        color: Color(0xFF5D5E60),
                       ),
                     ),
-                    style: FlutterFlowTheme.subtitle2,
+                    style: FlutterFlowTheme.of(context).subtitle2,
                     keyboardType: TextInputType.emailAddress,
                     validator: (val) {
                       if (val.isEmpty) {
@@ -181,133 +194,20 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 3, 0, 0),
-                  child: Container(
-                    width: double.infinity,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFEEEEEE),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    20, 20, 10, 0),
-                                child: TextFormField(
-                                  controller: phoneNoController,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    hintText: 'Phone number',
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: FlutterFlowTheme.tertiaryColor,
-                                        width: 1,
-                                      ),
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(4.0),
-                                        topRight: Radius.circular(4.0),
-                                      ),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: FlutterFlowTheme.tertiaryColor,
-                                        width: 1,
-                                      ),
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(4.0),
-                                        topRight: Radius.circular(4.0),
-                                      ),
-                                    ),
-                                    prefixIcon: Icon(
-                                      Icons.call,
-                                    ),
-                                  ),
-                                  style: FlutterFlowTheme.subtitle2,
-                                  keyboardType: TextInputType.emailAddress,
-                                  validator: (val) {
-                                    if (val.isEmpty) {
-                                      return 'Field is required';
-                                    }
-
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 10, 20, 0),
-                              child: FFButtonWidget(
-                                onPressed: () async {
-                                  if (!formKey.currentState.validate()) {
-                                    return;
-                                  }
-                                  if (phoneNoController.text.isEmpty) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            'Enter SMS verification code.'),
-                                      ),
-                                    );
-                                    return;
-                                  }
-                                  final phoneVerifiedUser = await verifySmsCode(
-                                    context: context,
-                                    smsCode: phoneNoController.text,
-                                  );
-                                  if (phoneVerifiedUser == null) {
-                                    return;
-                                  }
-                                  await Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          NavBarPage(initialPage: 'HomePage'),
-                                    ),
-                                    (r) => false,
-                                  );
-                                },
-                                text: 'Send OTP',
-                                options: FFButtonOptions(
-                                  width: 100,
-                                  height: 40,
-                                  color: FlutterFlowTheme.primaryColor,
-                                  textStyle:
-                                      FlutterFlowTheme.subtitle2.override(
-                                    fontFamily: 'Open Sans',
-                                    color: FlutterFlowTheme.tertiaryColor,
-                                  ),
-                                  borderSide: BorderSide(
-                                    color: Color(0xFF777171),
-                                    width: 1,
-                                  ),
-                                  borderRadius: 12,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
                   child: TextFormField(
-                    controller: aadhaarNoController,
+                    controller: phoneNoController,
                     obscureText: false,
                     decoration: InputDecoration(
-                      hintText: 'Aadhaar number',
+                      hintText: 'Phone number',
+                      hintStyle:
+                          FlutterFlowTheme.of(context).subtitle2.override(
+                                fontFamily: 'Open Sans',
+                                color: Color(0xFF5D5E60),
+                              ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: FlutterFlowTheme.tertiaryColor,
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
                           width: 1,
                         ),
                         borderRadius: const BorderRadius.only(
@@ -317,7 +217,48 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: FlutterFlowTheme.tertiaryColor,
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
+                          width: 1,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(4.0),
+                          topRight: Radius.circular(4.0),
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.call_rounded,
+                        color: Color(0xFF5D5E60),
+                      ),
+                    ),
+                    style: FlutterFlowTheme.of(context).subtitle2,
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                  child: TextFormField(
+                    controller: aadhaarNoController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      hintText: 'Aadhaar number',
+                      hintStyle:
+                          FlutterFlowTheme.of(context).subtitle2.override(
+                                fontFamily: 'Open Sans',
+                                color: Color(0xFF5D5E60),
+                              ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
+                          width: 1,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(4.0),
+                          topRight: Radius.circular(4.0),
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
                           width: 1,
                         ),
                         borderRadius: const BorderRadius.only(
@@ -327,9 +268,10 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       prefixIcon: Icon(
                         Icons.contact_phone,
+                        color: Color(0xFF5D5E60),
                       ),
                     ),
-                    style: FlutterFlowTheme.subtitle2,
+                    style: FlutterFlowTheme.of(context).subtitle2,
                     keyboardType: TextInputType.emailAddress,
                     validator: (val) {
                       if (val.isEmpty) {
@@ -352,9 +294,14 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                     obscureText: !paswordVisibility,
                     decoration: InputDecoration(
                       hintText: 'Password',
+                      hintStyle:
+                          FlutterFlowTheme.of(context).subtitle2.override(
+                                fontFamily: 'Open Sans',
+                                color: Color(0xFF5D5E60),
+                              ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: FlutterFlowTheme.tertiaryColor,
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
                           width: 1,
                         ),
                         borderRadius: const BorderRadius.only(
@@ -364,7 +311,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: FlutterFlowTheme.tertiaryColor,
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
                           width: 1,
                         ),
                         borderRadius: const BorderRadius.only(
@@ -374,6 +321,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       prefixIcon: Icon(
                         Icons.lock_rounded,
+                        color: Color(0xFF5D5E60),
                       ),
                       suffixIcon: InkWell(
                         onTap: () => setState(
@@ -388,7 +336,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                         ),
                       ),
                     ),
-                    style: FlutterFlowTheme.subtitle2,
+                    style: FlutterFlowTheme.of(context).subtitle2,
                     keyboardType: TextInputType.visiblePassword,
                     validator: (val) {
                       if (val.isEmpty) {
@@ -406,9 +354,14 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                     obscureText: !confPasswordVisibility,
                     decoration: InputDecoration(
                       hintText: 'Confirm Password',
+                      hintStyle:
+                          FlutterFlowTheme.of(context).subtitle2.override(
+                                fontFamily: 'Open Sans',
+                                color: Color(0xFF5D5E60),
+                              ),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: FlutterFlowTheme.tertiaryColor,
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
                           width: 1,
                         ),
                         borderRadius: const BorderRadius.only(
@@ -418,7 +371,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: FlutterFlowTheme.tertiaryColor,
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
                           width: 1,
                         ),
                         borderRadius: const BorderRadius.only(
@@ -428,6 +381,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       prefixIcon: Icon(
                         Icons.lock_rounded,
+                        color: Color(0xFF5D5E60),
                       ),
                       suffixIcon: InkWell(
                         onTap: () => setState(
@@ -443,7 +397,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                         ),
                       ),
                     ),
-                    style: FlutterFlowTheme.subtitle2,
+                    style: FlutterFlowTheme.of(context).subtitle2,
                     keyboardType: TextInputType.visiblePassword,
                     validator: (val) {
                       if (val.isEmpty) {
@@ -476,7 +430,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                           width: 150,
                           height: 45,
                           color: Color(0xFFD2D6E0),
-                          textStyle: FlutterFlowTheme.subtitle2,
+                          textStyle: FlutterFlowTheme.of(context).subtitle2,
                           borderSide: BorderSide(
                             color: Color(0xFF616161),
                             width: 1,
@@ -525,8 +479,8 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                         options: FFButtonOptions(
                           width: 150,
                           height: 45,
-                          color: FlutterFlowTheme.primaryColor,
-                          textStyle: FlutterFlowTheme.subtitle2,
+                          color: FlutterFlowTheme.of(context).primaryColor,
+                          textStyle: FlutterFlowTheme.of(context).subtitle2,
                           borderSide: BorderSide(
                             color: Color(0xFF616161),
                             width: 1,
@@ -541,9 +495,6 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(20, 50, 20, 0),
                   child: FFButtonWidget(
                     onPressed: () async {
-                      if (!formKey.currentState.validate()) {
-                        return;
-                      }
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -589,14 +540,15 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                     options: FFButtonOptions(
                       width: double.infinity,
                       height: 40,
-                      color: FlutterFlowTheme.secondaryColor,
-                      textStyle: FlutterFlowTheme.subtitle2.override(
-                        fontFamily: 'Open Sans',
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      color: FlutterFlowTheme.of(context).secondaryColor,
+                      textStyle:
+                          FlutterFlowTheme.of(context).subtitle2.override(
+                                fontFamily: 'Open Sans',
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
                       borderSide: BorderSide(
-                        color: FlutterFlowTheme.tertiaryColor,
+                        color: FlutterFlowTheme.of(context).tertiaryColor,
                         width: 1,
                       ),
                       borderRadius: 5,
@@ -611,7 +563,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                     children: [
                       Text(
                         'Already have an account ?',
-                        style: FlutterFlowTheme.bodyText1,
+                        style: FlutterFlowTheme.of(context).bodyText1,
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
@@ -626,10 +578,12 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                           },
                           child: Text(
                             'LOGIN',
-                            style: FlutterFlowTheme.bodyText1.override(
-                              fontFamily: 'Open Sans',
-                              color: FlutterFlowTheme.secondaryColor,
-                            ),
+                            style:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Open Sans',
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryColor,
+                                    ),
                           ),
                         ),
                       ),

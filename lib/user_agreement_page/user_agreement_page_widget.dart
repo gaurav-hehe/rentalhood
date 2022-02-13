@@ -68,11 +68,11 @@ class _UserAgreementPageWidgetState extends State<UserAgreementPageWidget> {
                       ),
                       Text(
                         'User\'s Agreement',
-                        style: FlutterFlowTheme.bodyText1.override(
-                          fontFamily: 'Open Sans',
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Open Sans',
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                     ],
                   ),
@@ -89,7 +89,7 @@ class _UserAgreementPageWidgetState extends State<UserAgreementPageWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
                       child: Text(
                         'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.',
-                        style: FlutterFlowTheme.bodyText2,
+                        style: FlutterFlowTheme.of(context).bodyText2,
                       ),
                     ),
                   ),
@@ -97,7 +97,7 @@ class _UserAgreementPageWidgetState extends State<UserAgreementPageWidget> {
                 Divider(
                   height: 5,
                   thickness: 5,
-                  color: FlutterFlowTheme.secondaryColor,
+                  color: FlutterFlowTheme.of(context).secondaryColor,
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
@@ -114,11 +114,11 @@ class _UserAgreementPageWidgetState extends State<UserAgreementPageWidget> {
                       ),
                       Text(
                         'Terms and Conditions',
-                        style: FlutterFlowTheme.bodyText1.override(
-                          fontFamily: 'Open Sans',
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Open Sans',
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                     ],
                   ),
@@ -135,7 +135,7 @@ class _UserAgreementPageWidgetState extends State<UserAgreementPageWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
                       child: Text(
                         'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.',
-                        style: FlutterFlowTheme.bodyText2,
+                        style: FlutterFlowTheme.of(context).bodyText2,
                       ),
                     ),
                   ),
