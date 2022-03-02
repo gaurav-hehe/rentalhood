@@ -39,12 +39,18 @@ abstract class TransactionsRecord
   DocumentReference get ownerId;
 
   @nullable
-  @BuiltValueField(wireName: 'pickup_dt')
-  String get pickupDt;
-
-  @nullable
   @BuiltValueField(wireName: 'product_ref')
   DocumentReference get productRef;
+
+  @nullable
+  @BuiltValueField(wireName: 'pickup_dt')
+  DateTime get pickupDt;
+
+  @nullable
+  String get id;
+
+  @nullable
+  DocumentReference get qrcode;
 
   @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
@@ -55,7 +61,7 @@ abstract class TransactionsRecord
     ..ownerName = ''
     ..paymentMode = ''
     ..price = ''
-    ..pickupDt = '';
+    ..id = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('transactions');
@@ -87,8 +93,10 @@ Map<String, dynamic> createTransactionsRecordData({
   LatLng pickupLoc,
   DocumentReference renterId,
   DocumentReference ownerId,
-  String pickupDt,
   DocumentReference productRef,
+  DateTime pickupDt,
+  String id,
+  DocumentReference qrcode,
 }) =>
     serializers.toFirestore(
         TransactionsRecord.serializer,
@@ -100,5 +108,7 @@ Map<String, dynamic> createTransactionsRecordData({
           ..pickupLoc = pickupLoc
           ..renterId = renterId
           ..ownerId = ownerId
+          ..productRef = productRef
           ..pickupDt = pickupDt
-          ..productRef = productRef));
+          ..id = id
+          ..qrcode = qrcode));

@@ -21,15 +21,16 @@ class PostAdPageWidget extends StatefulWidget {
 }
 
 class _PostAdPageWidgetState extends State<PostAdPageWidget> {
+  ProductsRecord adRef;
+  String uploadedFileUrl1 = '';
+  String uploadedFileUrl2 = '';
   String choiceChipsValue;
   String dropDownValue;
   TextEditingController descriptionController;
   TextEditingController priceController;
-  TextEditingController textController1;
+  TextEditingController titleController;
   TextEditingController availabilityController;
   TextEditingController identifierController;
-  String uploadedFileUrl1 = '';
-  String uploadedFileUrl2 = '';
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -40,14 +41,14 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
     identifierController = TextEditingController();
     descriptionController = TextEditingController();
     priceController = TextEditingController();
-    textController1 = TextEditingController();
+    titleController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Color(0xFFF5F5F5),
+      backgroundColor: Color(0xFFECEBEB),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -158,7 +159,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                         width: MediaQuery.of(context).size.width * 0.95,
                         height: 250,
                         decoration: BoxDecoration(
-                          color: Color(0xFFECEBEB),
+                          color: Color(0x00ECEBEB),
                           border: Border.all(
                             color: Color(0xFF545252),
                           ),
@@ -174,17 +175,10 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         10, 15, 10, 0),
                                     child: TextFormField(
-                                      controller: textController1,
+                                      controller: titleController,
                                       obscureText: false,
                                       decoration: InputDecoration(
                                         hintText: 'TITLE',
-                                        hintStyle: FlutterFlowTheme.of(context)
-                                            .subtitle2
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF5D5E60),
-                                              fontWeight: FontWeight.w600,
-                                            ),
                                         enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Color(0xFF616161),
@@ -210,12 +204,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                 10, 0, 0, 0),
                                       ),
                                       style: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Color(0xFF616161),
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                          .subtitle2,
                                       validator: (val) {
                                         if (val.isEmpty) {
                                           return 'Field is required';
@@ -241,18 +230,10 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                       controller: priceController,
                                       obscureText: false,
                                       decoration: InputDecoration(
-                                        labelText: 'PRICE',
                                         hintText: 'PRICE PER DAY',
-                                        hintStyle: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF5D5E60),
-                                              fontWeight: FontWeight.w600,
-                                            ),
                                         enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: Color(0xFF545252),
+                                            color: Color(0xFF616161),
                                             width: 1,
                                           ),
                                           borderRadius: const BorderRadius.only(
@@ -262,7 +243,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                         ),
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: Color(0xFF545252),
+                                            color: Color(0xFF616161),
                                             width: 1,
                                           ),
                                           borderRadius: const BorderRadius.only(
@@ -275,12 +256,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                 10, 0, 0, 0),
                                       ),
                                       style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Color(0xFF616161),
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                          .subtitle2,
                                       validator: (val) {
                                         if (val.isEmpty) {
                                           return 'Field is required';
@@ -304,70 +280,58 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                   child: Container(
                                     width: MediaQuery.of(context).size.width *
                                         0.94,
-                                    height: 80,
+                                    height: 60,
                                     decoration: BoxDecoration(
                                       color: Color(0x00EEEEEE),
                                     ),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10, 5, 10, 0),
-                                      child: TextFormField(
-                                        controller: descriptionController,
-                                        obscureText: false,
-                                        decoration: InputDecoration(
-                                          labelText: 'DESCRIPTION',
-                                          hintText: 'DESCRIPTION',
-                                          hintStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyText1
-                                                  .override(
-                                                    fontFamily: 'Open Sans',
-                                                    color: Color(0xFF5D5E60),
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0xFF616161),
-                                              width: 1,
+                                    child: Align(
+                                      alignment: AlignmentDirectional(0, 1),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            10, 5, 10, 0),
+                                        child: TextFormField(
+                                          controller: descriptionController,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            hintText: 'DESCRIPTION',
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFF616161),
+                                                width: 1,
+                                              ),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                topLeft: Radius.circular(4.0),
+                                                topRight: Radius.circular(4.0),
+                                              ),
                                             ),
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topLeft: Radius.circular(4.0),
-                                              topRight: Radius.circular(4.0),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFF616161),
+                                                width: 1,
+                                              ),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                topLeft: Radius.circular(4.0),
+                                                topRight: Radius.circular(4.0),
+                                              ),
                                             ),
+                                            contentPadding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    10, 0, 0, 0),
                                           ),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0xFF616161),
-                                              width: 1,
-                                            ),
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topLeft: Radius.circular(4.0),
-                                              topRight: Radius.circular(4.0),
-                                            ),
-                                          ),
-                                          contentPadding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  10, 0, 0, 0),
+                                          style: FlutterFlowTheme.of(context)
+                                              .subtitle2,
+                                          validator: (val) {
+                                            if (val.isEmpty) {
+                                              return 'Field is required';
+                                            }
+                                            if (val.length < 20) {
+                                              return 'Requires at least 20 characters.';
+                                            }
+                                            return null;
+                                          },
                                         ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF616161),
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                        maxLines: 2,
-                                        validator: (val) {
-                                          if (val.isEmpty) {
-                                            return 'Field is required';
-                                          }
-                                          if (val.length < 20) {
-                                            return 'Requires at least 20 characters.';
-                                          }
-                                          return null;
-                                        },
                                       ),
                                     ),
                                   ),
@@ -458,7 +422,12 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                       width: MediaQuery.of(context).size.width,
                                       height: 50,
                                       textStyle: FlutterFlowTheme.of(context)
-                                          .bodyText1,
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: FlutterFlowTheme.of(context)
+                                                .tertiaryColor,
+                                          ),
                                       hintText: 'PRODUCT TYPE',
                                       fillColor: Color(0xFFEEEEEE),
                                       elevation: 4,
@@ -481,7 +450,8 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                     .bodyText1
                                     .override(
                                       fontFamily: 'Open Sans',
-                                      color: Color(0xFF545252),
+                                      color: FlutterFlowTheme.of(context)
+                                          .tertiaryColor,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -536,44 +506,28 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                       elevation: 5,
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.95,
-                        height: 120,
+                        height: 130,
                         decoration: BoxDecoration(
-                          color: Color(0xFFEEEEEE),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0xFF545252),
-                            )
-                          ],
+                          color: Color(0x00ECEBEB),
                           border: Border.all(
                             color: Color(0xFF545252),
                           ),
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Expanded(
                                   child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        10, 5, 10, 0),
+                                        10, 10, 10, 0),
                                     child: TextFormField(
                                       controller: availabilityController,
                                       obscureText: false,
                                       decoration: InputDecoration(
-                                        labelText: 'AVAILABILITY',
                                         hintText: 'AVAILABILITY in DAYS',
-                                        hintStyle: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF5D5E60),
-                                              fontWeight: FontWeight.w600,
-                                            ),
                                         enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Color(0xFF616161),
@@ -599,21 +553,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                 10, 0, 0, 0),
                                       ),
                                       style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Color(0xFF616161),
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                      validator: (val) {
-                                        if (val.isEmpty) {
-                                          return 'Field is required';
-                                        }
-                                        if (val.length < 1) {
-                                          return 'Requires at least 1 characters.';
-                                        }
-                                        return null;
-                                      },
+                                          .subtitle2,
                                     ),
                                   ),
                                 ),
@@ -630,18 +570,10 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                       controller: identifierController,
                                       obscureText: false,
                                       decoration: InputDecoration(
-                                        labelText: 'IDENTIFIER',
                                         hintText: 'UNIQUE IDENTIFIER',
-                                        hintStyle: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF5D5E60),
-                                              fontWeight: FontWeight.w600,
-                                            ),
                                         enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: Color(0xFF616161),
+                                            color: Color(0xFF545252),
                                             width: 1,
                                           ),
                                           borderRadius: const BorderRadius.only(
@@ -651,7 +583,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                         ),
                                         focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
-                                            color: Color(0xFF616161),
+                                            color: Color(0xFF545252),
                                             width: 1,
                                           ),
                                           borderRadius: const BorderRadius.only(
@@ -664,21 +596,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                 10, 0, 0, 0),
                                       ),
                                       style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Color(0xFF616161),
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                      validator: (val) {
-                                        if (val.isEmpty) {
-                                          return 'Field is required';
-                                        }
-                                        if (val.length < 5) {
-                                          return 'Requires at least 5 characters.';
-                                        }
-                                        return null;
-                                      },
+                                          .subtitle2,
                                     ),
                                   ),
                                 ),
@@ -829,151 +747,157 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 40, 0, 15),
+                                          0, 15, 0, 15),
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceAround,
                                         children: [
-                                          FFButtonWidget(
-                                            onPressed: () async {
-                                              final selectedMedia =
-                                                  await selectMediaWithSourceBottomSheet(
-                                                context: context,
-                                                allowPhoto: true,
-                                              );
-                                              if (selectedMedia != null &&
-                                                  validateFileFormat(
-                                                      selectedMedia.storagePath,
-                                                      context)) {
-                                                showUploadMessage(
-                                                  context,
-                                                  'Uploading file...',
-                                                  showLoading: true,
-                                                );
-                                                final downloadUrl =
-                                                    await uploadData(
-                                                        selectedMedia
-                                                            .storagePath,
-                                                        selectedMedia.bytes);
-                                                ScaffoldMessenger.of(context)
-                                                    .hideCurrentSnackBar();
-                                                if (downloadUrl != null) {
-                                                  setState(() =>
-                                                      uploadedFileUrl1 =
-                                                          downloadUrl);
-                                                  showUploadMessage(
-                                                    context,
-                                                    'Success!',
-                                                  );
-                                                } else {
-                                                  showUploadMessage(
-                                                    context,
-                                                    'Failed to upload media',
-                                                  );
-                                                  return;
-                                                }
-                                              }
-                                            },
-                                            text: '',
-                                            icon: Icon(
-                                              Icons.add,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryColor,
-                                              size: 40,
-                                            ),
-                                            options: FFButtonOptions(
-                                              width: 130,
-                                              height: 90,
-                                              color: Color(0xFFEEEEEE),
-                                              textStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText1
-                                                      .override(
-                                                        fontFamily: 'Open Sans',
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                              elevation: 5,
-                                              borderSide: BorderSide(
-                                                color: Color(0xFF010101),
-                                                width: 1,
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Image.network(
+                                                valueOrDefault<String>(
+                                                  uploadedFileUrl1,
+                                                  'Upload',
+                                                ),
+                                                width: 100,
+                                                height: 100,
+                                                fit: BoxFit.contain,
                                               ),
-                                              borderRadius: 0,
-                                            ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 2, 0, 0),
+                                                child: InkWell(
+                                                  onTap: () async {
+                                                    final selectedMedia =
+                                                        await selectMediaWithSourceBottomSheet(
+                                                      context: context,
+                                                      allowPhoto: true,
+                                                    );
+                                                    if (selectedMedia != null &&
+                                                        validateFileFormat(
+                                                            selectedMedia
+                                                                .storagePath,
+                                                            context)) {
+                                                      showUploadMessage(
+                                                        context,
+                                                        'Uploading file...',
+                                                        showLoading: true,
+                                                      );
+                                                      final downloadUrl =
+                                                          await uploadData(
+                                                              selectedMedia
+                                                                  .storagePath,
+                                                              selectedMedia
+                                                                  .bytes);
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .hideCurrentSnackBar();
+                                                      if (downloadUrl != null) {
+                                                        setState(() =>
+                                                            uploadedFileUrl1 =
+                                                                downloadUrl);
+                                                        showUploadMessage(
+                                                          context,
+                                                          'Success!',
+                                                        );
+                                                      } else {
+                                                        showUploadMessage(
+                                                          context,
+                                                          'Failed to upload media',
+                                                        );
+                                                        return;
+                                                      }
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    'Image 1',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .title3
+                                                        .override(
+                                                          fontFamily:
+                                                              'Open Sans',
+                                                          fontSize: 15,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          FFButtonWidget(
-                                            onPressed: () async {
-                                              final selectedMedia =
-                                                  await selectMediaWithSourceBottomSheet(
-                                                context: context,
-                                                allowPhoto: true,
-                                              );
-                                              if (selectedMedia != null &&
-                                                  validateFileFormat(
-                                                      selectedMedia.storagePath,
-                                                      context)) {
-                                                showUploadMessage(
-                                                  context,
-                                                  'Uploading file...',
-                                                  showLoading: true,
-                                                );
-                                                final downloadUrl =
-                                                    await uploadData(
-                                                        selectedMedia
-                                                            .storagePath,
-                                                        selectedMedia.bytes);
-                                                ScaffoldMessenger.of(context)
-                                                    .hideCurrentSnackBar();
-                                                if (downloadUrl != null) {
-                                                  setState(() =>
-                                                      uploadedFileUrl2 =
-                                                          downloadUrl);
-                                                  showUploadMessage(
-                                                    context,
-                                                    'Success!',
-                                                  );
-                                                } else {
-                                                  showUploadMessage(
-                                                    context,
-                                                    'Failed to upload media',
-                                                  );
-                                                  return;
-                                                }
-                                              }
-                                            },
-                                            text: '',
-                                            icon: Icon(
-                                              Icons.add,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .secondaryColor,
-                                              size: 40,
-                                            ),
-                                            options: FFButtonOptions(
-                                              width: 130,
-                                              height: 90,
-                                              color: Color(0xFFEEEEEE),
-                                              textStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText1
-                                                      .override(
-                                                        fontFamily: 'Open Sans',
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                              elevation: 5,
-                                              borderSide: BorderSide(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .tertiaryColor,
-                                                width: 1,
+                                          Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Image.network(
+                                                valueOrDefault<String>(
+                                                  uploadedFileUrl2,
+                                                  'Upload',
+                                                ),
+                                                width: 100,
+                                                height: 100,
+                                                fit: BoxFit.contain,
                                               ),
-                                              borderRadius: 0,
-                                            ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 2, 0, 0),
+                                                child: InkWell(
+                                                  onTap: () async {
+                                                    final selectedMedia =
+                                                        await selectMediaWithSourceBottomSheet(
+                                                      context: context,
+                                                      allowPhoto: true,
+                                                    );
+                                                    if (selectedMedia != null &&
+                                                        validateFileFormat(
+                                                            selectedMedia
+                                                                .storagePath,
+                                                            context)) {
+                                                      showUploadMessage(
+                                                        context,
+                                                        'Uploading file...',
+                                                        showLoading: true,
+                                                      );
+                                                      final downloadUrl =
+                                                          await uploadData(
+                                                              selectedMedia
+                                                                  .storagePath,
+                                                              selectedMedia
+                                                                  .bytes);
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .hideCurrentSnackBar();
+                                                      if (downloadUrl != null) {
+                                                        setState(() =>
+                                                            uploadedFileUrl2 =
+                                                                downloadUrl);
+                                                        showUploadMessage(
+                                                          context,
+                                                          'Success!',
+                                                        );
+                                                      } else {
+                                                        showUploadMessage(
+                                                          context,
+                                                          'Failed to upload media',
+                                                        );
+                                                        return;
+                                                      }
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    'Image 2',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .title3
+                                                        .override(
+                                                          fontFamily:
+                                                              'Open Sans',
+                                                          fontSize: 15,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -985,7 +909,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                         onPressed: () async {
                                           final productsCreateData =
                                               createProductsRecordData(
-                                            name: textController1.text,
+                                            name: titleController.text,
                                             description:
                                                 descriptionController.text,
                                             condition: choiceChipsValue,
@@ -1003,9 +927,21 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                             status: false,
                                             ownerName: currentUserDisplayName,
                                           );
-                                          await ProductsRecord.collection
-                                              .doc()
+                                          final productsRecordReference =
+                                              ProductsRecord.collection.doc();
+                                          await productsRecordReference
                                               .set(productsCreateData);
+                                          adRef = ProductsRecord
+                                              .getDocumentFromData(
+                                                  productsCreateData,
+                                                  productsRecordReference);
+
+                                          final usersUpdateData = {
+                                            'my_ads': FieldValue.arrayUnion(
+                                                [adRef.reference]),
+                                          };
+                                          await currentUserReference
+                                              .update(usersUpdateData);
                                           await showDialog(
                                             context: context,
                                             builder: (alertDialogContext) {
@@ -1025,8 +961,18 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                           alertDialogContext);
                                                       await Navigator.push(
                                                         context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
+                                                        PageTransition(
+                                                          type:
+                                                              PageTransitionType
+                                                                  .rightToLeft,
+                                                          duration: Duration(
+                                                              milliseconds:
+                                                                  200),
+                                                          reverseDuration:
+                                                              Duration(
+                                                                  milliseconds:
+                                                                      200),
+                                                          child:
                                                               MyAdsPageWidget(),
                                                         ),
                                                       );
@@ -1039,12 +985,14 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                             },
                                           );
                                           setState(() {
-                                            textController1.clear();
+                                            titleController.clear();
                                             priceController.clear();
+                                            descriptionController.clear();
                                             availabilityController.clear();
                                             identifierController.clear();
-                                            descriptionController.clear();
                                           });
+
+                                          setState(() {});
                                         },
                                         text: 'Submit Ad',
                                         options: FFButtonOptions(
@@ -1081,7 +1029,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                   ),
                   Container(
                     width: double.infinity,
-                    height: 350,
+                    height: 200,
                     decoration: BoxDecoration(
                       color: Color(0xFFEEEEEE),
                     ),

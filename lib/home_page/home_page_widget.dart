@@ -3,6 +3,7 @@ import '../backend/backend.dart';
 import '../components/filter_widget.dart';
 import '../flutter_flow/flutter_flow_place_picker.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
+import '../flutter_flow/flutter_flow_toggle_icon.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/lat_lng.dart';
@@ -55,20 +56,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Container(
-                  width: double.infinity,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Color(0x00EEEEEE),
-                  ),
-                  alignment: AlignmentDirectional(0, 0),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(5, 20, 5, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(5, 15, 5, 15),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                        child: Container(
                           width: 60,
                           height: 80,
                           decoration: BoxDecoration(
@@ -80,7 +76,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             children: [
                               FlutterFlowPlacePicker(
                                 iOSGoogleMapsApiKey: '',
-                                androidGoogleMapsApiKey: '',
+                                androidGoogleMapsApiKey:
+                                    'AIzaSyBKPbL-SHAE3_r4MNgvxrViJPVmAtbOZjw',
                                 webGoogleMapsApiKey: '',
                                 onSelect: (place) =>
                                     setState(() => placePickerValue = place),
@@ -89,10 +86,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   Icons.place,
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryColor,
-                                  size: 25,
+                                  size: 30,
                                 ),
                                 buttonOptions: FFButtonOptions(
-                                  width: 50,
+                                  width: 55,
                                   height: 40,
                                   color:
                                       FlutterFlowTheme.of(context).primaryColor,
@@ -106,7 +103,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     color: Colors.transparent,
                                     width: 1,
                                   ),
-                                  borderRadius: 0,
+                                  borderRadius: 12,
                                 ),
                               ),
                               InkWell(
@@ -132,20 +129,22 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ],
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(10, 4, 0, 4),
-                            child: Container(
-                              width: double.infinity,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              alignment: AlignmentDirectional(0, 0),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(5, 4, 0, 4),
+                          child: Container(
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            alignment: AlignmentDirectional(0, 0),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
                               child: Row(
-                                mainAxisSize: MainAxisSize.min,
+                                mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Expanded(
                                     child: Padding(
@@ -218,19 +217,26 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       onPressed: () async {
                                         await Navigator.push(
                                           context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SearchPageWidget(),
+                                          PageTransition(
+                                            type:
+                                                PageTransitionType.rightToLeft,
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            reverseDuration:
+                                                Duration(milliseconds: 300),
+                                            child: SearchPageWidget(
+                                              productName: textController.text,
+                                            ),
                                           ),
                                         );
                                       },
                                       text: '',
                                       icon: Icon(
                                         Icons.search,
-                                        size: 15,
+                                        size: 22,
                                       ),
                                       options: FFButtonOptions(
-                                        width: 45,
+                                        width: 50,
                                         height: 40,
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryColor,
@@ -257,76 +263,61 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFECEBEB),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 1,
+                        color: Color(0xFF545252),
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  alignment: AlignmentDirectional(-1, 0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.07,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFECEBEB),
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 1,
-                              color: Color(0xFF545252),
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(2),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 10, 10, 10),
+                        child: Text(
+                          'Recently added',
+                          textAlign: TextAlign.start,
+                          style: FlutterFlowTheme.of(context).title1.override(
+                                fontFamily: 'Open Sans',
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
-                        alignment: AlignmentDirectional(-1, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  12, 10, 10, 10),
-                              child: AutoSizeText(
-                                'Recently added',
-                                textAlign: TextAlign.start,
-                                style: FlutterFlowTheme.of(context)
-                                    .title1
-                                    .override(
-                                      fontFamily: 'Open Sans',
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 15, 0),
-                              child: InkWell(
-                                onTap: () async {
-                                  await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    context: context,
-                                    builder: (context) {
-                                      return Padding(
-                                        padding:
-                                            MediaQuery.of(context).viewInsets,
-                                        child: FilterWidget(),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Icon(
-                                  Icons.filter_alt,
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryColor,
-                                  size: 40,
-                                ),
-                              ),
-                            ),
-                          ],
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 15, 0),
+                        child: InkWell(
+                          onTap: () async {
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (context) {
+                                return Padding(
+                                  padding: MediaQuery.of(context).viewInsets,
+                                  child: FilterWidget(),
+                                );
+                              },
+                            );
+                          },
+                          child: Icon(
+                            Icons.filter_alt,
+                            color: FlutterFlowTheme.of(context).secondaryColor,
+                            size: 40,
+                          ),
                         ),
                       ),
                     ],
@@ -336,7 +327,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
                     child: StreamBuilder<List<ProductsRecord>>(
-                      stream: queryProductsRecord(),
+                      stream: queryProductsRecord(
+                        queryBuilder: (productsRecord) => productsRecord
+                            .orderBy('uploaded_at', descending: true),
+                      ),
                       builder: (context, snapshot) {
                         // Customize what your widget looks like when it's loading.
                         if (!snapshot.hasData) {
@@ -385,9 +379,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     onTap: () async {
                                       await Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProductDetailPageWidget(
+                                        PageTransition(
+                                          type: PageTransitionType.rightToLeft,
+                                          duration: Duration(milliseconds: 300),
+                                          reverseDuration:
+                                              Duration(milliseconds: 300),
+                                          child: ProductDetailPageWidget(
                                             productRef: containerProductsRecord,
                                           ),
                                         ),
@@ -444,16 +441,22 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0, 5, 0, 0),
-                                                      child: Text(
-                                                        'Rs ${listViewProductsRecord.price}',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
+                                                    Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(0,
+                                                                      5, 0, 0),
+                                                          child: Text(
+                                                            'Rs ${listViewProductsRecord.price}',
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
                                                                 .subtitle1
                                                                 .override(
                                                                   fontFamily:
@@ -461,12 +464,46 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                   color: FlutterFlowTheme.of(
                                                                           context)
                                                                       .secondaryColor,
-                                                                  fontSize: 16,
+                                                                  fontSize: 18,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
                                                                 ),
-                                                      ),
+                                                          ),
+                                                        ),
+                                                        ToggleIcon(
+                                                          onPressed: () async {
+                                                            final productsUpdateData =
+                                                                createProductsRecordData(
+                                                              status:
+                                                                  !containerProductsRecord
+                                                                      .status,
+                                                            );
+                                                            await containerProductsRecord
+                                                                .reference
+                                                                .update(
+                                                                    productsUpdateData);
+                                                          },
+                                                          value:
+                                                              containerProductsRecord
+                                                                  .status,
+                                                          onIcon: Icon(
+                                                            Icons
+                                                                .not_interested,
+                                                            color: Color(
+                                                                0xFFC80C0D),
+                                                            size: 25,
+                                                          ),
+                                                          offIcon: Icon(
+                                                            Icons
+                                                                .check_circle_outline,
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .secondaryColor,
+                                                            size: 25,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                     Text(
                                                       listViewProductsRecord

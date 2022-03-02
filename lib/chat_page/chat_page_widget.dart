@@ -129,9 +129,9 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                         allowImages: true,
                         backgroundColor:
                             FlutterFlowTheme.of(context).primaryColor,
-                        timeDisplaySetting: TimeDisplaySetting.alwaysInvisible,
+                        timeDisplaySetting: TimeDisplaySetting.alwaysVisible,
                         currentUserBoxDecoration: BoxDecoration(
-                          color: Color(0xFFEEEEEE),
+                          color: Colors.white,
                           border: Border.all(
                             color: Colors.transparent,
                           ),

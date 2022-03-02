@@ -128,9 +128,12 @@ class _PaymentMethodsPageWidgetState extends State<PaymentMethodsPageWidget> {
                               onTap: () async {
                                 await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PaymentCompletionPageWidget(),
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: Duration(milliseconds: 300),
+                                    reverseDuration:
+                                        Duration(milliseconds: 300),
+                                    child: PaymentCompletionPageWidget(),
                                   ),
                                 );
                               },

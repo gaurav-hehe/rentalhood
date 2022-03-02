@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CardPaymenPageWidget extends StatefulWidget {
-  const CardPaymenPageWidget({Key key}) : super(key: key);
+class CardPaymentPageWidget extends StatefulWidget {
+  const CardPaymentPageWidget({Key key}) : super(key: key);
 
   @override
-  _CardPaymenPageWidgetState createState() => _CardPaymenPageWidgetState();
+  _CardPaymentPageWidgetState createState() => _CardPaymentPageWidgetState();
 }
 
-class _CardPaymenPageWidgetState extends State<CardPaymenPageWidget> {
+class _CardPaymentPageWidgetState extends State<CardPaymentPageWidget> {
   String dropDownValue1;
   String dropDownValue2;
   TextEditingController textController2;

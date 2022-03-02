@@ -10,6 +10,7 @@ import '../payment_completion_page/payment_completion_page_widget.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RentingPageWidget extends StatefulWidget {
@@ -25,18 +26,10 @@ class RentingPageWidget extends StatefulWidget {
 }
 
 class _RentingPageWidgetState extends State<RentingPageWidget> {
-  TextEditingController textController1;
-  TextEditingController textController2;
+  DateTime datePicked;
   var placePickerValue = FFPlace();
   TransactionsRecord transactionRef;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
-  @override
-  void initState() {
-    super.initState();
-    textController1 = TextEditingController();
-    textController2 = TextEditingController();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +215,8 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                                 EdgeInsetsDirectional.fromSTEB(5, 10, 0, 10),
                             child: FlutterFlowPlacePicker(
                               iOSGoogleMapsApiKey: '',
-                              androidGoogleMapsApiKey: '',
+                              androidGoogleMapsApiKey:
+                                  'AIzaSyBKPbL-SHAE3_r4MNgvxrViJPVmAtbOZjw',
                               webGoogleMapsApiKey: '',
                               onSelect: (place) =>
                                   setState(() => placePickerValue = place),
@@ -252,86 +246,41 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                               ),
                             ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 5, 0),
-                                  child: TextFormField(
-                                    controller: textController1,
-                                    obscureText: false,
-                                    decoration: InputDecoration(
-                                      labelText: 'Date',
-                                      hintText: 'Date in DD/MM/YYYY',
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
-                                          width: 1,
-                                        ),
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(4.0),
-                                          topRight: Radius.circular(4.0),
-                                        ),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
-                                          width: 1,
-                                        ),
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(4.0),
-                                          topRight: Radius.circular(4.0),
-                                        ),
-                                      ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                await DatePicker.showDateTimePicker(
+                                  context,
+                                  showTitleActions: true,
+                                  onConfirm: (date) {
+                                    setState(() => datePicked = date);
+                                  },
+                                  currentTime: getCurrentTimestamp,
+                                  minTime: getCurrentTimestamp,
+                                );
+                              },
+                              text: 'Pickup Date and Time',
+                              options: FFButtonOptions(
+                                width: 200,
+                                height: 40,
+                                color:
+                                    FlutterFlowTheme.of(context).primaryColor,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .subtitle1
+                                    .override(
+                                      fontFamily: 'Open Sans',
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryColor,
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                    style:
-                                        FlutterFlowTheme.of(context).bodyText1,
-                                  ),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1,
                                 ),
+                                borderRadius: 12,
                               ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      10, 0, 0, 0),
-                                  child: TextFormField(
-                                    controller: textController2,
-                                    obscureText: false,
-                                    decoration: InputDecoration(
-                                      labelText: 'Time',
-                                      hintText: 'Time in hh:mm am',
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
-                                          width: 1,
-                                        ),
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(4.0),
-                                          topRight: Radius.circular(4.0),
-                                        ),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
-                                          width: 1,
-                                        ),
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(4.0),
-                                          topRight: Radius.circular(4.0),
-                                        ),
-                                      ),
-                                    ),
-                                    style:
-                                        FlutterFlowTheme.of(context).bodyText1,
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ],
                       ),
@@ -418,8 +367,7 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                       renterId: currentUserReference,
                       ownerId: widget.productRef.uploadedBy,
                       pickupLoc: placePickerValue.latLng,
-                      pickupDt:
-                          '${textController1.text}${textController2.text}',
+                      pickupDt: datePicked,
                       ownerName: widget.productRef.ownerName,
                       productRef: widget.productRef.reference,
                     );
@@ -431,8 +379,11 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                         transactionsCreateData, transactionsRecordReference);
                     await Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => PaymentCompletionPageWidget(
+                      PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        duration: Duration(milliseconds: 300),
+                        reverseDuration: Duration(milliseconds: 300),
+                        child: PaymentCompletionPageWidget(
                           productRef: rentingPageProductsRecord.reference,
                           transactionRef: transactionRef,
                         ),
@@ -442,7 +393,7 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
 
                     setState(() {});
                   },
-                  text: 'Proceed to select payment',
+                  text: 'Proceed to payment',
                   options: FFButtonOptions(
                     width: 320,
                     height: 60,

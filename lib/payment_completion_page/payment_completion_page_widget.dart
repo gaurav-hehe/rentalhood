@@ -92,7 +92,7 @@ class _PaymentCompletionPageWidgetState
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                       child: Text(
-                        paymentCompletionPageTransactionsRecord.price,
+                        'Rs ${paymentCompletionPageTransactionsRecord.price}',
                         style: GoogleFonts.getFont(
                           'Overpass',
                           color: Color(0xFF5D5E60),
@@ -102,9 +102,22 @@ class _PaymentCompletionPageWidgetState
                       ),
                     ),
                     Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 25),
+                      child: Text(
+                        'PAID',
+                        style: FlutterFlowTheme.of(context).title1.override(
+                              fontFamily: 'Lexend Deca',
+                              color:
+                                  FlutterFlowTheme.of(context).secondaryColor,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ),
+                    Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(24, 8, 24, 0),
                       child: Text(
-                        'If your payment was cash, then please carry the appropriate change when picking up the product.',
+                        'If your payment method was cash, then please carry the appropriate change when picking up the product.',
                         textAlign: TextAlign.center,
                         style: FlutterFlowTheme.of(context).bodyText2.override(
                               fontFamily: 'Lexend Deca',
@@ -123,13 +136,6 @@ class _PaymentCompletionPageWidgetState
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
-                                await Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MyOrdersPageWidget(),
-                                  ),
-                                  (r) => false,
-                                );
                                 final transactionsUpdateData =
                                     createTransactionsRecordData(
                                   paymentMode: 'cash',
@@ -141,11 +147,23 @@ class _PaymentCompletionPageWidgetState
                                 final productsUpdateData =
                                     createProductsRecordData(
                                   rentedBy: currentUserReference,
+                                  status: true,
                                 );
                                 await widget.productRef
                                     .update(productsUpdateData);
+                                await Navigator.pushAndRemoveUntil(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: Duration(milliseconds: 300),
+                                    reverseDuration:
+                                        Duration(milliseconds: 300),
+                                    child: MyOrdersPageWidget(),
+                                  ),
+                                  (r) => false,
+                                );
                               },
-                              text: 'Go Home',
+                              text: 'DONE',
                               options: FFButtonOptions(
                                 width: 230,
                                 height: 50,

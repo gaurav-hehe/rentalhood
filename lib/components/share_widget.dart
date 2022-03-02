@@ -24,6 +24,11 @@ class _ShareWidgetState extends State<ShareWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
+            Divider(
+              height: 20,
+              thickness: 1,
+              color: Color(0xFF171414),
+            ),
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
               child: Row(
@@ -31,33 +36,13 @@ class _ShareWidgetState extends State<ShareWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Main Title',
+                    'Share',
                     style: FlutterFlowTheme.of(context).subtitle1.override(
                           fontFamily: 'Lexend Deca',
                           color: Color(0xFF090F13),
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(16, 4, 16, 12),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Secondary Text',
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Lexend Deca',
-                            color: Color(0xFF57636C),
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
-                    ),
                   ),
                 ],
               ),

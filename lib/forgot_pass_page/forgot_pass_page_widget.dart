@@ -47,8 +47,11 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
           onPressed: () async {
             await Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => LoginPageWidget(),
+              PageTransition(
+                type: PageTransitionType.rightToLeft,
+                duration: Duration(milliseconds: 300),
+                reverseDuration: Duration(milliseconds: 300),
+                child: LoginPageWidget(),
               ),
             );
           },
@@ -220,8 +223,11 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
                             onTap: () async {
                               await Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => RegisterPageWidget(),
+                                PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  duration: Duration(milliseconds: 300),
+                                  reverseDuration: Duration(milliseconds: 300),
+                                  child: RegisterPageWidget(),
                                 ),
                               );
                             },

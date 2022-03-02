@@ -3,7 +3,6 @@ import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../product_detail_page/product_detail_page_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,6 +20,14 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Color(0xFFEEEEEE),
+        iconTheme:
+            IconThemeData(color: FlutterFlowTheme.of(context).tertiaryColor),
+        automaticallyImplyLeading: true,
+        actions: [],
+        centerTitle: false,
+      ),
       backgroundColor: Color(0xFFF5F5F5),
       body: SafeArea(
         child: GestureDetector(
@@ -34,22 +41,6 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Align(
-                  alignment: AlignmentDirectional(-0.9, 0),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                    child: InkWell(
-                      onTap: () async {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back_rounded,
-                        color: Colors.black,
-                        size: 30,
-                      ),
-                    ),
-                  ),
-                ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(20, 20, 0, 30),
                   child: Row(
@@ -127,9 +118,12 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                     onTap: () async {
                                       await Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProductDetailPageWidget(
+                                        PageTransition(
+                                          type: PageTransitionType.rightToLeft,
+                                          duration: Duration(milliseconds: 300),
+                                          reverseDuration:
+                                              Duration(milliseconds: 300),
+                                          child: ProductDetailPageWidget(
                                             productRef: containerProductsRecord,
                                           ),
                                         ),
@@ -183,12 +177,20 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      containerProductsRecord
-                                                          .price,
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
+                                                    Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          containerProductsRecord
+                                                              .price,
+                                                          textAlign:
+                                                              TextAlign.start,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
                                                               .subtitle1
                                                               .override(
                                                                 fontFamily:
@@ -201,60 +203,86 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                                                     FontWeight
                                                                         .bold,
                                                               ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(120, 0,
-                                                                  10, 0),
-                                                      child: InkWell(
-                                                        onTap: () async {
-                                                          await showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (alertDialogContext) {
-                                                              return AlertDialog(
-                                                                title: Text(
-                                                                    'Confirm Delete?'),
-                                                                content: Text(
-                                                                    'The product will be deleted from your favourites list.'),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext),
-                                                                    child: Text(
-                                                                        'Cancel'),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(0,
+                                                                      0, 10, 0),
+                                                          child: StreamBuilder<
+                                                              ProductsRecord>(
+                                                            stream: ProductsRecord
+                                                                .getDocument(
+                                                                    containerProductsRecord
+                                                                        .reference),
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              // Customize what your widget looks like when it's loading.
+                                                              if (!snapshot
+                                                                  .hasData) {
+                                                                return Center(
+                                                                  child:
+                                                                      SizedBox(
+                                                                    width: 50,
+                                                                    height: 50,
+                                                                    child:
+                                                                        CircularProgressIndicator(
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .primaryColor,
+                                                                    ),
                                                                   ),
-                                                                  TextButton(
-                                                                    onPressed:
-                                                                        () async {
-                                                                      Navigator.pop(
-                                                                          alertDialogContext);
-
-                                                                      final productsUpdateData =
-                                                                          createProductsRecordData();
-                                                                      await containerProductsRecord
-                                                                          .reference
-                                                                          .update(
-                                                                              productsUpdateData);
-                                                                      ;
+                                                                );
+                                                              }
+                                                              final iconProductsRecord =
+                                                                  snapshot.data;
+                                                              return InkWell(
+                                                                onTap:
+                                                                    () async {
+                                                                  await showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (alertDialogContext) {
+                                                                      return AlertDialog(
+                                                                        title: Text(
+                                                                            'Confirm Delete?'),
+                                                                        content:
+                                                                            Text('The product will be deleted from your products list.'),
+                                                                        actions: [
+                                                                          TextButton(
+                                                                            onPressed: () =>
+                                                                                Navigator.pop(alertDialogContext),
+                                                                            child:
+                                                                                Text('Cancel'),
+                                                                          ),
+                                                                          TextButton(
+                                                                            onPressed:
+                                                                                () async {
+                                                                              Navigator.pop(alertDialogContext);
+                                                                              await listViewProductsRecord.reference.delete();
+                                                                              ;
+                                                                            },
+                                                                            child:
+                                                                                Text('Confirm'),
+                                                                          ),
+                                                                        ],
+                                                                      );
                                                                     },
-                                                                    child: Text(
-                                                                        'Confirm'),
-                                                                  ),
-                                                                ],
+                                                                  );
+                                                                },
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .delete_forever,
+                                                                  color: Color(
+                                                                      0xFFC80C0D),
+                                                                  size: 30,
+                                                                ),
                                                               );
                                                             },
-                                                          );
-                                                        },
-                                                        child: Icon(
-                                                          Icons.delete_forever,
-                                                          color:
-                                                              Color(0xFFC80C0D),
-                                                          size: 30,
+                                                          ),
                                                         ),
-                                                      ),
+                                                      ],
                                                     ),
                                                     Text(
                                                       containerProductsRecord

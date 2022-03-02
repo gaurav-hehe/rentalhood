@@ -9,6 +9,7 @@ import '../main.dart';
 import '../my_ads_page/my_ads_page_widget.dart';
 import '../my_orders_page/my_orders_page_widget.dart';
 import '../profile_page/profile_page_widget.dart';
+import '../review_page/review_page_widget.dart';
 import '../user_agreement_page/user_agreement_page_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -61,8 +62,11 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
               onPressed: () async {
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => NavBarPage(initialPage: 'HomePage'),
+                  PageTransition(
+                    type: PageTransitionType.rightToLeft,
+                    duration: Duration(milliseconds: 300),
+                    reverseDuration: Duration(milliseconds: 300),
+                    child: NavBarPage(initialPage: 'HomePage'),
                   ),
                 );
               },
@@ -97,8 +101,11 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                             onTap: () async {
                               await Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProfilePageWidget(),
+                                PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  duration: Duration(milliseconds: 300),
+                                  reverseDuration: Duration(milliseconds: 300),
+                                  child: ProfilePageWidget(),
                                 ),
                               );
                             },
@@ -188,8 +195,12 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                               onTap: () async {
                                 await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MyOrdersPageWidget(),
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: Duration(milliseconds: 300),
+                                    reverseDuration:
+                                        Duration(milliseconds: 300),
+                                    child: MyOrdersPageWidget(),
                                   ),
                                 );
                               },
@@ -237,9 +248,14 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                               onTap: () async {
                                                 await Navigator.push(
                                                   context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        MyOrdersPageWidget(),
+                                                  PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    duration: Duration(
+                                                        milliseconds: 300),
+                                                    reverseDuration: Duration(
+                                                        milliseconds: 300),
+                                                    child: MyOrdersPageWidget(),
                                                   ),
                                                 );
                                               },
@@ -272,8 +288,12 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                               onTap: () async {
                                 await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MyAdsPageWidget(),
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: Duration(milliseconds: 300),
+                                    reverseDuration:
+                                        Duration(milliseconds: 300),
+                                    child: MyAdsPageWidget(),
                                   ),
                                 );
                               },
@@ -355,8 +375,12 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                               onTap: () async {
                                 await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HelpPageWidget(),
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: Duration(milliseconds: 300),
+                                    reverseDuration:
+                                        Duration(milliseconds: 300),
+                                    child: HelpPageWidget(),
                                   ),
                                 );
                               },
@@ -379,9 +403,12 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                     onTap: () async {
                                       await Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              HelpPageWidget(),
+                                        PageTransition(
+                                          type: PageTransitionType.rightToLeft,
+                                          duration: Duration(milliseconds: 300),
+                                          reverseDuration:
+                                              Duration(milliseconds: 300),
+                                          child: HelpPageWidget(),
                                         ),
                                       );
                                     },
@@ -441,9 +468,12 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                               onTap: () async {
                                 await Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        UserAgreementPageWidget(),
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: Duration(milliseconds: 300),
+                                    reverseDuration:
+                                        Duration(milliseconds: 300),
+                                    child: UserAgreementPageWidget(),
                                   ),
                                 );
                               },
@@ -487,9 +517,9 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                           child: Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
-                                                    0, 5, 0, 0),
+                                                    5, 5, 5, 0),
                                             child: AutoSizeText(
-                                              'User Agreement\n&\nTerms and Condition',
+                                              'Privacy Policy',
                                               textAlign: TextAlign.center,
                                               style:
                                                   FlutterFlowTheme.of(context)
@@ -500,6 +530,7 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                                             FlutterFlowTheme.of(
                                                                     context)
                                                                 .secondaryColor,
+                                                        fontSize: 22,
                                                       ),
                                             ),
                                           ),
@@ -523,58 +554,93 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                         children: [
                           Align(
                             alignment: AlignmentDirectional(0, 0),
-                            child: Material(
-                              color: Colors.transparent,
-                              elevation: 2,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.45,
-                                height: 160,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFF3F3F4),
-                                  border: Border.all(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryColor,
-                                    width: 5,
+                            child: InkWell(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: Duration(milliseconds: 300),
+                                    reverseDuration:
+                                        Duration(milliseconds: 300),
+                                    child: ReviewPageWidget(),
                                   ),
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Align(
-                                        alignment: AlignmentDirectional(0, 1),
-                                        child: Icon(
-                                          Icons.rate_review,
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryColor,
-                                          size: 30,
-                                        ),
-                                      ),
+                                );
+                              },
+                              child: Material(
+                                color: Colors.transparent,
+                                elevation: 2,
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.45,
+                                  height: 160,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFF3F3F4),
+                                    border: Border.all(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryColor,
+                                      width: 5,
                                     ),
-                                    Expanded(
-                                      child: Align(
-                                        alignment: AlignmentDirectional(0, -1),
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 5, 0, 0),
-                                          child: Text(
-                                            'Review',
-                                            style: FlutterFlowTheme.of(context)
-                                                .title1
-                                                .override(
-                                                  fontFamily: 'Open Sans',
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryColor,
-                                                ),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Align(
+                                          alignment: AlignmentDirectional(0, 1),
+                                          child: Icon(
+                                            Icons.rate_review,
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryColor,
+                                            size: 30,
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      Expanded(
+                                        child: Align(
+                                          alignment:
+                                              AlignmentDirectional(0, -1),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 5, 0, 0),
+                                            child: InkWell(
+                                              onTap: () async {
+                                                await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    duration: Duration(
+                                                        milliseconds: 300),
+                                                    reverseDuration: Duration(
+                                                        milliseconds: 300),
+                                                    child: ReviewPageWidget(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text(
+                                                'Review',
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .title1
+                                                    .override(
+                                                      fontFamily: 'Open Sans',
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondaryColor,
+                                                    ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -586,8 +652,12 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                 await signOut();
                                 await Navigator.pushAndRemoveUntil(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LoginPageWidget(),
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    duration: Duration(milliseconds: 300),
+                                    reverseDuration:
+                                        Duration(milliseconds: 300),
+                                    child: LoginPageWidget(),
                                   ),
                                   (r) => false,
                                 );

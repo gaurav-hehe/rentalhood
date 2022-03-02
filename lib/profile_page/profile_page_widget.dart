@@ -177,9 +177,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                           controller: textController1,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: 'Full Name',
                             hintText: profilePageUsersRecord.displayName,
-                            hintStyle: FlutterFlowTheme.of(context).bodyText1,
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: Color(0x00000000),
@@ -205,11 +203,14 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                               color: Color(0xFF5D5E60),
                             ),
                           ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    fontSize: 16,
-                                  ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodyText1
+                              .override(
+                                fontFamily: 'Open Sans',
+                                color:
+                                    FlutterFlowTheme.of(context).tertiaryColor,
+                                fontSize: 16,
+                              ),
                         ),
                       ),
                       Padding(
@@ -218,7 +219,6 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                           controller: textController2,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: 'Email',
                             hintText: profilePageUsersRecord.email,
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
@@ -245,11 +245,14 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                               color: Color(0xFF5D5E60),
                             ),
                           ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    fontSize: 16,
-                                  ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodyText1
+                              .override(
+                                fontFamily: 'Open Sans',
+                                color:
+                                    FlutterFlowTheme.of(context).tertiaryColor,
+                                fontSize: 16,
+                              ),
                         ),
                       ),
                       Padding(
@@ -259,7 +262,6 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                             controller: textController3,
                             obscureText: false,
                             decoration: InputDecoration(
-                              labelText: 'Phone No',
                               hintText: currentPhoneNumber,
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
@@ -289,6 +291,8 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Open Sans',
+                                      color: FlutterFlowTheme.of(context)
+                                          .tertiaryColor,
                                       fontSize: 16,
                                     ),
                             keyboardType: TextInputType.phone,
@@ -299,7 +303,6 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                         controller: textController4,
                         obscureText: false,
                         decoration: InputDecoration(
-                          labelText: 'User_ID',
                           hintText: currentUserUid,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -328,6 +331,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                         ),
                         style: FlutterFlowTheme.of(context).bodyText1.override(
                               fontFamily: 'Open Sans',
+                              color: FlutterFlowTheme.of(context).tertiaryColor,
                               fontSize: 16,
                             ),
                       ),

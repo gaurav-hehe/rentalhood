@@ -194,8 +194,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                         onTap: () async {
                           await Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => ForgotPassPageWidget(),
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              duration: Duration(milliseconds: 300),
+                              reverseDuration: Duration(milliseconds: 300),
+                              child: ForgotPassPageWidget(),
                             ),
                           );
                         },
@@ -226,8 +229,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
 
                         await Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => HomePageWidget(
+                          PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 300),
+                            reverseDuration: Duration(milliseconds: 300),
+                            child: HomePageWidget(
                               userLoc: currentUserDocument?.location,
                             ),
                           ),
@@ -274,8 +280,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                             onTap: () async {
                               await Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => RegisterPageWidget(),
+                                PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  duration: Duration(milliseconds: 300),
+                                  reverseDuration: Duration(milliseconds: 300),
+                                  child: RegisterPageWidget(),
                                 ),
                               );
                             },
