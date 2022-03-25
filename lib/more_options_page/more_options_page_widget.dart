@@ -1,15 +1,13 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../help_page/help_page_widget.dart';
 import '../login_page/login_page_widget.dart';
-import '../main.dart';
 import '../my_ads_page/my_ads_page_widget.dart';
 import '../my_orders_page/my_orders_page_widget.dart';
+import '../offers_page/offers_page_widget.dart';
 import '../profile_page/profile_page_widget.dart';
-import '../review_page/review_page_widget.dart';
 import '../user_agreement_page/user_agreement_page_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -46,34 +44,33 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
         final moreOptionsPageUsersRecord = snapshot.data;
         return Scaffold(
           key: scaffoldKey,
-          appBar: AppBar(
-            backgroundColor: Color(0xFFEEEEEE),
-            automaticallyImplyLeading: false,
-            leading: FlutterFlowIconButton(
-              borderColor: Colors.transparent,
-              borderRadius: 30,
-              borderWidth: 1,
-              buttonSize: 60,
-              icon: Icon(
-                Icons.arrow_back_rounded,
-                color: Colors.black,
-                size: 24,
-              ),
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.rightToLeft,
-                    duration: Duration(milliseconds: 300),
-                    reverseDuration: Duration(milliseconds: 300),
-                    child: NavBarPage(initialPage: 'HomePage'),
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(80),
+            child: AppBar(
+              backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+              automaticallyImplyLeading: false,
+              flexibleSpace: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 5),
+                    child: Text(
+                      'More Options',
+                      style: FlutterFlowTheme.of(context).title3.override(
+                            fontFamily: 'Open Sans',
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
                   ),
-                );
-              },
+                ],
+              ),
+              actions: [],
+              elevation: 1,
             ),
-            actions: [],
-            centerTitle: false,
-            elevation: 2,
           ),
           backgroundColor: Color(0xFFF5F5F5),
           body: SafeArea(
@@ -84,12 +81,17 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    Divider(
+                      height: 5,
+                      thickness: 5,
+                      color: FlutterFlowTheme.of(context).secondaryColor,
+                    ),
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Container(
                           width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.25,
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(0),
@@ -113,32 +115,11 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        20, 25, 0, 0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'More Options',
-                                          style: FlutterFlowTheme.of(context)
-                                              .title1
-                                              .override(
-                                                fontFamily: 'Open Sans',
-                                                color: Color(0xFF302E2E),
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
                                   Align(
                                     alignment: AlignmentDirectional(0, 0),
                                     child: Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 15, 0, 0),
+                                          0, 10, 0, 0),
                                       child: Container(
                                         width: 100,
                                         height: 100,
@@ -162,7 +143,7 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryColor,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 25,
+                                        fontSize: 20,
                                       ),
                                     ),
                                   ),
@@ -380,7 +361,9 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                     duration: Duration(milliseconds: 300),
                                     reverseDuration:
                                         Duration(milliseconds: 300),
-                                    child: HelpPageWidget(),
+                                    child: OffersPageWidget(
+                                      userRef: moreOptionsPageUsersRecord,
+                                    ),
                                   ),
                                 );
                               },
@@ -399,64 +382,49 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                       width: 5,
                                     ),
                                   ),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.rightToLeft,
-                                          duration: Duration(milliseconds: 300),
-                                          reverseDuration:
-                                              Duration(milliseconds: 300),
-                                          child: HelpPageWidget(),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Align(
+                                          alignment:
+                                              AlignmentDirectional(0, 0.65),
+                                          child: FaIcon(
+                                            FontAwesomeIcons.handsHelping,
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryColor,
+                                            size: 30,
+                                          ),
                                         ),
-                                      );
-                                    },
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          child: Align(
-                                            alignment:
-                                                AlignmentDirectional(0, 1),
-                                            child: FaIcon(
-                                              FontAwesomeIcons.handsHelping,
-                                              color:
+                                      ),
+                                      Expanded(
+                                        child: Align(
+                                          alignment:
+                                              AlignmentDirectional(0, -1),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 5, 0, 0),
+                                            child: Text(
+                                              'Offers',
+                                              style:
                                                   FlutterFlowTheme.of(context)
-                                                      .secondaryColor,
-                                              size: 30,
+                                                      .title1
+                                                      .override(
+                                                        fontFamily: 'Open Sans',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryColor,
+                                                      ),
                                             ),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Align(
-                                            alignment:
-                                                AlignmentDirectional(0, -1),
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 5, 0, 0),
-                                              child: Text(
-                                                'FAQ',
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .title1
-                                                    .override(
-                                                      fontFamily: 'Open Sans',
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryColor,
-                                                    ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -501,7 +469,7 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                       Expanded(
                                         child: Align(
                                           alignment:
-                                              AlignmentDirectional(0, 0.3),
+                                              AlignmentDirectional(0, 0.55),
                                           child: Icon(
                                             Icons.post_add,
                                             color: FlutterFlowTheme.of(context)
@@ -563,7 +531,7 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                     duration: Duration(milliseconds: 300),
                                     reverseDuration:
                                         Duration(milliseconds: 300),
-                                    child: ReviewPageWidget(),
+                                    child: HelpPageWidget(),
                                   ),
                                 );
                               },
@@ -590,9 +558,10 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                     children: [
                                       Expanded(
                                         child: Align(
-                                          alignment: AlignmentDirectional(0, 1),
+                                          alignment:
+                                              AlignmentDirectional(0, 0.55),
                                           child: Icon(
-                                            Icons.rate_review,
+                                            Icons.help_center,
                                             color: FlutterFlowTheme.of(context)
                                                 .secondaryColor,
                                             size: 30,
@@ -607,34 +576,18 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     0, 5, 0, 0),
-                                            child: InkWell(
-                                              onTap: () async {
-                                                await Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                    type: PageTransitionType
-                                                        .rightToLeft,
-                                                    duration: Duration(
-                                                        milliseconds: 300),
-                                                    reverseDuration: Duration(
-                                                        milliseconds: 300),
-                                                    child: ReviewPageWidget(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Text(
-                                                'Review',
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .title1
-                                                    .override(
-                                                      fontFamily: 'Open Sans',
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .secondaryColor,
-                                                    ),
-                                              ),
+                                            child: Text(
+                                              'FAQ',
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .title1
+                                                      .override(
+                                                        fontFamily: 'Open Sans',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryColor,
+                                                      ),
                                             ),
                                           ),
                                         ),
@@ -686,7 +639,7 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                       Expanded(
                                         child: Align(
                                           alignment:
-                                              AlignmentDirectional(0, 0.3),
+                                              AlignmentDirectional(0, 0.55),
                                           child: Icon(
                                             Icons.logout,
                                             color: FlutterFlowTheme.of(context)

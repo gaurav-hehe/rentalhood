@@ -1,6 +1,6 @@
 {
-    "name": "RentalHood 1",
-    "short_name": "RentalHood 1",
+    "name": "RentalHood",
+    "short_name": "RentalHood",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

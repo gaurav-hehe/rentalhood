@@ -199,7 +199,17 @@ class _FavouritesPageWidgetState extends State<FavouritesPageWidget> {
                                                                   .spaceBetween,
                                                           children: [
                                                             Text(
-                                                              'Rs ${containerProductsRecord.price}',
+                                                              formatNumber(
+                                                                containerProductsRecord
+                                                                    .price,
+                                                                formatType:
+                                                                    FormatType
+                                                                        .custom,
+                                                                currency:
+                                                                    'Rs. ',
+                                                                format: '',
+                                                                locale: '',
+                                                              ),
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .subtitle1
@@ -227,43 +237,44 @@ class _FavouritesPageWidgetState extends State<FavouritesPageWidget> {
                                                               child: InkWell(
                                                                 onTap:
                                                                     () async {
-                                                                  await showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (alertDialogContext) {
-                                                                      return AlertDialog(
-                                                                        title: Text(
-                                                                            'Confirm Delete?'),
-                                                                        content:
-                                                                            Text('The product will be deleted from your favourites list.'),
-                                                                        actions: [
-                                                                          TextButton(
-                                                                            onPressed: () =>
-                                                                                Navigator.pop(alertDialogContext),
-                                                                            child:
-                                                                                Text('Cancel'),
-                                                                          ),
-                                                                          TextButton(
-                                                                            onPressed:
-                                                                                () async {
-                                                                              Navigator.pop(alertDialogContext);
-
-                                                                              final usersUpdateData = {
-                                                                                'favourite_prod': FieldValue.arrayRemove([
-                                                                                  containerProductsRecord.reference
-                                                                                ]),
-                                                                              };
-                                                                              await currentUserReference.update(usersUpdateData);
-                                                                              ;
+                                                                  var confirmDialogResponse =
+                                                                      await showDialog<
+                                                                              bool>(
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (alertDialogContext) {
+                                                                              return AlertDialog(
+                                                                                title: Text('Confirm Delete?'),
+                                                                                content: Text('The product will be deleted from your favourites list.'),
+                                                                                actions: [
+                                                                                  TextButton(
+                                                                                    onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                    child: Text('Cancel'),
+                                                                                  ),
+                                                                                  TextButton(
+                                                                                    onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                    child: Text('Confirm'),
+                                                                                  ),
+                                                                                ],
+                                                                              );
                                                                             },
-                                                                            child:
-                                                                                Text('Confirm'),
-                                                                          ),
-                                                                        ],
-                                                                      );
-                                                                    },
-                                                                  );
+                                                                          ) ??
+                                                                          false;
+                                                                  if (confirmDialogResponse) {
+                                                                    final usersUpdateData =
+                                                                        {
+                                                                      'favourite_prod':
+                                                                          FieldValue
+                                                                              .arrayRemove([
+                                                                        containerProductsRecord
+                                                                            .reference
+                                                                      ]),
+                                                                    };
+                                                                    await currentUserReference
+                                                                        .update(
+                                                                            usersUpdateData);
+                                                                  }
                                                                 },
                                                                 child: Icon(
                                                                   Icons

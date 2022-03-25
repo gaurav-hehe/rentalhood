@@ -5,10 +5,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'auth/firebase_user_provider.dart';
 import 'auth/auth_util.dart';
 
+import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/internationalization.dart';
-import 'package:rental_hood_1/login_page/login_page_widget.dart';
-import 'flutter_flow/flutter_flow_theme.dart';
+import 'package:rental_hood/login_page/login_page_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'home_page/home_page_widget.dart';
@@ -36,8 +36,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Locale _locale;
   ThemeMode _themeMode = ThemeMode.system;
-  Stream<RentalHood1FirebaseUser> userStream;
-  RentalHood1FirebaseUser initialUser;
+  Stream<RentalHoodFirebaseUser> userStream;
+  RentalHoodFirebaseUser initialUser;
   bool displaySplashImage = true;
   final authUserSub = authenticatedUserStream.listen((_) {});
 
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    userStream = rentalHood1FirebaseUserStream()
+    userStream = rentalHoodFirebaseUserStream()
       ..listen((user) => initialUser ?? setState(() => initialUser = user));
     Future.delayed(
         Duration(seconds: 1), () => setState(() => displaySplashImage = false));
@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'RentalHood 1',
+      title: 'RentalHood',
       localizationsDelegates: [
         FFLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
@@ -77,12 +77,12 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(brightness: Brightness.light),
       themeMode: _themeMode,
       home: initialUser == null || displaySplashImage
-          ? Center(
-              child: SizedBox(
-                width: 50,
-                height: 50,
-                child: CircularProgressIndicator(
-                  color: FlutterFlowTheme.of(context).primaryColor,
+          ? Container(
+              color: Colors.transparent,
+              child: Builder(
+                builder: (context) => Image.asset(
+                  'assets/images/Capture.PNG',
+                  fit: BoxFit.contain,
                 ),
               ),
             )
@@ -148,7 +148,7 @@ class _NavBarPageState extends State<NavBarPage> {
                   color: currentIndex == 0
                       ? FlutterFlowTheme.of(context).secondaryColor
                       : Color(0xFF616161),
-                  size: 24,
+                  size: 25,
                 ),
                 Text(
                   'Home',
@@ -172,7 +172,7 @@ class _NavBarPageState extends State<NavBarPage> {
                   color: currentIndex == 1
                       ? FlutterFlowTheme.of(context).secondaryColor
                       : Color(0xFF616161),
-                  size: 24,
+                  size: 25,
                 ),
                 Text(
                   'Favourites',
@@ -196,7 +196,7 @@ class _NavBarPageState extends State<NavBarPage> {
                   color: currentIndex == 2
                       ? FlutterFlowTheme.of(context).secondaryColor
                       : Color(0xFF616161),
-                  size: 24,
+                  size: 25,
                 ),
                 Text(
                   'Post Ad',
@@ -222,10 +222,10 @@ class _NavBarPageState extends State<NavBarPage> {
                   color: currentIndex == 3
                       ? FlutterFlowTheme.of(context).secondaryColor
                       : Color(0xFF616161),
-                  size: 24,
+                  size: 25,
                 ),
                 Text(
-                  'Chats',
+                  'Messages',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: currentIndex == 3
@@ -246,7 +246,7 @@ class _NavBarPageState extends State<NavBarPage> {
                   color: currentIndex == 4
                       ? FlutterFlowTheme.of(context).secondaryColor
                       : Color(0xFF616161),
-                  size: 24,
+                  size: 25,
                 ),
                 Text(
                   'More',

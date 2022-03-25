@@ -5,14 +5,16 @@ import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SucessfullWidget extends StatefulWidget {
-  const SucessfullWidget({Key key}) : super(key: key);
+class CodeVerificationSheetWidget extends StatefulWidget {
+  const CodeVerificationSheetWidget({Key key}) : super(key: key);
 
   @override
-  _SucessfullWidgetState createState() => _SucessfullWidgetState();
+  _CodeVerificationSheetWidgetState createState() =>
+      _CodeVerificationSheetWidgetState();
 }
 
-class _SucessfullWidgetState extends State<SucessfullWidget> {
+class _CodeVerificationSheetWidgetState
+    extends State<CodeVerificationSheetWidget> {
   TextEditingController textController;
 
   @override

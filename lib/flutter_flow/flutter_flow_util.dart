@@ -13,6 +13,7 @@ import '../main.dart';
 
 import 'lat_lng.dart';
 
+export '../app_state.dart';
 export 'dart:math' show min, max;
 export 'package:intl/intl.dart';
 export 'package:cloud_firestore/cloud_firestore.dart' show DocumentReference;
@@ -135,6 +136,8 @@ dynamic getJsonField(dynamic response, String jsonPath) {
 }
 
 bool get isAndroid => !kIsWeb && Platform.isAndroid;
+bool get isiOS => !kIsWeb && Platform.isIOS;
+bool get isWeb => kIsWeb;
 bool responsiveVisibility({
   @required BuildContext context,
   bool phone = true,

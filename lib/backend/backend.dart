@@ -9,6 +9,7 @@ import 'schema/products_record.dart';
 import 'schema/transactions_record.dart';
 import 'schema/chats_record.dart';
 import 'schema/chat_messages_record.dart';
+import 'schema/offers_record.dart';
 import 'schema/serializers.dart';
 
 export 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +21,7 @@ export 'schema/products_record.dart';
 export 'schema/transactions_record.dart';
 export 'schema/chats_record.dart';
 export 'schema/chat_messages_record.dart';
+export 'schema/offers_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Stream<List<UsersRecord>> queryUsersRecord(
@@ -98,6 +100,21 @@ Future<List<ChatMessagesRecord>> queryChatMessagesRecordOnce(
         bool singleRecord = false}) =>
     queryCollectionOnce(
         ChatMessagesRecord.collection, ChatMessagesRecord.serializer,
+        queryBuilder: queryBuilder, limit: limit, singleRecord: singleRecord);
+
+/// Functions to query OffersRecords (as a Stream and as a Future).
+Stream<List<OffersRecord>> queryOffersRecord(
+        {Query Function(Query) queryBuilder,
+        int limit = -1,
+        bool singleRecord = false}) =>
+    queryCollection(OffersRecord.collection, OffersRecord.serializer,
+        queryBuilder: queryBuilder, limit: limit, singleRecord: singleRecord);
+
+Future<List<OffersRecord>> queryOffersRecordOnce(
+        {Query Function(Query) queryBuilder,
+        int limit = -1,
+        bool singleRecord = false}) =>
+    queryCollectionOnce(OffersRecord.collection, OffersRecord.serializer,
         queryBuilder: queryBuilder, limit: limit, singleRecord: singleRecord);
 
 Stream<List<T>> queryCollection<T>(

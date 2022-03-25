@@ -24,12 +24,6 @@ abstract class ProductsRecord
   String get identifier;
 
   @nullable
-  String get availability;
-
-  @nullable
-  String get price;
-
-  @nullable
   @BuiltValueField(wireName: 'uploaded_at')
   DateTime get uploadedAt;
 
@@ -51,15 +45,47 @@ abstract class ProductsRecord
   LatLng get location;
 
   @nullable
-  bool get status;
-
-  @nullable
   @BuiltValueField(wireName: 'owner_name')
   String get ownerName;
 
   @nullable
+  bool get q1;
+
+  @nullable
+  bool get q2;
+
+  @nullable
+  bool get q3;
+
+  @nullable
+  bool get q4;
+
+  @nullable
+  bool get q5;
+
+  @nullable
+  @BuiltValueField(wireName: 'prod_id')
+  int get prodId;
+
+  @nullable
+  String get address;
+
+  @nullable
+  double get price;
+
+  @nullable
+  int get availability;
+
+  @nullable
+  @BuiltValueField(wireName: 'product_type')
+  String get productType;
+
+  @nullable
   @BuiltValueField(wireName: 'transaction_ref')
-  DocumentReference get transactionRef;
+  BuiltList<DocumentReference> get transactionRef;
+
+  @nullable
+  String get status;
 
   @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
@@ -70,12 +96,21 @@ abstract class ProductsRecord
     ..description = ''
     ..condition = ''
     ..identifier = ''
-    ..availability = ''
-    ..price = ''
     ..image1 = ''
     ..image2 = ''
-    ..status = false
-    ..ownerName = '';
+    ..ownerName = ''
+    ..q1 = false
+    ..q2 = false
+    ..q3 = false
+    ..q4 = false
+    ..q5 = false
+    ..prodId = 0
+    ..address = ''
+    ..price = 0.0
+    ..availability = 0
+    ..productType = ''
+    ..transactionRef = ListBuilder()
+    ..status = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('products');
@@ -103,17 +138,24 @@ Map<String, dynamic> createProductsRecordData({
   String description,
   String condition,
   String identifier,
-  String availability,
-  String price,
   DateTime uploadedAt,
   DocumentReference uploadedBy,
   DocumentReference rentedBy,
   String image1,
   String image2,
   LatLng location,
-  bool status,
   String ownerName,
-  DocumentReference transactionRef,
+  bool q1,
+  bool q2,
+  bool q3,
+  bool q4,
+  bool q5,
+  int prodId,
+  String address,
+  double price,
+  int availability,
+  String productType,
+  String status,
 }) =>
     serializers.toFirestore(
         ProductsRecord.serializer,
@@ -122,14 +164,22 @@ Map<String, dynamic> createProductsRecordData({
           ..description = description
           ..condition = condition
           ..identifier = identifier
-          ..availability = availability
-          ..price = price
           ..uploadedAt = uploadedAt
           ..uploadedBy = uploadedBy
           ..rentedBy = rentedBy
           ..image1 = image1
           ..image2 = image2
           ..location = location
-          ..status = status
           ..ownerName = ownerName
-          ..transactionRef = transactionRef));
+          ..q1 = q1
+          ..q2 = q2
+          ..q3 = q3
+          ..q4 = q4
+          ..q5 = q5
+          ..prodId = prodId
+          ..address = address
+          ..price = price
+          ..availability = availability
+          ..productType = productType
+          ..transactionRef = null
+          ..status = status));

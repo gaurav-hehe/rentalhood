@@ -1,4 +1,4 @@
-# RentalHood 1
+# RentalHood
 
 A new Flutter project.
 

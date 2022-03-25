@@ -26,15 +26,6 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
-  void initState() {
-    super.initState();
-    textController1 = TextEditingController();
-    textController2 = TextEditingController();
-    textController3 = TextEditingController();
-    textController4 = TextEditingController();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return StreamBuilder<UsersRecord>(
       stream: UsersRecord.getDocument(currentUserReference),
@@ -106,56 +97,52 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                           ),
                         ),
                       ),
-                      Align(
-                        alignment: AlignmentDirectional(0, 0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
-                          child: InkWell(
-                            onTap: () async {
-                              final selectedMedia =
-                                  await selectMediaWithSourceBottomSheet(
-                                context: context,
-                                allowPhoto: true,
+                      Image.network(
+                        uploadedFileUrl,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          final selectedMedia =
+                              await selectMediaWithSourceBottomSheet(
+                            context: context,
+                            allowPhoto: true,
+                          );
+                          if (selectedMedia != null &&
+                              validateFileFormat(
+                                  selectedMedia.storagePath, context)) {
+                            showUploadMessage(
+                              context,
+                              'Uploading file...',
+                              showLoading: true,
+                            );
+                            final downloadUrl = await uploadData(
+                                selectedMedia.storagePath, selectedMedia.bytes);
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            if (downloadUrl != null) {
+                              setState(() => uploadedFileUrl = downloadUrl);
+                              showUploadMessage(
+                                context,
+                                'Success!',
                               );
-                              if (selectedMedia != null &&
-                                  validateFileFormat(
-                                      selectedMedia.storagePath, context)) {
-                                showUploadMessage(
-                                  context,
-                                  'Uploading file...',
-                                  showLoading: true,
-                                );
-                                final downloadUrl = await uploadData(
-                                    selectedMedia.storagePath,
-                                    selectedMedia.bytes);
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                                if (downloadUrl != null) {
-                                  setState(() => uploadedFileUrl = downloadUrl);
-                                  showUploadMessage(
-                                    context,
-                                    'Success!',
-                                  );
-                                } else {
-                                  showUploadMessage(
-                                    context,
-                                    'Failed to upload media',
-                                  );
-                                  return;
-                                }
-                              }
-                            },
-                            child: Container(
-                              width: 100,
-                              height: 100,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: Image.network(
-                                profilePageUsersRecord.photoUrl,
-                              ),
-                            ),
+                            } else {
+                              showUploadMessage(
+                                context,
+                                'Failed to upload media',
+                              );
+                              return;
+                            }
+                          }
+                        },
+                        child: Text(
+                          'Change Image',
+                          style: GoogleFonts.getFont(
+                            'Open Sans',
+                            color: FlutterFlowTheme.of(context).secondaryColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
                           ),
                         ),
                       ),
@@ -174,10 +161,11 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                         child: TextFormField(
-                          controller: textController1,
+                          controller: textController1 ??= TextEditingController(
+                            text: profilePageUsersRecord.displayName,
+                          ),
                           obscureText: false,
                           decoration: InputDecoration(
-                            hintText: profilePageUsersRecord.displayName,
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: Color(0x00000000),
@@ -216,10 +204,11 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                         child: TextFormField(
-                          controller: textController2,
+                          controller: textController2 ??= TextEditingController(
+                            text: profilePageUsersRecord.email,
+                          ),
                           obscureText: false,
                           decoration: InputDecoration(
-                            hintText: profilePageUsersRecord.email,
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: Color(0x00000000),
@@ -257,53 +246,55 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                        child: AuthUserStreamWidget(
-                          child: TextFormField(
-                            controller: textController3,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              hintText: currentPhoneNumber,
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 1,
-                                ),
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(4.0),
-                                  topRight: Radius.circular(4.0),
-                                ),
+                        child: TextFormField(
+                          controller: textController3 ??= TextEditingController(
+                            text: profilePageUsersRecord.phoneNumber,
+                          ),
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            hintText: 'Fullname',
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1,
                               ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 1,
-                                ),
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(4.0),
-                                  topRight: Radius.circular(4.0),
-                                ),
-                              ),
-                              prefixIcon: Icon(
-                                Icons.phone_sharp,
-                                color: Color(0xFF5D5E60),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(4.0),
+                                topRight: Radius.circular(4.0),
                               ),
                             ),
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Open Sans',
-                                      color: FlutterFlowTheme.of(context)
-                                          .tertiaryColor,
-                                      fontSize: 16,
-                                    ),
-                            keyboardType: TextInputType.phone,
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0x00000000),
+                                width: 1,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(4.0),
+                                topRight: Radius.circular(4.0),
+                              ),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.phone_sharp,
+                              color: Color(0xFF5D5E60),
+                            ),
                           ),
+                          style: FlutterFlowTheme.of(context)
+                              .bodyText1
+                              .override(
+                                fontFamily: 'Open Sans',
+                                color:
+                                    FlutterFlowTheme.of(context).tertiaryColor,
+                                fontSize: 16,
+                              ),
+                          keyboardType: TextInputType.phone,
                         ),
                       ),
                       TextFormField(
-                        controller: textController4,
+                        controller: textController4 ??= TextEditingController(
+                          text: profilePageUsersRecord.uid,
+                        ),
                         obscureText: false,
                         decoration: InputDecoration(
-                          hintText: currentUserUid,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0x00000000),
@@ -344,10 +335,10 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                             child: FFButtonWidget(
                               onPressed: () async {
                                 final usersUpdateData = createUsersRecordData(
-                                  displayName: textController1.text,
-                                  email: textController2.text,
-                                  phoneNumber: textController3.text,
-                                  uid: textController4.text,
+                                  displayName: textController1?.text ?? '',
+                                  email: textController2?.text ?? '',
+                                  phoneNumber: textController3?.text ?? '',
+                                  uid: textController4?.text ?? '',
                                   photoUrl: uploadedFileUrl,
                                 );
                                 await profilePageUsersRecord.reference

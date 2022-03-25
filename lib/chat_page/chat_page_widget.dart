@@ -169,13 +169,6 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
-                        emptyChatWidget: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            'assets/images/messagesEmpty@2x.png',
-                            width: MediaQuery.of(context).size.width * 0.75,
-                          ),
-                        ),
                       )
                     : Center(
                         child: SizedBox(

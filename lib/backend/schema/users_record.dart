@@ -47,6 +47,17 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   BuiltList<DocumentReference> get myAds;
 
   @nullable
+  @BuiltValueField(wireName: 'offers_sent')
+  BuiltList<DocumentReference> get offersSent;
+
+  @nullable
+  @BuiltValueField(wireName: 'offers_received')
+  BuiltList<DocumentReference> get offersReceived;
+
+  @nullable
+  String get address;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
@@ -58,7 +69,10 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..uid = ''
     ..favouriteProd = ListBuilder()
     ..myOrders = ListBuilder()
-    ..myAds = ListBuilder();
+    ..myAds = ListBuilder()
+    ..offersSent = ListBuilder()
+    ..offersReceived = ListBuilder()
+    ..address = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -89,6 +103,7 @@ Map<String, dynamic> createUsersRecordData({
   DateTime createdTime,
   String phoneNumber,
   String uid,
+  String address,
 }) =>
     serializers.toFirestore(
         UsersRecord.serializer,
@@ -102,4 +117,7 @@ Map<String, dynamic> createUsersRecordData({
           ..uid = uid
           ..favouriteProd = null
           ..myOrders = null
-          ..myAds = null));
+          ..myAds = null
+          ..offersSent = null
+          ..offersReceived = null
+          ..address = address));

@@ -50,7 +50,16 @@ abstract class TransactionsRecord
   String get id;
 
   @nullable
-  DocumentReference get qrcode;
+  @BuiltValueField(wireName: 'list_veri')
+  bool get listVeri;
+
+  @nullable
+  @BuiltValueField(wireName: 'sec_dep')
+  bool get secDep;
+
+  @nullable
+  @BuiltValueField(wireName: 'trans_type')
+  String get transType;
 
   @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
@@ -61,7 +70,10 @@ abstract class TransactionsRecord
     ..ownerName = ''
     ..paymentMode = ''
     ..price = ''
-    ..id = '';
+    ..id = ''
+    ..listVeri = false
+    ..secDep = false
+    ..transType = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('transactions');
@@ -96,7 +108,9 @@ Map<String, dynamic> createTransactionsRecordData({
   DocumentReference productRef,
   DateTime pickupDt,
   String id,
-  DocumentReference qrcode,
+  bool listVeri,
+  bool secDep,
+  String transType,
 }) =>
     serializers.toFirestore(
         TransactionsRecord.serializer,
@@ -111,4 +125,6 @@ Map<String, dynamic> createTransactionsRecordData({
           ..productRef = productRef
           ..pickupDt = pickupDt
           ..id = id
-          ..qrcode = qrcode));
+          ..listVeri = listVeri
+          ..secDep = secDep
+          ..transType = transType));

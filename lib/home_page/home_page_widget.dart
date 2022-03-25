@@ -1,18 +1,11 @@
-import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../components/filter_widget.dart';
-import '../flutter_flow/flutter_flow_place_picker.dart';
+import '../components/filter_sheet_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_toggle_icon.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/lat_lng.dart';
-import '../flutter_flow/place.dart';
 import '../product_detail_page/product_detail_page_widget.dart';
 import '../search_page/search_page_widget.dart';
-import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -30,7 +23,6 @@ class HomePageWidget extends StatefulWidget {
 
 class _HomePageWidgetState extends State<HomePageWidget> {
   TextEditingController textController;
-  var placePickerValue = FFPlace();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -57,76 +49,37 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(5, 15, 5, 15),
+                  padding: EdgeInsetsDirectional.fromSTEB(5, 15, 5, 5),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
-                        child: Container(
-                          width: 60,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).primaryColor,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              FlutterFlowPlacePicker(
-                                iOSGoogleMapsApiKey: '',
-                                androidGoogleMapsApiKey:
-                                    'AIzaSyBKPbL-SHAE3_r4MNgvxrViJPVmAtbOZjw',
-                                webGoogleMapsApiKey: '',
-                                onSelect: (place) =>
-                                    setState(() => placePickerValue = place),
-                                defaultText: '',
-                                icon: Icon(
-                                  Icons.place,
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryColor,
-                                  size: 30,
-                                ),
-                                buttonOptions: FFButtonOptions(
-                                  width: 55,
-                                  height: 40,
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryColor,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Open Sans',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.transparent,
-                                    width: 1,
+                        padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                        child: InkWell(
+                          onTap: () async {
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Color(0xFFEEEEEE),
+                              barrierColor:
+                                  FlutterFlowTheme.of(context).primaryColor,
+                              context: context,
+                              builder: (context) {
+                                return Padding(
+                                  padding: MediaQuery.of(context).viewInsets,
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.7,
+                                    child: FilterSheetWidget(),
                                   ),
-                                  borderRadius: 12,
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () async {
-                                  final usersUpdateData = createUsersRecordData(
-                                    location: placePickerValue.latLng,
-                                  );
-                                  await currentUserReference
-                                      .update(usersUpdateData);
-                                },
-                                child: Text(
-                                  'Update',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Open Sans',
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryColor,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                              ),
-                            ],
+                                );
+                              },
+                            );
+                          },
+                          child: Icon(
+                            Icons.filter_list_alt,
+                            color: FlutterFlowTheme.of(context).secondaryColor,
+                            size: 40,
                           ),
                         ),
                       ),
@@ -164,7 +117,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                     fontWeight:
                                                         FontWeight.normal,
                                                   ),
-                                          hintText: 'Samsung Phone...',
+                                          hintText: 'Search',
                                           hintStyle:
                                               FlutterFlowTheme.of(context)
                                                   .bodyText1
@@ -212,9 +165,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ),
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 8, 0),
-                                    child: FFButtonWidget(
-                                      onPressed: () async {
+                                        0, 0, 10, 0),
+                                    child: InkWell(
+                                      onTap: () async {
                                         await Navigator.push(
                                           context,
                                           PageTransition(
@@ -230,31 +183,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           ),
                                         );
                                       },
-                                      text: '',
-                                      icon: Icon(
-                                        Icons.search,
-                                        size: 22,
-                                      ),
-                                      options: FFButtonOptions(
-                                        width: 50,
-                                        height: 40,
+                                      child: Icon(
+                                        Icons.search_rounded,
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryColor,
-                                        textStyle: FlutterFlowTheme.of(context)
-                                            .title3
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryColor,
-                                              fontSize: 17,
-                                            ),
-                                        elevation: 2,
-                                        borderSide: BorderSide(
-                                          color: Colors.transparent,
-                                          width: 1,
-                                        ),
-                                        borderRadius: 20,
+                                        size: 40,
                                       ),
                                     ),
                                   ),
@@ -268,68 +201,49 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.height * 0.07,
+                  width: MediaQuery.of(context).size.width * 0.95,
+                  height: MediaQuery.of(context).size.height * 0.08,
                   decoration: BoxDecoration(
-                    color: Color(0xFFECEBEB),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 1,
-                        color: Color(0xFF545252),
-                      )
-                    ],
-                    borderRadius: BorderRadius.circular(2),
+                    color: Color(0xFFEEEEEE),
                   ),
-                  alignment: AlignmentDirectional(-1, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 10, 10, 10),
-                        child: Text(
-                          'Recently added',
-                          textAlign: TextAlign.start,
-                          style: FlutterFlowTheme.of(context).title1.override(
-                                fontFamily: 'Open Sans',
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
+                  child: Align(
+                    alignment: AlignmentDirectional(-1, 0),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                      child: Text(
+                        'RECENTLY ADDED',
+                        textAlign: TextAlign.start,
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Open Sans',
+                              color:
+                                  FlutterFlowTheme.of(context).secondaryColor,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 15, 0),
-                        child: InkWell(
-                          onTap: () async {
-                            await showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              context: context,
-                              builder: (context) {
-                                return Padding(
-                                  padding: MediaQuery.of(context).viewInsets,
-                                  child: FilterWidget(),
-                                );
-                              },
-                            );
-                          },
-                          child: Icon(
-                            Icons.filter_alt,
-                            color: FlutterFlowTheme.of(context).secondaryColor,
-                            size: 40,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
                     child: StreamBuilder<List<ProductsRecord>>(
                       stream: queryProductsRecord(
                         queryBuilder: (productsRecord) => productsRecord
-                            .orderBy('uploaded_at', descending: true),
+                            .where('condition',
+                                isEqualTo: FFAppState().filterCondition != ''
+                                    ? FFAppState().filterCondition
+                                    : null)
+                            .where('product_type',
+                                isEqualTo: FFAppState().filterProdType != ''
+                                    ? FFAppState().filterProdType
+                                    : null)
+                            .where('price',
+                                isGreaterThanOrEqualTo:
+                                    FFAppState().filterMinPrice.toDouble())
+                            .where('price',
+                                isLessThanOrEqualTo:
+                                    FFAppState().filterMaxPrice.toDouble()),
                       ),
                       builder: (context, snapshot) {
                         // Customize what your widget looks like when it's loading.
@@ -417,7 +331,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                               CrossAxisAlignment.end,
                                           children: [
                                             Image.network(
-                                              listViewProductsRecord.image1,
+                                              containerProductsRecord.image1,
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width *
@@ -431,7 +345,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                             Expanded(
                                               child: Padding(
                                                 padding: EdgeInsetsDirectional
-                                                    .fromSTEB(16, 0, 0, 0),
+                                                    .fromSTEB(10, 0, 0, 0),
                                                 child: Column(
                                                   mainAxisSize:
                                                       MainAxisSize.max,
@@ -454,7 +368,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                   .fromSTEB(0,
                                                                       5, 0, 0),
                                                           child: Text(
-                                                            'Rs ${listViewProductsRecord.price}',
+                                                            formatNumber(
+                                                              containerProductsRecord
+                                                                  .price,
+                                                              formatType:
+                                                                  FormatType
+                                                                      .custom,
+                                                              currency: 'Rs. ',
+                                                              format: '',
+                                                              locale: '',
+                                                            ),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
                                                                 .subtitle1
@@ -471,42 +394,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                 ),
                                                           ),
                                                         ),
-                                                        ToggleIcon(
-                                                          onPressed: () async {
-                                                            final productsUpdateData =
-                                                                createProductsRecordData(
-                                                              status:
-                                                                  !containerProductsRecord
-                                                                      .status,
-                                                            );
-                                                            await containerProductsRecord
-                                                                .reference
-                                                                .update(
-                                                                    productsUpdateData);
-                                                          },
-                                                          value:
-                                                              containerProductsRecord
-                                                                  .status,
-                                                          onIcon: Icon(
+                                                        if ((containerProductsRecord
+                                                                .status) ==
+                                                            'Not Available')
+                                                          Icon(
                                                             Icons
-                                                                .not_interested,
+                                                                .cancel_outlined,
                                                             color: Color(
-                                                                0xFFC80C0D),
+                                                                0xFFB82023),
                                                             size: 25,
                                                           ),
-                                                          offIcon: Icon(
-                                                            Icons
-                                                                .check_circle_outline,
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .secondaryColor,
-                                                            size: 25,
-                                                          ),
-                                                        ),
                                                       ],
                                                     ),
                                                     Text(
-                                                      listViewProductsRecord
+                                                      containerProductsRecord
                                                           .name,
                                                       style: FlutterFlowTheme
                                                               .of(context)
@@ -527,7 +428,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                               .fromSTEB(
                                                                   0, 4, 0, 0),
                                                       child: Text(
-                                                        listViewProductsRecord
+                                                        containerProductsRecord
                                                             .description
                                                             .maybeHandleOverflow(
                                                           maxChars: 30,
@@ -554,7 +455,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                 .fromSTEB(
                                                                     0, 0, 0, 5),
                                                         child: AutoSizeText(
-                                                          'Posted: ${dateTimeFormat('relative', listViewProductsRecord.uploadedAt)}',
+                                                          'Posted: ${dateTimeFormat('relative', containerProductsRecord.uploadedAt)}',
                                                           textAlign:
                                                               TextAlign.end,
                                                           style: FlutterFlowTheme

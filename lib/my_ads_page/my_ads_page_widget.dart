@@ -2,7 +2,9 @@ import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../order_details_page/order_details_page_widget.dart';
 import '../product_detail_page/product_detail_page_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -42,7 +44,7 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(20, 20, 0, 30),
+                  padding: EdgeInsetsDirectional.fromSTEB(20, 20, 0, 10),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -116,18 +118,64 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                   final containerProductsRecord = snapshot.data;
                                   return InkWell(
                                     onTap: () async {
-                                      await Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.rightToLeft,
-                                          duration: Duration(milliseconds: 300),
-                                          reverseDuration:
-                                              Duration(milliseconds: 300),
-                                          child: ProductDetailPageWidget(
-                                            productRef: containerProductsRecord,
+                                      var confirmDialogResponse =
+                                          await showDialog<bool>(
+                                                context: context,
+                                                builder: (alertDialogContext) {
+                                                  return AlertDialog(
+                                                    title:
+                                                        Text('Make a choice!'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                alertDialogContext,
+                                                                false),
+                                                        child: Text(
+                                                            'Order Details'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                alertDialogContext,
+                                                                true),
+                                                        child: Text('View Ad'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ) ??
+                                              false;
+                                      if (confirmDialogResponse) {
+                                        await Navigator.push(
+                                          context,
+                                          PageTransition(
+                                            type:
+                                                PageTransitionType.rightToLeft,
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            reverseDuration:
+                                                Duration(milliseconds: 300),
+                                            child: ProductDetailPageWidget(
+                                              productRef:
+                                                  containerProductsRecord,
+                                            ),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      } else {
+                                        await Navigator.push(
+                                          context,
+                                          PageTransition(
+                                            type:
+                                                PageTransitionType.rightToLeft,
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            reverseDuration:
+                                                Duration(milliseconds: 300),
+                                            child: OrderDetailsPageWidget(),
+                                          ),
+                                        );
+                                      }
                                     },
                                     child: Container(
                                       width: double.infinity,
@@ -185,8 +233,16 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          containerProductsRecord
-                                                              .price,
+                                                          formatNumber(
+                                                            containerProductsRecord
+                                                                .price,
+                                                            formatType:
+                                                                FormatType
+                                                                    .custom,
+                                                            currency: 'Rs. ',
+                                                            format: '',
+                                                            locale: '',
+                                                          ),
                                                           textAlign:
                                                               TextAlign.start,
                                                           style: FlutterFlowTheme
@@ -239,37 +295,64 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                                               return InkWell(
                                                                 onTap:
                                                                     () async {
-                                                                  await showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (alertDialogContext) {
-                                                                      return AlertDialog(
-                                                                        title: Text(
-                                                                            'Confirm Delete?'),
+                                                                  if ((containerProductsRecord
+                                                                          .status) ==
+                                                                      'Available') {
+                                                                    var confirmDialogResponse =
+                                                                        await showDialog<bool>(
+                                                                              context: context,
+                                                                              builder: (alertDialogContext) {
+                                                                                return AlertDialog(
+                                                                                  title: Text('Confirm Delete?'),
+                                                                                  content: Text('The product will be deleted from your products list.'),
+                                                                                  actions: [
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                      child: Text('Cancel'),
+                                                                                    ),
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                      child: Text('Confirm'),
+                                                                                    ),
+                                                                                  ],
+                                                                                );
+                                                                              },
+                                                                            ) ??
+                                                                            false;
+                                                                    if (confirmDialogResponse) {
+                                                                      final usersUpdateData =
+                                                                          {
+                                                                        'my_ads':
+                                                                            FieldValue.arrayRemove([
+                                                                          containerProductsRecord
+                                                                              .reference
+                                                                        ]),
+                                                                      };
+                                                                      await currentUserReference
+                                                                          .update(
+                                                                              usersUpdateData);
+                                                                      await containerProductsRecord
+                                                                          .reference
+                                                                          .delete();
+                                                                    }
+                                                                  } else {
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                      SnackBar(
                                                                         content:
-                                                                            Text('The product will be deleted from your products list.'),
-                                                                        actions: [
-                                                                          TextButton(
-                                                                            onPressed: () =>
-                                                                                Navigator.pop(alertDialogContext),
-                                                                            child:
-                                                                                Text('Cancel'),
-                                                                          ),
-                                                                          TextButton(
-                                                                            onPressed:
-                                                                                () async {
-                                                                              Navigator.pop(alertDialogContext);
-                                                                              await listViewProductsRecord.reference.delete();
-                                                                              ;
-                                                                            },
-                                                                            child:
-                                                                                Text('Confirm'),
-                                                                          ),
-                                                                        ],
-                                                                      );
-                                                                    },
-                                                                  );
+                                                                            Text(
+                                                                          'Product on Rent, Cannot Delete.',
+                                                                          style:
+                                                                              TextStyle(),
+                                                                        ),
+                                                                        duration:
+                                                                            Duration(milliseconds: 4000),
+                                                                        backgroundColor:
+                                                                            Color(0x00000000),
+                                                                      ),
+                                                                    );
+                                                                  }
                                                                 },
                                                                 child: Icon(
                                                                   Icons
@@ -317,6 +400,14 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                                                     context)
                                                                 .bodyText1,
                                                       ),
+                                                    ),
+                                                    Text(
+                                                      containerProductsRecord
+                                                          .status,
+                                                      style:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyText1,
                                                     ),
                                                     Align(
                                                       alignment:

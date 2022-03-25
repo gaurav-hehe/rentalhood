@@ -26,6 +26,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
   TextEditingController nameController;
   TextEditingController emailController;
   TextEditingController phoneNoController;
+  TextEditingController addressController;
   TextEditingController aadhaarNoController;
   TextEditingController paswordController;
   bool paswordVisibility;
@@ -36,6 +37,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
   void initState() {
     super.initState();
     aadhaarNoController = TextEditingController();
+    addressController = TextEditingController();
     emailController = TextEditingController();
     nameController = TextEditingController();
     phoneNoController = TextEditingController(text: '+91');
@@ -86,12 +88,14 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Image.network(
-                                uploadedFileUrl,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.contain,
-                              ),
+                              if (uploadedFileUrl != null &&
+                                  uploadedFileUrl != '')
+                                Image.network(
+                                  uploadedFileUrl,
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.contain,
+                                ),
                               Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
@@ -289,6 +293,54 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
                     child: TextFormField(
+                      controller: addressController,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        hintText: 'Full Address',
+                        hintStyle:
+                            FlutterFlowTheme.of(context).subtitle2.override(
+                                  fontFamily: 'Open Sans',
+                                  color: Color(0xFF5D5E60),
+                                ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                            width: 1,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                            width: 1,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.place_sharp,
+                          color: Color(0xFF5D5E60),
+                        ),
+                      ),
+                      style: FlutterFlowTheme.of(context).subtitle2,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (val) {
+                        if (val.isEmpty) {
+                          return 'Field is required';
+                        }
+
+                        return null;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                    child: TextFormField(
                       controller: aadhaarNoController,
                       obscureText: false,
                       decoration: InputDecoration(
@@ -325,13 +377,6 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       style: FlutterFlowTheme.of(context).subtitle2,
                       keyboardType: TextInputType.emailAddress,
-                      validator: (val) {
-                        if (val.isEmpty) {
-                          return 'Field is required';
-                        }
-
-                        return null;
-                      },
                     ),
                   ),
                   Padding(
@@ -492,7 +537,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                           displayName: nameController.text,
                           photoUrl: uploadedFileUrl,
                           createdTime: getCurrentTimestamp,
-                          uid: aadhaarNoController.text,
+                          uid: addressController.text,
                           phoneNumber: phoneNoController.text,
                           location: currentUserLocationValue,
                         );

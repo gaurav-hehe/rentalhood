@@ -194,7 +194,16 @@ class _SearchPageWidgetState extends State<SearchPageWidget> {
                                                                 .fromSTEB(
                                                                     0, 5, 0, 0),
                                                         child: Text(
-                                                          'Rs ${containerProductsRecord.price}',
+                                                          formatNumber(
+                                                            containerProductsRecord
+                                                                .price,
+                                                            formatType:
+                                                                FormatType
+                                                                    .custom,
+                                                            currency: 'Rs. ',
+                                                            format: '',
+                                                            locale: '',
+                                                          ),
                                                           style: FlutterFlowTheme
                                                                   .of(context)
                                                               .subtitle1

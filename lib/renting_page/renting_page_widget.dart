@@ -1,13 +1,11 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../completion_page/completion_page_widget.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_place_picker.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../flutter_flow/place.dart';
-import '../payment_completion_page/payment_completion_page_widget.dart';
-import 'dart:io';
+import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -16,10 +14,10 @@ import 'package:google_fonts/google_fonts.dart';
 class RentingPageWidget extends StatefulWidget {
   const RentingPageWidget({
     Key key,
-    this.productRef,
+    this.offerRef,
   }) : super(key: key);
 
-  final ProductsRecord productRef;
+  final OffersRecord offerRef;
 
   @override
   _RentingPageWidgetState createState() => _RentingPageWidgetState();
@@ -27,14 +25,13 @@ class RentingPageWidget extends StatefulWidget {
 
 class _RentingPageWidgetState extends State<RentingPageWidget> {
   DateTime datePicked;
-  var placePickerValue = FFPlace();
   TransactionsRecord transactionRef;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ProductsRecord>(
-      stream: ProductsRecord.getDocument(widget.productRef.reference),
+      stream: ProductsRecord.getDocument(widget.offerRef.prodRef),
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
@@ -98,6 +95,8 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                         'Renting Page',
                         style: FlutterFlowTheme.of(context).title1.override(
                               fontFamily: 'Open Sans',
+                              color:
+                                  FlutterFlowTheme.of(context).secondaryColor,
                               fontSize: 25,
                             ),
                       ),
@@ -130,7 +129,7 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: Image.network(
-                            widget.productRef.image1,
+                            rentingPageProductsRecord.image1,
                             width: 74,
                             height: 74,
                             fit: BoxFit.cover,
@@ -146,7 +145,7 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.productRef.name,
+                                rentingPageProductsRecord.name,
                                 style: FlutterFlowTheme.of(context)
                                     .subtitle1
                                     .override(
@@ -162,7 +161,13 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 30, 0, 0),
                                   child: Text(
-                                    widget.productRef.price,
+                                    formatNumber(
+                                      rentingPageProductsRecord.price,
+                                      formatType: FormatType.custom,
+                                      currency: 'Rs. ',
+                                      format: '',
+                                      locale: '',
+                                    ),
                                     style: FlutterFlowTheme.of(context)
                                         .subtitle1
                                         .override(
@@ -200,57 +205,54 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(5, 10, 0, 5),
+                                EdgeInsetsDirectional.fromSTEB(5, 10, 0, 10),
                             child: Text(
                               'Pick up details',
-                              style: FlutterFlowTheme.of(context).title2,
+                              style:
+                                  FlutterFlowTheme.of(context).title2.override(
+                                        fontFamily: 'Open Sans',
+                                        fontWeight: FontWeight.bold,
+                                      ),
                             ),
                           ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(5, 10, 0, 10),
-                            child: FlutterFlowPlacePicker(
-                              iOSGoogleMapsApiKey: '',
-                              androidGoogleMapsApiKey:
-                                  'AIzaSyBKPbL-SHAE3_r4MNgvxrViJPVmAtbOZjw',
-                              webGoogleMapsApiKey: '',
-                              onSelect: (place) =>
-                                  setState(() => placePickerValue = place),
-                              defaultText: 'Select Location',
-                              icon: Icon(
-                                Icons.place,
-                                color: Colors.white,
-                                size: 16,
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                child: Text(
+                                  'ADDRESS : ',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
                               ),
-                              buttonOptions: FFButtonOptions(
-                                width: 200,
-                                height: 40,
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
+                              Text(
+                                rentingPageProductsRecord.address,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
                                     .override(
                                       fontFamily: 'Open Sans',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryColor,
+                                      fontSize: 16,
                                     ),
-                                borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                  width: 1,
-                                ),
-                                borderRadius: 12,
                               ),
-                            ),
+                            ],
                           ),
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                await DatePicker.showDateTimePicker(
+                                await DatePicker.showDatePicker(
                                   context,
                                   showTitleActions: true,
                                   onConfirm: (date) {
@@ -260,10 +262,10 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                                   minTime: getCurrentTimestamp,
                                 );
                               },
-                              text: 'Pickup Date and Time',
+                              text: 'Set DATE and TIME',
                               options: FFButtonOptions(
-                                width: 200,
-                                height: 40,
+                                width: 180,
+                                height: 30,
                                 color:
                                     FlutterFlowTheme.of(context).primaryColor,
                                 textStyle: FlutterFlowTheme.of(context)
@@ -272,6 +274,7 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                                       fontFamily: 'Open Sans',
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryColor,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                     ),
                                 borderSide: BorderSide(
@@ -280,6 +283,18 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                                 ),
                                 borderRadius: 12,
                               ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 5),
+                            child: Text(
+                              'DATE & TIME: ${dateTimeFormat('d/M h:mm a', datePicked)}',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    fontSize: 18,
+                                  ),
                             ),
                           ),
                         ],
@@ -341,7 +356,12 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                                 ),
                               ),
                               Text(
-                                widget.productRef.price,
+                                functions
+                                    .totalPriceCalc(
+                                        rentingPageProductsRecord.availability
+                                            .toDouble(),
+                                        rentingPageProductsRecord.price)
+                                    .toString(),
                                 textAlign: TextAlign.end,
                                 style: FlutterFlowTheme.of(context)
                                     .subtitle1
@@ -361,46 +381,84 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                 ),
                 FFButtonWidget(
                   onPressed: () async {
-                    final transactionsCreateData = createTransactionsRecordData(
-                      renterName: currentUserDisplayName,
-                      price: widget.productRef.price,
-                      renterId: currentUserReference,
-                      ownerId: widget.productRef.uploadedBy,
-                      pickupLoc: placePickerValue.latLng,
-                      pickupDt: datePicked,
-                      ownerName: widget.productRef.ownerName,
-                      productRef: widget.productRef.reference,
-                    );
-                    final transactionsRecordReference =
-                        TransactionsRecord.collection.doc();
-                    await transactionsRecordReference
-                        .set(transactionsCreateData);
-                    transactionRef = TransactionsRecord.getDocumentFromData(
-                        transactionsCreateData, transactionsRecordReference);
+                    var _shouldSetState = false;
+                    var confirmDialogResponse = await showDialog<bool>(
+                          context: context,
+                          builder: (alertDialogContext) {
+                            return AlertDialog(
+                              title: Text('ARE YOU SURE TO RENT THE PRODUCT?'),
+                              content: Text('This action is not reversable.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, false),
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext, true),
+                                  child: Text('Confirm'),
+                                ),
+                              ],
+                            );
+                          },
+                        ) ??
+                        false;
+                    if (confirmDialogResponse) {
+                      final transactionsCreateData =
+                          createTransactionsRecordData(
+                        renterName: currentUserDisplayName,
+                        price: functions
+                            .totalPriceCalc(
+                                rentingPageProductsRecord.availability
+                                    .toDouble(),
+                                rentingPageProductsRecord.price)
+                            .toString(),
+                        renterId: currentUserReference,
+                        ownerId: rentingPageProductsRecord.uploadedBy,
+                        pickupDt: datePicked,
+                        ownerName: rentingPageProductsRecord.ownerName,
+                        productRef: rentingPageProductsRecord.reference,
+                        paymentMode: '',
+                        id: functions.randomNum(currentUserUid).toString(),
+                        transType: 'Pickup',
+                      );
+                      var transactionsRecordReference =
+                          TransactionsRecord.collection.doc();
+                      await transactionsRecordReference
+                          .set(transactionsCreateData);
+                      transactionRef = TransactionsRecord.getDocumentFromData(
+                          transactionsCreateData, transactionsRecordReference);
+                      _shouldSetState = true;
+                    } else {
+                      if (_shouldSetState) setState(() {});
+                      return;
+                    }
+
                     await Navigator.pushAndRemoveUntil(
                       context,
                       PageTransition(
                         type: PageTransitionType.rightToLeft,
                         duration: Duration(milliseconds: 300),
                         reverseDuration: Duration(milliseconds: 300),
-                        child: PaymentCompletionPageWidget(
+                        child: CompletionPageWidget(
                           productRef: rentingPageProductsRecord.reference,
                           transactionRef: transactionRef,
                         ),
                       ),
                       (r) => false,
                     );
-
-                    setState(() {});
+                    if (_shouldSetState) setState(() {});
                   },
-                  text: 'Proceed to payment',
+                  text: 'RENT IT !',
                   options: FFButtonOptions(
                     width: 320,
                     height: 60,
                     color: FlutterFlowTheme.of(context).secondaryColor,
-                    textStyle: FlutterFlowTheme.of(context).title3.override(
+                    textStyle: FlutterFlowTheme.of(context).title2.override(
                           fontFamily: 'Open Sans',
-                          color: Color(0xFFF3F3F4),
+                          color: Color(0xFFEEEEEE),
+                          fontWeight: FontWeight.bold,
                         ),
                     elevation: 3,
                     borderSide: BorderSide(

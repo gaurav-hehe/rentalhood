@@ -5,7 +5,7 @@ service cloud.firestore {
       allow create: if true;
       allow read: if true;
       allow write: if true;
-      allow delete: if false;
+      allow delete: if true;
     }
 
     match /products/{document} {
@@ -19,7 +19,7 @@ service cloud.firestore {
       allow create: if true;
       allow read: if true;
       allow write: if true;
-      allow delete: if false;
+      allow delete: if true;
     }
 
     match /chats/{document} {
@@ -30,6 +30,13 @@ service cloud.firestore {
     }
 
     match /chat_messages/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if true;
+      allow delete: if true;
+    }
+
+    match /offers/{document} {
       allow create: if true;
       allow read: if true;
       allow write: if true;

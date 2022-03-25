@@ -1,6 +1,6 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../components/sucessfull_widget.dart';
+import '../components/code_verification_sheet_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -162,7 +162,7 @@ class _VerificationPageWidgetState extends State<VerificationPageWidget> {
                           builder: (context) {
                             return Padding(
                               padding: MediaQuery.of(context).viewInsets,
-                              child: SucessfullWidget(),
+                              child: CodeVerificationSheetWidget(),
                             );
                           },
                         );
