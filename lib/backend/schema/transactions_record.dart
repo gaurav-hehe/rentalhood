@@ -58,8 +58,39 @@ abstract class TransactionsRecord
   bool get secDep;
 
   @nullable
-  @BuiltValueField(wireName: 'trans_type')
-  String get transType;
+  bool get pickupS1;
+
+  @nullable
+  bool get pickupS2;
+
+  @nullable
+  bool get returnS1;
+
+  @nullable
+  bool get returnS2;
+
+  @nullable
+  @BuiltValueField(wireName: 'return_dt')
+  DateTime get returnDt;
+
+  @nullable
+  @BuiltValueField(wireName: 'return_loc')
+  LatLng get returnLoc;
+
+  @nullable
+  @BuiltValueField(wireName: 'picked_at')
+  DateTime get pickedAt;
+
+  @nullable
+  @BuiltValueField(wireName: 'return_at')
+  DateTime get returnAt;
+
+  @nullable
+  DocumentReference get offerRef;
+
+  @nullable
+  @BuiltValueField(wireName: 'deposit_item')
+  String get depositItem;
 
   @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
@@ -73,7 +104,11 @@ abstract class TransactionsRecord
     ..id = ''
     ..listVeri = false
     ..secDep = false
-    ..transType = '';
+    ..pickupS1 = false
+    ..pickupS2 = false
+    ..returnS1 = false
+    ..returnS2 = false
+    ..depositItem = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('transactions');
@@ -110,7 +145,16 @@ Map<String, dynamic> createTransactionsRecordData({
   String id,
   bool listVeri,
   bool secDep,
-  String transType,
+  bool pickupS1,
+  bool pickupS2,
+  bool returnS1,
+  bool returnS2,
+  DateTime returnDt,
+  LatLng returnLoc,
+  DateTime pickedAt,
+  DateTime returnAt,
+  DocumentReference offerRef,
+  String depositItem,
 }) =>
     serializers.toFirestore(
         TransactionsRecord.serializer,
@@ -127,4 +171,13 @@ Map<String, dynamic> createTransactionsRecordData({
           ..id = id
           ..listVeri = listVeri
           ..secDep = secDep
-          ..transType = transType));
+          ..pickupS1 = pickupS1
+          ..pickupS2 = pickupS2
+          ..returnS1 = returnS1
+          ..returnS2 = returnS2
+          ..returnDt = returnDt
+          ..returnLoc = returnLoc
+          ..pickedAt = pickedAt
+          ..returnAt = returnAt
+          ..offerRef = offerRef
+          ..depositItem = depositItem));

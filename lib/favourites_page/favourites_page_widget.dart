@@ -82,6 +82,7 @@ class _FavouritesPageWidgetState extends State<FavouritesPageWidget> {
                                 [];
                             return ListView.builder(
                               padding: EdgeInsets.zero,
+                              primary: false,
                               scrollDirection: Axis.vertical,
                               itemCount: fav.length,
                               itemBuilder: (context, favIndex) {

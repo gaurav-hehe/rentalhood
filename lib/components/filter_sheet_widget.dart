@@ -1,6 +1,5 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_place_picker.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -21,9 +20,8 @@ class FilterSheetWidget extends StatefulWidget {
 }
 
 class _FilterSheetWidgetState extends State<FilterSheetWidget> {
-  String choiceChipsValue;
-  var placePickerValue = FFPlace();
   String dropDownValue;
+  var placePickerValue = FFPlace();
   TextEditingController textController1;
   TextEditingController textController2;
   double sliderValue;
@@ -126,59 +124,6 @@ class _FilterSheetWidgetState extends State<FilterSheetWidget> {
               color: Color(0xFF0E1112),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15, 20, 0, 0),
-              child: Text(
-                'Condition',
-                textAlign: TextAlign.start,
-                style: FlutterFlowTheme.of(context).title3.override(
-                      fontFamily: 'Open Sans',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20, 5, 10, 0),
-                    child: FlutterFlowChoiceChips(
-                      initiallySelected: [choiceChipsValue],
-                      options: [ChipData('New'), ChipData('Used')],
-                      onChanged: (val) =>
-                          setState(() => choiceChipsValue = val.first),
-                      selectedChipStyle: ChipStyle(
-                        backgroundColor:
-                            FlutterFlowTheme.of(context).secondaryColor,
-                        textStyle:
-                            FlutterFlowTheme.of(context).bodyText1.override(
-                                  fontFamily: 'Open Sans',
-                                  color: Colors.white,
-                                ),
-                        iconColor: Colors.white,
-                        iconSize: 18,
-                        elevation: 4,
-                      ),
-                      unselectedChipStyle: ChipStyle(
-                        backgroundColor: Colors.white,
-                        textStyle:
-                            FlutterFlowTheme.of(context).bodyText2.override(
-                                  fontFamily: 'Open Sans',
-                                  color: Color(0xFF262D34),
-                                ),
-                        iconColor: Color(0xFF262D34),
-                        iconSize: 18,
-                        elevation: 4,
-                      ),
-                      chipSpacing: 20,
-                      multiselect: false,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
               padding: EdgeInsetsDirectional.fromSTEB(15, 10, 0, 0),
               child: Text(
                 'Product Type',
@@ -193,7 +138,7 @@ class _FilterSheetWidgetState extends State<FilterSheetWidget> {
               padding: EdgeInsetsDirectional.fromSTEB(15, 5, 0, 5),
               child: FlutterFlowDropDown(
                 options: [
-                  'Mobile Phones',
+                  'Mobile Phone',
                   'Tools & Toolkits',
                   'Mobile Accessories',
                   'Computers & Laptops',
@@ -222,7 +167,7 @@ class _FilterSheetWidgetState extends State<FilterSheetWidget> {
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15, 10, 8, 0),
+              padding: EdgeInsetsDirectional.fromSTEB(15, 15, 8, 0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -347,7 +292,7 @@ class _FilterSheetWidgetState extends State<FilterSheetWidget> {
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
                     child: Text(
-                      '10M - 5000M',
+                      '500M - 5000M',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
                             fontWeight: FontWeight.w500,
@@ -360,57 +305,104 @@ class _FilterSheetWidgetState extends State<FilterSheetWidget> {
             Slider(
               activeColor: FlutterFlowTheme.of(context).secondaryColor,
               inactiveColor: Color(0xFF9E9E9E),
-              min: 10,
+              min: 500,
               max: 5000,
-              value: sliderValue ??= 10,
+              value: sliderValue ??= 500,
               label: sliderValue.toString(),
-              divisions: 499,
+              divisions: 90,
               onChanged: (newValue) {
                 setState(() => sliderValue = newValue);
               },
             ),
-            Align(
-              alignment: AlignmentDirectional(0, 0),
-              child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
-                child: FFButtonWidget(
-                  onPressed: () async {
-                    setState(
-                        () => FFAppState().filterCondition = choiceChipsValue);
-                    setState(() => FFAppState().filterProdType = dropDownValue);
-                    setState(() => FFAppState().filterMinPrice =
-                        int.parse(textController1.text));
-                    setState(() => FFAppState().filterMaxPrice =
-                        int.parse(textController2.text));
-                    await Navigator.pushAndRemoveUntil(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 0),
-                        reverseDuration: Duration(milliseconds: 0),
-                        child: NavBarPage(initialPage: 'HomePage'),
-                      ),
-                      (r) => false,
-                    );
-                  },
-                  text: 'APPLY',
-                  options: FFButtonOptions(
-                    width: 200,
-                    height: 40,
-                    color: FlutterFlowTheme.of(context).secondaryColor,
-                    textStyle: FlutterFlowTheme.of(context).subtitle2.override(
-                          fontFamily: 'Open Sans',
-                          color: Color(0xFFEEEEEE),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional(0, 0),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        setState(() => FFAppState().filterProdType = '');
+                        setState(() => FFAppState().filterMinPrice = 0);
+                        setState(() => FFAppState().filterMaxPrice = 99999);
+                        setState(() => FFAppState().filterLoc = 500.0);
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 0),
+                            reverseDuration: Duration(milliseconds: 0),
+                            child: NavBarPage(initialPage: 'HomePage'),
+                          ),
+                        );
+                      },
+                      text: 'CLEAR ALL',
+                      options: FFButtonOptions(
+                        width: 150,
+                        height: 40,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        textStyle: FlutterFlowTheme.of(context)
+                            .subtitle2
+                            .override(
+                              fontFamily: 'Open Sans',
+                              color:
+                                  FlutterFlowTheme.of(context).secondaryColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
+                          width: 1,
                         ),
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                      width: 1,
+                        borderRadius: 12,
+                      ),
                     ),
-                    borderRadius: 12,
                   ),
-                ),
+                  Align(
+                    alignment: AlignmentDirectional(0, 0),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        setState(
+                            () => FFAppState().filterProdType = dropDownValue);
+                        setState(() => FFAppState().filterMinPrice =
+                            int.parse(textController1.text));
+                        setState(() => FFAppState().filterMaxPrice =
+                            int.parse(textController2.text));
+                        setState(() => FFAppState().filterLoc = sliderValue);
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 0),
+                            reverseDuration: Duration(milliseconds: 0),
+                            child: NavBarPage(initialPage: 'HomePage'),
+                          ),
+                        );
+                      },
+                      text: 'APPLY',
+                      options: FFButtonOptions(
+                        width: 150,
+                        height: 40,
+                        color: FlutterFlowTheme.of(context).secondaryColor,
+                        textStyle:
+                            FlutterFlowTheme.of(context).subtitle2.override(
+                                  fontFamily: 'Open Sans',
+                                  color: Color(0xFFEEEEEE),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1,
+                        ),
+                        borderRadius: 12,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

@@ -26,273 +26,126 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
+  void initState() {
+    super.initState();
+    textController1 = TextEditingController(text: currentUserDisplayName);
+    textController2 = TextEditingController(text: currentUserEmail);
+    textController3 = TextEditingController(text: currentPhoneNumber);
+    textController4 = TextEditingController(text: currentUserUid);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<UsersRecord>(
-      stream: UsersRecord.getDocument(currentUserReference),
-      builder: (context, snapshot) {
-        // Customize what your widget looks like when it's loading.
-        if (!snapshot.hasData) {
-          return Center(
-            child: SizedBox(
-              width: 50,
-              height: 50,
-              child: CircularProgressIndicator(
-                color: FlutterFlowTheme.of(context).primaryColor,
-              ),
-            ),
-          );
-        }
-        final profilePageUsersRecord = snapshot.data;
-        return Scaffold(
-          key: scaffoldKey,
-          appBar: AppBar(
-            backgroundColor: Color(0xFFEEEEEE),
-            automaticallyImplyLeading: false,
-            leading: FlutterFlowIconButton(
-              borderColor: Colors.transparent,
-              borderRadius: 30,
-              borderWidth: 1,
-              buttonSize: 60,
-              icon: Icon(
-                Icons.arrow_back_rounded,
-                color: Colors.black,
-                size: 24,
-              ),
-              onPressed: () async {
-                Navigator.pop(context);
-              },
-            ),
-            actions: [],
-            centerTitle: false,
-            elevation: 2,
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Color(0xFFEEEEEE),
+        automaticallyImplyLeading: false,
+        leading: FlutterFlowIconButton(
+          borderColor: Colors.transparent,
+          borderRadius: 30,
+          borderWidth: 1,
+          buttonSize: 60,
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.black,
+            size: 24,
           ),
-          backgroundColor: Color(0xFFEEEEEE),
-          body: SafeArea(
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color(0xFFEEEEEE),
-                ),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional(-1, 0),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                          child: Text(
-                            'Profile',
-                            textAlign: TextAlign.start,
-                            style: FlutterFlowTheme.of(context).title2.override(
-                                  fontFamily: 'Open Sans',
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                        ),
+          onPressed: () async {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [],
+        centerTitle: false,
+        elevation: 2,
+      ),
+      backgroundColor: Color(0xFFEEEEEE),
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              color: Color(0xFFEEEEEE),
+            ),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional(-1, 0),
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                      child: Text(
+                        'Profile',
+                        textAlign: TextAlign.start,
+                        style: FlutterFlowTheme.of(context).title2.override(
+                              fontFamily: 'Open Sans',
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
-                      Image.network(
-                        uploadedFileUrl,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          final selectedMedia =
-                              await selectMediaWithSourceBottomSheet(
-                            context: context,
-                            allowPhoto: true,
+                    ),
+                  ),
+                  Image.network(
+                    uploadedFileUrl,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      final selectedMedia =
+                          await selectMediaWithSourceBottomSheet(
+                        context: context,
+                        allowPhoto: true,
+                      );
+                      if (selectedMedia != null &&
+                          selectedMedia.every((m) =>
+                              validateFileFormat(m.storagePath, context))) {
+                        showUploadMessage(
+                          context,
+                          'Uploading file...',
+                          showLoading: true,
+                        );
+                        final downloadUrls = await Future.wait(
+                            selectedMedia.map((m) async =>
+                                await uploadData(m.storagePath, m.bytes)));
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        if (downloadUrls != null) {
+                          setState(() => uploadedFileUrl = downloadUrls.first);
+                          showUploadMessage(
+                            context,
+                            'Success!',
                           );
-                          if (selectedMedia != null &&
-                              validateFileFormat(
-                                  selectedMedia.storagePath, context)) {
-                            showUploadMessage(
-                              context,
-                              'Uploading file...',
-                              showLoading: true,
-                            );
-                            final downloadUrl = await uploadData(
-                                selectedMedia.storagePath, selectedMedia.bytes);
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            if (downloadUrl != null) {
-                              setState(() => uploadedFileUrl = downloadUrl);
-                              showUploadMessage(
-                                context,
-                                'Success!',
-                              );
-                            } else {
-                              showUploadMessage(
-                                context,
-                                'Failed to upload media',
-                              );
-                              return;
-                            }
-                          }
-                        },
-                        child: Text(
-                          'Change Image',
-                          style: GoogleFonts.getFont(
-                            'Open Sans',
-                            color: FlutterFlowTheme.of(context).secondaryColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15,
-                          ),
-                        ),
+                        } else {
+                          showUploadMessage(
+                            context,
+                            'Failed to upload media',
+                          );
+                          return;
+                        }
+                      }
+                    },
+                    child: Text(
+                      'Upload Image',
+                      style: GoogleFonts.getFont(
+                        'Open Sans',
+                        color: FlutterFlowTheme.of(context).secondaryColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
                       ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 30),
-                        child: Text(
-                          profilePageUsersRecord.displayName,
-                          style: GoogleFonts.getFont(
-                            'Open Sans',
-                            color: FlutterFlowTheme.of(context).secondaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 25,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                        child: TextFormField(
-                          controller: textController1 ??= TextEditingController(
-                            text: profilePageUsersRecord.displayName,
-                          ),
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(4.0),
-                                topRight: Radius.circular(4.0),
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(4.0),
-                                topRight: Radius.circular(4.0),
-                              ),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.person,
-                              color: Color(0xFF5D5E60),
-                            ),
-                          ),
-                          style: FlutterFlowTheme.of(context)
-                              .bodyText1
-                              .override(
-                                fontFamily: 'Open Sans',
-                                color:
-                                    FlutterFlowTheme.of(context).tertiaryColor,
-                                fontSize: 16,
-                              ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                        child: TextFormField(
-                          controller: textController2 ??= TextEditingController(
-                            text: profilePageUsersRecord.email,
-                          ),
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(4.0),
-                                topRight: Radius.circular(4.0),
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(4.0),
-                                topRight: Radius.circular(4.0),
-                              ),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.email_outlined,
-                              color: Color(0xFF5D5E60),
-                            ),
-                          ),
-                          style: FlutterFlowTheme.of(context)
-                              .bodyText1
-                              .override(
-                                fontFamily: 'Open Sans',
-                                color:
-                                    FlutterFlowTheme.of(context).tertiaryColor,
-                                fontSize: 16,
-                              ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                        child: TextFormField(
-                          controller: textController3 ??= TextEditingController(
-                            text: profilePageUsersRecord.phoneNumber,
-                          ),
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            hintText: 'Fullname',
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(4.0),
-                                topRight: Radius.circular(4.0),
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0x00000000),
-                                width: 1,
-                              ),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(4.0),
-                                topRight: Radius.circular(4.0),
-                              ),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.phone_sharp,
-                              color: Color(0xFF5D5E60),
-                            ),
-                          ),
-                          style: FlutterFlowTheme.of(context)
-                              .bodyText1
-                              .override(
-                                fontFamily: 'Open Sans',
-                                color:
-                                    FlutterFlowTheme.of(context).tertiaryColor,
-                                fontSize: 16,
-                              ),
-                          keyboardType: TextInputType.phone,
-                        ),
-                      ),
-                      TextFormField(
-                        controller: textController4 ??= TextEditingController(
-                          text: profilePageUsersRecord.uid,
-                        ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 10),
+                    child: AuthUserStreamWidget(
+                      child: TextFormField(
+                        controller: textController1,
                         obscureText: false,
                         decoration: InputDecoration(
                           enabledBorder: UnderlineInputBorder(
@@ -316,7 +169,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                             ),
                           ),
                           prefixIcon: Icon(
-                            Icons.location_history_outlined,
+                            Icons.person,
                             color: Color(0xFF5D5E60),
                           ),
                         ),
@@ -326,55 +179,165 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                               fontSize: 16,
                             ),
                       ),
-                      Expanded(
-                        child: Align(
-                          alignment: AlignmentDirectional(0, 1),
-                          child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(20, 0, 20, 30),
-                            child: FFButtonWidget(
-                              onPressed: () async {
-                                final usersUpdateData = createUsersRecordData(
-                                  displayName: textController1?.text ?? '',
-                                  email: textController2?.text ?? '',
-                                  phoneNumber: textController3?.text ?? '',
-                                  uid: textController4?.text ?? '',
-                                  photoUrl: uploadedFileUrl,
-                                );
-                                await profilePageUsersRecord.reference
-                                    .update(usersUpdateData);
-                              },
-                              text: 'Update',
-                              options: FFButtonOptions(
-                                width: double.infinity,
-                                height: 40,
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryColor,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: TextFormField(
+                      controller: textController2,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.email_outlined,
+                          color: Color(0xFF5D5E60),
+                        ),
+                      ),
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Open Sans',
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                            fontSize: 16,
+                          ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: AuthUserStreamWidget(
+                      child: TextFormField(
+                        controller: textController3,
+                        obscureText: false,
+                        decoration: InputDecoration(
+                          hintText: 'Fullname',
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(4.0),
+                              topRight: Radius.circular(4.0),
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0x00000000),
+                              width: 1,
+                            ),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(4.0),
+                              topRight: Radius.circular(4.0),
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.phone_sharp,
+                            color: Color(0xFF5D5E60),
+                          ),
+                        ),
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Open Sans',
+                              color: FlutterFlowTheme.of(context).tertiaryColor,
+                              fontSize: 16,
+                            ),
+                        keyboardType: TextInputType.phone,
+                      ),
+                    ),
+                  ),
+                  TextFormField(
+                    controller: textController4,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0x00000000),
+                          width: 1,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(4.0),
+                          topRight: Radius.circular(4.0),
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0x00000000),
+                          width: 1,
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(4.0),
+                          topRight: Radius.circular(4.0),
+                        ),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.location_history_outlined,
+                        color: Color(0xFF5D5E60),
+                      ),
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Open Sans',
+                          color: FlutterFlowTheme.of(context).tertiaryColor,
+                          fontSize: 16,
+                        ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: AlignmentDirectional(0, 1),
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 30),
+                        child: FFButtonWidget(
+                          onPressed: () async {
+                            final usersUpdateData = createUsersRecordData(
+                              displayName: textController1.text,
+                              email: textController2.text,
+                              phoneNumber: textController3.text,
+                              uid: textController4.text,
+                              photoUrl: uploadedFileUrl,
+                            );
+                            await currentUserReference.update(usersUpdateData);
+                          },
+                          text: 'Update',
+                          options: FFButtonOptions(
+                            width: double.infinity,
+                            height: 40,
+                            color: FlutterFlowTheme.of(context).secondaryColor,
+                            textStyle:
+                                FlutterFlowTheme.of(context).subtitle2.override(
                                       fontFamily: 'Open Sans',
                                       color: Colors.white,
                                     ),
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context)
-                                      .tertiaryColor,
-                                  width: 1,
-                                ),
-                                borderRadius: 5,
-                              ),
+                            borderSide: BorderSide(
+                              color: FlutterFlowTheme.of(context).tertiaryColor,
+                              width: 1,
                             ),
+                            borderRadius: 5,
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

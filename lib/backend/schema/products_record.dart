@@ -71,9 +71,6 @@ abstract class ProductsRecord
   String get address;
 
   @nullable
-  double get price;
-
-  @nullable
   int get availability;
 
   @nullable
@@ -81,11 +78,17 @@ abstract class ProductsRecord
   String get productType;
 
   @nullable
-  @BuiltValueField(wireName: 'transaction_ref')
-  BuiltList<DocumentReference> get transactionRef;
+  String get status;
 
   @nullable
-  String get status;
+  int get price;
+
+  @nullable
+  @BuiltValueField(wireName: 'trans_ref')
+  DocumentReference get transRef;
+
+  @nullable
+  BuiltList<DocumentReference> get allTransactions;
 
   @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
@@ -106,11 +109,11 @@ abstract class ProductsRecord
     ..q5 = false
     ..prodId = 0
     ..address = ''
-    ..price = 0.0
     ..availability = 0
     ..productType = ''
-    ..transactionRef = ListBuilder()
-    ..status = '';
+    ..status = ''
+    ..price = 0
+    ..allTransactions = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('products');
@@ -152,10 +155,11 @@ Map<String, dynamic> createProductsRecordData({
   bool q5,
   int prodId,
   String address,
-  double price,
   int availability,
   String productType,
   String status,
+  int price,
+  DocumentReference transRef,
 }) =>
     serializers.toFirestore(
         ProductsRecord.serializer,
@@ -178,8 +182,9 @@ Map<String, dynamic> createProductsRecordData({
           ..q5 = q5
           ..prodId = prodId
           ..address = address
-          ..price = price
           ..availability = availability
           ..productType = productType
-          ..transactionRef = null
-          ..status = status));
+          ..status = status
+          ..price = price
+          ..transRef = transRef
+          ..allTransactions = null));

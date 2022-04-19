@@ -109,6 +109,7 @@ class _ReviewPageWidgetState extends State<ReviewPageWidget> {
                               ),
                               chipSpacing: 20,
                               multiselect: false,
+                              alignment: WrapAlignment.start,
                             ),
                           ),
                         ],

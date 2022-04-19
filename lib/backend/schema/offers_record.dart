@@ -28,9 +28,6 @@ abstract class OffersRecord
   String get status;
 
   @nullable
-  String get price;
-
-  @nullable
   @BuiltValueField(wireName: 'received_by')
   DocumentReference get receivedBy;
 
@@ -50,17 +47,23 @@ abstract class OffersRecord
   String get deposit;
 
   @nullable
+  DocumentReference get transactionRef;
+
+  @nullable
+  int get price;
+
+  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference get reference;
 
   static void _initializeBuilder(OffersRecordBuilder builder) => builder
     ..id = 0
     ..status = ''
-    ..price = ''
     ..senderName = ''
     ..receiverName = ''
     ..paymentMode = ''
-    ..deposit = '';
+    ..deposit = ''
+    ..price = 0;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('offers');
@@ -89,12 +92,13 @@ Map<String, dynamic> createOffersRecordData({
   DocumentReference prodRef,
   DateTime timestamp,
   String status,
-  String price,
   DocumentReference receivedBy,
   String senderName,
   String receiverName,
   String paymentMode,
   String deposit,
+  DocumentReference transactionRef,
+  int price,
 }) =>
     serializers.toFirestore(
         OffersRecord.serializer,
@@ -104,9 +108,10 @@ Map<String, dynamic> createOffersRecordData({
           ..prodRef = prodRef
           ..timestamp = timestamp
           ..status = status
-          ..price = price
           ..receivedBy = receivedBy
           ..senderName = senderName
           ..receiverName = receiverName
           ..paymentMode = paymentMode
-          ..deposit = deposit));
+          ..deposit = deposit
+          ..transactionRef = transactionRef
+          ..price = price));

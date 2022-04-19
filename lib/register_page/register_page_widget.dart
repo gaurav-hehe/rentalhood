@@ -1,5 +1,4 @@
 import '../auth/auth_util.dart';
-import '../backend/backend.dart';
 import '../backend/firebase_storage/storage.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -19,9 +18,6 @@ class RegisterPageWidget extends StatefulWidget {
 }
 
 class _RegisterPageWidgetState extends State<RegisterPageWidget> {
-  LatLng currentUserLocationValue;
-  final formKey = GlobalKey<FormState>();
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   String uploadedFileUrl = '';
   TextEditingController nameController;
   TextEditingController emailController;
@@ -32,6 +28,8 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
   bool paswordVisibility;
   TextEditingController confPasswordController;
   bool confPasswordVisibility;
+  final formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -88,8 +86,8 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              if (uploadedFileUrl != null &&
-                                  uploadedFileUrl != '')
+                              if ((uploadedFileUrl != null) &&
+                                  (uploadedFileUrl != ''))
                                 Image.network(
                                   uploadedFileUrl,
                                   width: 100,
@@ -107,22 +105,23 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                                       allowPhoto: true,
                                     );
                                     if (selectedMedia != null &&
-                                        validateFileFormat(
-                                            selectedMedia.storagePath,
-                                            context)) {
+                                        selectedMedia.every((m) =>
+                                            validateFileFormat(
+                                                m.storagePath, context))) {
                                       showUploadMessage(
                                         context,
                                         'Uploading file...',
                                         showLoading: true,
                                       );
-                                      final downloadUrl = await uploadData(
-                                          selectedMedia.storagePath,
-                                          selectedMedia.bytes);
+                                      final downloadUrls = await Future.wait(
+                                          selectedMedia.map((m) async =>
+                                              await uploadData(
+                                                  m.storagePath, m.bytes)));
                                       ScaffoldMessenger.of(context)
                                           .hideCurrentSnackBar();
-                                      if (downloadUrl != null) {
-                                        setState(() =>
-                                            uploadedFileUrl = downloadUrl);
+                                      if (downloadUrls != null) {
+                                        setState(() => uploadedFileUrl =
+                                            downloadUrls.first);
                                         showUploadMessage(
                                           context,
                                           'Success!',
@@ -509,8 +508,6 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(20, 50, 20, 0),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        currentUserLocationValue = await getCurrentUserLocation(
-                            defaultLocation: LatLng(0.0, 0.0));
                         if (paswordController.text !=
                             confPasswordController.text) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -531,19 +528,6 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                         if (user == null) {
                           return;
                         }
-
-                        final usersCreateData = createUsersRecordData(
-                          email: emailController.text,
-                          displayName: nameController.text,
-                          photoUrl: uploadedFileUrl,
-                          createdTime: getCurrentTimestamp,
-                          uid: addressController.text,
-                          phoneNumber: phoneNoController.text,
-                          location: currentUserLocationValue,
-                        );
-                        await UsersRecord.collection
-                            .doc(user.uid)
-                            .update(usersCreateData);
 
                         await Navigator.push(
                           context,

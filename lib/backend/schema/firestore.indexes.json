@@ -5,15 +5,11 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "condition",
+          "fieldPath": "price",
           "order": "ASCENDING"
         },
         {
           "fieldPath": "product_type",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "price",
           "order": "ASCENDING"
         }
       ]

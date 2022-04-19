@@ -1,14 +1,16 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../backend/firebase_storage/storage.dart';
-import '../checklist_page/checklist_page_widget.dart';
 import '../flutter_flow/flutter_flow_choice_chips.dart';
 import '../flutter_flow/flutter_flow_drop_down.dart';
+import '../flutter_flow/flutter_flow_place_picker.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../flutter_flow/place.dart';
 import '../flutter_flow/upload_media.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
+import 'dart:io';
+import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,17 +24,23 @@ class PostAdPageWidget extends StatefulWidget {
 }
 
 class _PostAdPageWidgetState extends State<PostAdPageWidget> {
-  ProductsRecord adRef;
+  ProductsRecord newAd;
   String uploadedFileUrl1 = '';
   String uploadedFileUrl2 = '';
   String choiceChipsValue;
   String dropDownValue;
   TextEditingController addressController;
+  var placePickerValue = FFPlace();
   TextEditingController descriptionController;
   TextEditingController priceController;
   TextEditingController titleController;
   TextEditingController availabilityController;
   TextEditingController identifierController;
+  bool checkboxListTileValue1;
+  bool checkboxListTileValue2;
+  bool checkboxListTileValue3;
+  bool checkboxListTileValue4;
+  bool checkboxListTileValue5;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -249,6 +257,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                     ),
                                     style:
                                         FlutterFlowTheme.of(context).subtitle2,
+                                    keyboardType: TextInputType.number,
                                   ),
                                 ),
                               ),
@@ -305,7 +314,6 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                         ),
                                         style: FlutterFlowTheme.of(context)
                                             .subtitle2,
-                                        keyboardType: TextInputType.multiline,
                                       ),
                                     ),
                                   ),
@@ -338,15 +346,10 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.9,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFEEEEEE),
-                                ),
+                              Expanded(
                                 child: Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
-                                      5, 0, 5, 0),
+                                      10, 0, 5, 0),
                                   child: TextFormField(
                                     controller: addressController,
                                     obscureText: false,
@@ -386,8 +389,40 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                     ),
                                     style:
                                         FlutterFlowTheme.of(context).subtitle2,
-                                    keyboardType: TextInputType.multiline,
                                   ),
+                                ),
+                              ),
+                              FlutterFlowPlacePicker(
+                                iOSGoogleMapsApiKey:
+                                    'AIzaSyAMBy4yAjHAzlTm2fMH5qxDwMMZVmB4JBs',
+                                androidGoogleMapsApiKey:
+                                    'AIzaSyBKPbL-SHAE3_r4MNgvxrViJPVmAtbOZjw',
+                                webGoogleMapsApiKey:
+                                    'AIzaSyB7rDPXoN62wvMqAmQPhYJh9ugGBPNA01Q',
+                                onSelect: (place) =>
+                                    setState(() => placePickerValue = place),
+                                defaultText: '',
+                                icon: Icon(
+                                  Icons.place,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                buttonOptions: FFButtonOptions(
+                                  width: 50,
+                                  height: 50,
+                                  color:
+                                      FlutterFlowTheme.of(context).primaryColor,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .subtitle2
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        color: Colors.white,
+                                      ),
+                                  borderSide: BorderSide(
+                                    color: Colors.transparent,
+                                    width: 1,
+                                  ),
+                                  borderRadius: 12,
                                 ),
                               ),
                             ],
@@ -430,7 +465,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                       5, 8, 5, 0),
                                   child: FlutterFlowDropDown(
                                     options: [
-                                      'Mobile Phones',
+                                      'Mobile Phone',
                                       'Tools & Toolkits',
                                       'Mobile Accessories',
                                       'Computers & Laptops',
@@ -514,6 +549,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                               ),
                               chipSpacing: 20,
                               multiselect: false,
+                              alignment: WrapAlignment.start,
                             ),
                           ),
                         ],
@@ -576,6 +612,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                     ),
                                     style:
                                         FlutterFlowTheme.of(context).subtitle2,
+                                    keyboardType: TextInputType.number,
                                   ),
                                 ),
                               ),
@@ -698,6 +735,126 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                     ),
                   ),
                 ),
+                Container(
+                  width: double.infinity,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFEEEEEE),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 10),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                          child: Text(
+                            'Please assess the condition of the product and verify the below checklist.',
+                            textAlign: TextAlign.start,
+                            style: FlutterFlowTheme.of(context).bodyText2,
+                          ),
+                        ),
+                        Theme(
+                          data: ThemeData(
+                            unselectedWidgetColor: Color(0xFF95A1AC),
+                          ),
+                          child: CheckboxListTile(
+                            value: checkboxListTileValue1 ??= false,
+                            onChanged: (newValue) => setState(
+                                () => checkboxListTileValue1 = newValue),
+                            title: Text(
+                              'Minor Scratches',
+                              style: FlutterFlowTheme.of(context).title3,
+                            ),
+                            tileColor: Color(0xFFF5F5F5),
+                            activeColor:
+                                FlutterFlowTheme.of(context).primaryColor,
+                            dense: false,
+                            controlAffinity: ListTileControlAffinity.trailing,
+                          ),
+                        ),
+                        Theme(
+                          data: ThemeData(
+                            unselectedWidgetColor: Color(0xFF95A1AC),
+                          ),
+                          child: CheckboxListTile(
+                            value: checkboxListTileValue2 ??= false,
+                            onChanged: (newValue) => setState(
+                                () => checkboxListTileValue2 = newValue),
+                            title: Text(
+                              'Visible Dents',
+                              style: FlutterFlowTheme.of(context).title3,
+                            ),
+                            tileColor: Color(0xFFF5F5F5),
+                            activeColor:
+                                FlutterFlowTheme.of(context).primaryColor,
+                            dense: false,
+                            controlAffinity: ListTileControlAffinity.trailing,
+                          ),
+                        ),
+                        Theme(
+                          data: ThemeData(
+                            unselectedWidgetColor: Color(0xFF95A1AC),
+                          ),
+                          child: CheckboxListTile(
+                            value: checkboxListTileValue3 ??= false,
+                            onChanged: (newValue) => setState(
+                                () => checkboxListTileValue3 = newValue),
+                            title: Text(
+                              'Wear and Tear',
+                              style: FlutterFlowTheme.of(context).title3,
+                            ),
+                            tileColor: Color(0xFFF5F5F5),
+                            activeColor:
+                                FlutterFlowTheme.of(context).primaryColor,
+                            dense: false,
+                            controlAffinity: ListTileControlAffinity.trailing,
+                          ),
+                        ),
+                        Theme(
+                          data: ThemeData(
+                            unselectedWidgetColor: Color(0xFF95A1AC),
+                          ),
+                          child: CheckboxListTile(
+                            value: checkboxListTileValue4 ??= false,
+                            onChanged: (newValue) => setState(
+                                () => checkboxListTileValue4 = newValue),
+                            title: Text(
+                              'Dust-Free Surface',
+                              style: FlutterFlowTheme.of(context).title3,
+                            ),
+                            tileColor: Color(0xFFF5F5F5),
+                            activeColor:
+                                FlutterFlowTheme.of(context).primaryColor,
+                            dense: false,
+                            controlAffinity: ListTileControlAffinity.trailing,
+                          ),
+                        ),
+                        Theme(
+                          data: ThemeData(
+                            unselectedWidgetColor: Color(0xFF95A1AC),
+                          ),
+                          child: CheckboxListTile(
+                            value: checkboxListTileValue5 ??= false,
+                            onChanged: (newValue) => setState(
+                                () => checkboxListTileValue5 = newValue),
+                            title: Text(
+                              'Cover Applied',
+                              style: FlutterFlowTheme.of(context).title3,
+                            ),
+                            tileColor: Color(0xFFF5F5F5),
+                            activeColor:
+                                FlutterFlowTheme.of(context).primaryColor,
+                            dense: false,
+                            controlAffinity: ListTileControlAffinity.trailing,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                   child: Material(
@@ -775,8 +932,8 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                         Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            if (uploadedFileUrl1 != null &&
-                                                uploadedFileUrl1 != '')
+                                            if ((uploadedFileUrl1 != null) &&
+                                                (uploadedFileUrl1 != ''))
                                               Image.network(
                                                 uploadedFileUrl1,
                                                 width: 100,
@@ -794,28 +951,29 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                     allowPhoto: true,
                                                   );
                                                   if (selectedMedia != null &&
-                                                      validateFileFormat(
-                                                          selectedMedia
-                                                              .storagePath,
-                                                          context)) {
+                                                      selectedMedia.every((m) =>
+                                                          validateFileFormat(
+                                                              m.storagePath,
+                                                              context))) {
                                                     showUploadMessage(
                                                       context,
                                                       'Uploading file...',
                                                       showLoading: true,
                                                     );
-                                                    final downloadUrl =
-                                                        await uploadData(
-                                                            selectedMedia
-                                                                .storagePath,
-                                                            selectedMedia
-                                                                .bytes);
+                                                    final downloadUrls = await Future
+                                                        .wait(selectedMedia.map(
+                                                            (m) async =>
+                                                                await uploadData(
+                                                                    m.storagePath,
+                                                                    m.bytes)));
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .hideCurrentSnackBar();
-                                                    if (downloadUrl != null) {
+                                                    if (downloadUrls != null) {
                                                       setState(() =>
                                                           uploadedFileUrl1 =
-                                                              downloadUrl);
+                                                              downloadUrls
+                                                                  .first);
                                                       showUploadMessage(
                                                         context,
                                                         'Success!',
@@ -846,8 +1004,8 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                         Column(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
-                                            if (uploadedFileUrl2 != null &&
-                                                uploadedFileUrl2 != '')
+                                            if ((uploadedFileUrl2 != null) &&
+                                                (uploadedFileUrl2 != ''))
                                               Image.network(
                                                 uploadedFileUrl2,
                                                 width: 100,
@@ -865,28 +1023,29 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                     allowPhoto: true,
                                                   );
                                                   if (selectedMedia != null &&
-                                                      validateFileFormat(
-                                                          selectedMedia
-                                                              .storagePath,
-                                                          context)) {
+                                                      selectedMedia.every((m) =>
+                                                          validateFileFormat(
+                                                              m.storagePath,
+                                                              context))) {
                                                     showUploadMessage(
                                                       context,
                                                       'Uploading file...',
                                                       showLoading: true,
                                                     );
-                                                    final downloadUrl =
-                                                        await uploadData(
-                                                            selectedMedia
-                                                                .storagePath,
-                                                            selectedMedia
-                                                                .bytes);
+                                                    final downloadUrls = await Future
+                                                        .wait(selectedMedia.map(
+                                                            (m) async =>
+                                                                await uploadData(
+                                                                    m.storagePath,
+                                                                    m.bytes)));
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .hideCurrentSnackBar();
-                                                    if (downloadUrl != null) {
+                                                    if (downloadUrls != null) {
                                                       setState(() =>
                                                           uploadedFileUrl2 =
-                                                              downloadUrl);
+                                                              downloadUrls
+                                                                  .first);
                                                       showUploadMessage(
                                                         context,
                                                         'Success!',
@@ -922,99 +1081,52 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                         0, 20, 0, 0),
                                     child: FFButtonWidget(
                                       onPressed: () async {
-                                        var _shouldSetState = false;
-                                        var confirmDialogResponse =
-                                            await showDialog<bool>(
-                                                  context: context,
-                                                  builder:
-                                                      (alertDialogContext) {
-                                                    return AlertDialog(
-                                                      title: Text(
-                                                          'Do you want to proceed?'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  false),
-                                                          child: Text('Cancel'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  alertDialogContext,
-                                                                  true),
-                                                          child: Text('Yes'),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                ) ??
-                                                false;
-                                        if (confirmDialogResponse) {
-                                          final productsCreateData =
-                                              createProductsRecordData(
-                                            name: titleController.text,
-                                            description:
-                                                descriptionController.text,
-                                            condition: choiceChipsValue,
-                                            identifier:
-                                                identifierController.text,
-                                            availability: int.parse(
-                                                availabilityController.text),
-                                            price: double.parse(
-                                                priceController.text),
-                                            uploadedAt: getCurrentTimestamp,
-                                            uploadedBy: currentUserReference,
-                                            image1: uploadedFileUrl1,
-                                            image2: uploadedFileUrl2,
-                                            location:
-                                                currentUserDocument?.location,
-                                            status: 'Available',
-                                            ownerName: currentUserDisplayName,
-                                            prodId: functions
-                                                .randomNum(currentUserUid),
-                                            productType: dropDownValue,
-                                            address: addressController.text,
-                                          );
-                                          var productsRecordReference =
-                                              ProductsRecord.collection.doc();
-                                          await productsRecordReference
-                                              .set(productsCreateData);
-                                          adRef = ProductsRecord
-                                              .getDocumentFromData(
-                                                  productsCreateData,
-                                                  productsRecordReference);
-                                          _shouldSetState = true;
-                                          await Navigator.pushAndRemoveUntil(
-                                            context,
-                                            PageTransition(
-                                              type: PageTransitionType
-                                                  .rightToLeft,
-                                              duration:
-                                                  Duration(milliseconds: 200),
-                                              reverseDuration:
-                                                  Duration(milliseconds: 200),
-                                              child: ChecklistPageWidget(
-                                                adref: adRef.reference,
-                                              ),
-                                            ),
-                                            (r) => false,
-                                          );
-                                        } else {
-                                          if (_shouldSetState) setState(() {});
-                                          return;
-                                        }
+                                        final productsCreateData =
+                                            createProductsRecordData(
+                                          name: titleController.text,
+                                          description:
+                                              descriptionController.text,
+                                          condition: choiceChipsValue,
+                                          identifier: identifierController.text,
+                                          uploadedAt: getCurrentTimestamp,
+                                          uploadedBy: currentUserReference,
+                                          location: placePickerValue.latLng,
+                                          image1: uploadedFileUrl1,
+                                          image2: uploadedFileUrl2,
+                                          q1: checkboxListTileValue1,
+                                          q2: checkboxListTileValue2,
+                                          q3: checkboxListTileValue3,
+                                          q4: checkboxListTileValue4,
+                                          q5: checkboxListTileValue5,
+                                          prodId: random_data.randomInteger(
+                                              1000, 99999),
+                                          address: addressController.text,
+                                          price:
+                                              int.parse(priceController.text),
+                                          availability: int.parse(
+                                              availabilityController.text),
+                                          productType: dropDownValue,
+                                          status: 'Available',
+                                          ownerName: currentUserDisplayName,
+                                        );
+                                        var productsRecordReference =
+                                            ProductsRecord.collection.doc();
+                                        await productsRecordReference
+                                            .set(productsCreateData);
+                                        newAd =
+                                            ProductsRecord.getDocumentFromData(
+                                                productsCreateData,
+                                                productsRecordReference);
 
-                                        setState(() {
-                                          addressController.clear();
-                                          titleController.clear();
-                                          priceController.clear();
-                                          descriptionController.clear();
-                                          availabilityController.clear();
-                                          identifierController.clear();
-                                        });
-                                        if (_shouldSetState) setState(() {});
+                                        final usersUpdateData = {
+                                          'my_ads': FieldValue.arrayUnion(
+                                              [newAd.reference]),
+                                        };
+                                        await currentUserReference
+                                            .update(usersUpdateData);
+                                        Navigator.pop(context);
+
+                                        setState(() {});
                                       },
                                       text: 'Proceed',
                                       options: FFButtonOptions(
@@ -1049,10 +1161,10 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                   ),
                 ),
                 Container(
-                  width: double.infinity,
+                  width: 100,
                   height: 200,
                   decoration: BoxDecoration(
-                    color: Color(0xFFEEEEEE),
+                    color: Color(0x00EEEEEE),
                   ),
                 ),
               ],

@@ -3,7 +3,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../forgot_pass_page/forgot_pass_page_widget.dart';
-import '../home_page/home_page_widget.dart';
+import '../main.dart';
 import '../register_page/register_page_widget.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -233,9 +233,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                             type: PageTransitionType.rightToLeft,
                             duration: Duration(milliseconds: 300),
                             reverseDuration: Duration(milliseconds: 300),
-                            child: HomePageWidget(
-                              userLoc: currentUserDocument?.location,
-                            ),
+                            child: NavBarPage(initialPage: 'HomePage'),
                           ),
                           (r) => false,
                         );

@@ -1,3 +1,4 @@
+import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../components/owner_offer_sheet_widget.dart';
 import '../components/renter_offer_sheet_widget.dart';
@@ -8,12 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OffersPageWidget extends StatefulWidget {
-  const OffersPageWidget({
-    Key key,
-    this.userRef,
-  }) : super(key: key);
-
-  final UsersRecord userRef;
+  const OffersPageWidget({Key key}) : super(key: key);
 
   @override
   _OffersPageWidgetState createState() => _OffersPageWidgetState();
@@ -39,8 +35,8 @@ class _OffersPageWidgetState extends State<OffersPageWidget> {
             color: FlutterFlowTheme.of(context).tertiaryColor,
             size: 30,
           ),
-          onPressed: () {
-            print('IconButton pressed ...');
+          onPressed: () async {
+            Navigator.pop(context);
           },
         ),
         actions: [],
@@ -52,13 +48,14 @@ class _OffersPageWidgetState extends State<OffersPageWidget> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Container(
-            width: double.infinity,
-            height: double.infinity,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 1,
             decoration: BoxDecoration(
               color: Color(0xFFEEEEEE),
             ),
             child: Column(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(20, 20, 0, 10),
@@ -80,17 +77,9 @@ class _OffersPageWidgetState extends State<OffersPageWidget> {
                   thickness: 5,
                   color: FlutterFlowTheme.of(context).secondaryColor,
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(5, 10, 5, 5),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 1,
-                    decoration: BoxDecoration(
-                      color: Color(0x00EEEEEE),
-                      border: Border.all(
-                        color: FlutterFlowTheme.of(context).primaryColor,
-                      ),
-                    ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                     child: DefaultTabController(
                       length: 2,
                       initialIndex: 0,
@@ -120,25 +109,45 @@ class _OffersPageWidgetState extends State<OffersPageWidget> {
                           Expanded(
                             child: TabBarView(
                               children: [
-                                Builder(
-                                  builder: (context) {
-                                    final sentOffers =
-                                        widget.userRef.offersSent?.toList() ??
-                                            [];
+                                StreamBuilder<List<OffersRecord>>(
+                                  stream: queryOffersRecord(
+                                    queryBuilder: (offersRecord) =>
+                                        offersRecord.where('sent_by',
+                                            isEqualTo: currentUserReference),
+                                  ),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 50,
+                                          height: 50,
+                                          child: CircularProgressIndicator(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryColor,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    List<OffersRecord>
+                                        listViewOffersRecordList =
+                                        snapshot.data;
                                     return ListView.builder(
                                       padding: EdgeInsets.zero,
                                       scrollDirection: Axis.vertical,
-                                      itemCount: sentOffers.length,
-                                      itemBuilder: (context, sentOffersIndex) {
-                                        final sentOffersItem =
-                                            sentOffers[sentOffersIndex];
+                                      itemCount:
+                                          listViewOffersRecordList.length,
+                                      itemBuilder: (context, listViewIndex) {
+                                        final listViewOffersRecord =
+                                            listViewOffersRecordList[
+                                                listViewIndex];
                                         return Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   10, 15, 10, 0),
                                           child: StreamBuilder<OffersRecord>(
                                             stream: OffersRecord.getDocument(
-                                                sentOffersItem),
+                                                listViewOffersRecord.reference),
                                             builder: (context, snapshot) {
                                               // Customize what your widget looks like when it's loading.
                                               if (!snapshot.hasData) {
@@ -284,7 +293,18 @@ class _OffersPageWidgetState extends State<OffersPageWidget> {
                                                                           .start,
                                                                   children: [
                                                                     Text(
-                                                                      'Offer Price: Rs. ${containerOffersRecord.price}',
+                                                                      'Offer Price: ${formatNumber(
+                                                                        containerOffersRecord
+                                                                            .price,
+                                                                        formatType:
+                                                                            FormatType.custom,
+                                                                        currency:
+                                                                            'Rs. ',
+                                                                        format:
+                                                                            '',
+                                                                        locale:
+                                                                            '',
+                                                                      )}',
                                                                       textAlign:
                                                                           TextAlign
                                                                               .start,
@@ -303,7 +323,18 @@ class _OffersPageWidgetState extends State<OffersPageWidget> {
                                                                           ),
                                                                     ),
                                                                     Text(
-                                                                      'Original Price: Rs. ${rowProductsRecord.price.toString()}',
+                                                                      'Original Price: Rs. ${formatNumber(
+                                                                        rowProductsRecord
+                                                                            .price,
+                                                                        formatType:
+                                                                            FormatType.custom,
+                                                                        currency:
+                                                                            'Rs. ',
+                                                                        format:
+                                                                            '',
+                                                                        locale:
+                                                                            '',
+                                                                      )}',
                                                                       textAlign:
                                                                           TextAlign
                                                                               .start,
@@ -409,27 +440,45 @@ class _OffersPageWidgetState extends State<OffersPageWidget> {
                                     );
                                   },
                                 ),
-                                Builder(
-                                  builder: (context) {
-                                    final receivedOffers = widget
-                                            .userRef.offersReceived
-                                            ?.toList() ??
-                                        [];
+                                StreamBuilder<List<OffersRecord>>(
+                                  stream: queryOffersRecord(
+                                    queryBuilder: (offersRecord) =>
+                                        offersRecord.where('received_by',
+                                            isEqualTo: currentUserReference),
+                                  ),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 50,
+                                          height: 50,
+                                          child: CircularProgressIndicator(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryColor,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    List<OffersRecord>
+                                        listViewOffersRecordList =
+                                        snapshot.data;
                                     return ListView.builder(
                                       padding: EdgeInsets.zero,
                                       scrollDirection: Axis.vertical,
-                                      itemCount: receivedOffers.length,
-                                      itemBuilder:
-                                          (context, receivedOffersIndex) {
-                                        final receivedOffersItem =
-                                            receivedOffers[receivedOffersIndex];
+                                      itemCount:
+                                          listViewOffersRecordList.length,
+                                      itemBuilder: (context, listViewIndex) {
+                                        final listViewOffersRecord =
+                                            listViewOffersRecordList[
+                                                listViewIndex];
                                         return Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   10, 15, 10, 0),
                                           child: StreamBuilder<OffersRecord>(
                                             stream: OffersRecord.getDocument(
-                                                receivedOffersItem),
+                                                listViewOffersRecord.reference),
                                             builder: (context, snapshot) {
                                               // Customize what your widget looks like when it's loading.
                                               if (!snapshot.hasData) {
@@ -575,7 +624,18 @@ class _OffersPageWidgetState extends State<OffersPageWidget> {
                                                                           .start,
                                                                   children: [
                                                                     Text(
-                                                                      'Offer Price: Rs. ${containerOffersRecord.price}',
+                                                                      'Offer Price: ${formatNumber(
+                                                                        containerOffersRecord
+                                                                            .price,
+                                                                        formatType:
+                                                                            FormatType.custom,
+                                                                        currency:
+                                                                            'Rs. ',
+                                                                        format:
+                                                                            '',
+                                                                        locale:
+                                                                            '',
+                                                                      )}',
                                                                       textAlign:
                                                                           TextAlign
                                                                               .start,
@@ -594,7 +654,18 @@ class _OffersPageWidgetState extends State<OffersPageWidget> {
                                                                           ),
                                                                     ),
                                                                     Text(
-                                                                      'Original Price: Rs. ${rowProductsRecord.price.toString()}',
+                                                                      'Original Price: Rs. ${formatNumber(
+                                                                        rowProductsRecord
+                                                                            .price,
+                                                                        formatType:
+                                                                            FormatType.custom,
+                                                                        currency:
+                                                                            'Rs. ',
+                                                                        format:
+                                                                            '',
+                                                                        locale:
+                                                                            '',
+                                                                      )}',
                                                                       textAlign:
                                                                           TextAlign
                                                                               .start,

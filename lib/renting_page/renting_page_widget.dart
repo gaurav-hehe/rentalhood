@@ -6,6 +6,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
+import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -141,11 +142,26 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
+                                child: Text(
+                                  'Name: ${rentingPageProductsRecord.name}',
+                                  style: FlutterFlowTheme.of(context)
+                                      .subtitle1
+                                      .override(
+                                        fontFamily: 'Lexend Deca',
+                                        color: Color(0xFF111417),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
+                              ),
                               Text(
-                                rentingPageProductsRecord.name,
+                                'From: ${rentingPageProductsRecord.ownerName}',
                                 style: FlutterFlowTheme.of(context)
                                     .subtitle1
                                     .override(
@@ -159,10 +175,10 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                                 alignment: AlignmentDirectional(0.8, 0),
                                 child: Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 30, 0, 0),
+                                      0, 30, 0, 5),
                                   child: Text(
                                     formatNumber(
-                                      rentingPageProductsRecord.price,
+                                      widget.offerRef.price,
                                       formatType: FormatType.custom,
                                       currency: 'Rs. ',
                                       format: '',
@@ -190,7 +206,7 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(15, 0, 15, 0),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 180,
+                    height: 200,
                     decoration: BoxDecoration(
                       color: Color(0xFFEEEEEE),
                       boxShadow: [
@@ -200,22 +216,26 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                           offset: Offset(0, 1),
                         )
                       ],
+                      border: Border.all(
+                        width: 1,
+                      ),
                     ),
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(5, 10, 0, 10),
+                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                             child: Text(
                               'Pick up details',
                               style:
                                   FlutterFlowTheme.of(context).title2.override(
                                         fontFamily: 'Open Sans',
+                                        fontSize: 22,
                                         fontWeight: FontWeight.bold,
                                       ),
                             ),
@@ -223,79 +243,79 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
-                                child: Text(
-                                  'ADDRESS : ',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Open Sans',
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                ),
-                              ),
                               Text(
-                                rentingPageProductsRecord.address,
+                                'ADD: ${rentingPageProductsRecord.address}',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
                                       fontFamily: 'Open Sans',
-                                      fontSize: 16,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
                                     ),
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
-                            child: FFButtonWidget(
-                              onPressed: () async {
-                                await DatePicker.showDatePicker(
-                                  context,
-                                  showTitleActions: true,
-                                  onConfirm: (date) {
-                                    setState(() => datePicked = date);
-                                  },
-                                  currentTime: getCurrentTimestamp,
-                                  minTime: getCurrentTimestamp,
-                                );
-                              },
-                              text: 'Set DATE and TIME',
-                              options: FFButtonOptions(
-                                width: 180,
-                                height: 30,
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle1
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'DATE & TIME: ${dateTimeFormat('d/M h:mm a', datePicked)}',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
                                     .override(
                                       fontFamily: 'Open Sans',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryColor,
-                                      fontSize: 16,
+                                      fontSize: 18,
+                                    ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(5, 0, 20, 0),
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    await DatePicker.showDateTimePicker(
+                                      context,
+                                      showTitleActions: true,
+                                      onConfirm: (date) {
+                                        setState(() => datePicked = date);
+                                      },
+                                      currentTime: getCurrentTimestamp,
+                                      minTime: getCurrentTimestamp,
+                                    );
+                                  },
+                                  text: 'Select',
+                                  options: FFButtonOptions(
+                                    width: 100,
+                                    height: 30,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .subtitle1
+                                        .override(
+                                          fontFamily: 'Open Sans',
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryColor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                      width: 1,
+                                    ),
+                                    borderRadius: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            'YOUR DEPOSIT: ${widget.offerRef.deposit} (Offer)',
+                            style:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Open Sans',
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w500,
                                     ),
-                                borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                  width: 1,
-                                ),
-                                borderRadius: 12,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 5),
-                            child: Text(
-                              'DATE & TIME: ${dateTimeFormat('d/M h:mm a', datePicked)}',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Open Sans',
-                                    fontSize: 18,
-                                  ),
-                            ),
                           ),
                         ],
                       ),
@@ -352,23 +372,23 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                                     EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
                                 child: Text(
                                   'Total',
-                                  style: FlutterFlowTheme.of(context).title3,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        fontSize: 24,
+                                      ),
                                 ),
                               ),
                               Text(
-                                functions
-                                    .totalPriceCalc(
-                                        rentingPageProductsRecord.availability
-                                            .toDouble(),
-                                        rentingPageProductsRecord.price)
-                                    .toString(),
+                                'Rs. ${functions.totalPriceCalc(rentingPageProductsRecord.availability.toDouble(), widget.offerRef.price.toDouble()).toString()}',
                                 textAlign: TextAlign.end,
                                 style: FlutterFlowTheme.of(context)
                                     .subtitle1
                                     .override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF151B1E),
-                                      fontSize: 18,
+                                      fontSize: 25,
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
@@ -412,16 +432,16 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                             .totalPriceCalc(
                                 rentingPageProductsRecord.availability
                                     .toDouble(),
-                                rentingPageProductsRecord.price)
+                                rentingPageProductsRecord.price.toDouble())
                             .toString(),
                         renterId: currentUserReference,
                         ownerId: rentingPageProductsRecord.uploadedBy,
                         pickupDt: datePicked,
                         ownerName: rentingPageProductsRecord.ownerName,
                         productRef: rentingPageProductsRecord.reference,
-                        paymentMode: '',
-                        id: functions.randomNum(currentUserUid).toString(),
-                        transType: 'Pickup',
+                        paymentMode: widget.offerRef.paymentMode,
+                        id: random_data.randomInteger(1000, 99999).toString(),
+                        offerRef: widget.offerRef.reference,
                       );
                       var transactionsRecordReference =
                           TransactionsRecord.collection.doc();
@@ -430,6 +450,30 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                       transactionRef = TransactionsRecord.getDocumentFromData(
                           transactionsCreateData, transactionsRecordReference);
                       _shouldSetState = true;
+
+                      final usersUpdateData = {
+                        'my_orders': FieldValue.arrayUnion(
+                            [rentingPageProductsRecord.reference]),
+                      };
+                      await currentUserReference.update(usersUpdateData);
+
+                      final offersUpdateData = createOffersRecordData(
+                        status: 'Picking Up',
+                        transactionRef: transactionRef.reference,
+                      );
+                      await widget.offerRef.reference.update(offersUpdateData);
+
+                      final productsUpdateData = {
+                        ...createProductsRecordData(
+                          rentedBy: currentUserReference,
+                          transRef: transactionRef.reference,
+                          status: 'Not Available',
+                        ),
+                        'allTransactions':
+                            FieldValue.arrayUnion([transactionRef.reference]),
+                      };
+                      await rentingPageProductsRecord.reference
+                          .update(productsUpdateData);
                     } else {
                       if (_shouldSetState) setState(() {});
                       return;
@@ -441,10 +485,7 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                         type: PageTransitionType.rightToLeft,
                         duration: Duration(milliseconds: 300),
                         reverseDuration: Duration(milliseconds: 300),
-                        child: CompletionPageWidget(
-                          productRef: rentingPageProductsRecord.reference,
-                          transactionRef: transactionRef,
-                        ),
+                        child: CompletionPageWidget(),
                       ),
                       (r) => false,
                     );
@@ -452,7 +493,7 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                   },
                   text: 'RENT IT !',
                   options: FFButtonOptions(
-                    width: 320,
+                    width: 300,
                     height: 60,
                     color: FlutterFlowTheme.of(context).secondaryColor,
                     textStyle: FlutterFlowTheme.of(context).title2.override(

@@ -361,9 +361,7 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                     duration: Duration(milliseconds: 300),
                                     reverseDuration:
                                         Duration(milliseconds: 300),
-                                    child: OffersPageWidget(
-                                      userRef: moreOptionsPageUsersRecord,
-                                    ),
+                                    child: OffersPageWidget(),
                                   ),
                                 );
                               },

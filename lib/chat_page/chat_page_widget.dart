@@ -111,7 +111,35 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                   ),
               ],
             ),
-            actions: [],
+            actions: [
+              FlutterFlowIconButton(
+                borderColor: Colors.transparent,
+                borderRadius: 30,
+                borderWidth: 1,
+                buttonSize: 60,
+                icon: Icon(
+                  Icons.call,
+                  color: Colors.black,
+                  size: 25,
+                ),
+                onPressed: () async {
+                  await showDialog(
+                    context: context,
+                    builder: (alertDialogContext) {
+                      return AlertDialog(
+                        title: Text('Call on This Number'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(alertDialogContext),
+                            child: Text('Ok'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
             centerTitle: false,
             elevation: 2,
           ),

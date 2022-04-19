@@ -18,13 +18,13 @@ class FFAppState {
 
   SharedPreferences prefs;
 
-  String filterCondition = '';
-
   String filterProdType = '';
 
   int filterMinPrice = 0;
 
-  int filterMaxPrice = 0;
+  int filterMaxPrice = 10000;
+
+  double filterLoc = 500;
 }
 
 LatLng _latLngFromString(String val) {

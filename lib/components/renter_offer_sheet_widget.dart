@@ -3,8 +3,10 @@ import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../pickup_return_verif_page/pickup_return_verif_page_widget.dart';
+import '../pickup_step1/pickup_step1_widget.dart';
 import '../renting_page/renting_page_widget.dart';
+import '../return_page/return_page_widget.dart';
+import '../return_step2/return_step2_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -114,43 +116,24 @@ class _RenterOfferSheetWidgetState extends State<RenterOfferSheetWidget> {
                   ),
                 ),
               ),
-            if ((widget.offerRef.status) == 'Accepted')
+            if ((widget.offerRef.status) == 'Picked Up')
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                 child: FFButtonWidget(
                   onPressed: () async {
-                    if ((widget.offerRef.status) == 'Pending') {
-                      await showDialog(
-                        context: context,
-                        builder: (alertDialogContext) {
-                          return AlertDialog(
-                            title: Text('The Offer Status is still Pending!'),
-                            actions: [
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(alertDialogContext),
-                                child: Text('Ok'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      return;
-                    } else {
-                      await Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          duration: Duration(milliseconds: 300),
-                          reverseDuration: Duration(milliseconds: 300),
-                          child: PickupReturnVerifPageWidget(
-                            offerRef: widget.offerRef,
-                          ),
+                    await Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        duration: Duration(milliseconds: 300),
+                        reverseDuration: Duration(milliseconds: 300),
+                        child: ReturnPageWidget(
+                          offerRef: widget.offerRef,
                         ),
-                      );
-                    }
+                      ),
+                    );
                   },
-                  text: 'Pickup / Return Page',
+                  text: 'Return Page',
                   options: FFButtonOptions(
                     width: double.infinity,
                     height: 60,
@@ -162,11 +145,83 @@ class _RenterOfferSheetWidgetState extends State<RenterOfferSheetWidget> {
                           fontWeight: FontWeight.normal,
                         ),
                     borderSide: BorderSide(
-                      color: FlutterFlowTheme.of(context).secondaryColor,
+                      color: Color(0xFF00BF14),
                       width: 2,
                     ),
                     borderRadius: 40,
                   ),
+                ),
+              ),
+            if ((widget.offerRef.status) == 'Picking Up')
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                child: StreamBuilder<TransactionsRecord>(
+                  stream: TransactionsRecord.getDocument(
+                      widget.offerRef.transactionRef),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            color: FlutterFlowTheme.of(context).primaryColor,
+                          ),
+                        ),
+                      );
+                    }
+                    final buttonTransactionsRecord = snapshot.data;
+                    return FFButtonWidget(
+                      onPressed: () async {
+                        if ((buttonTransactionsRecord.pickupS1) == false) {
+                          await Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              duration: Duration(milliseconds: 300),
+                              reverseDuration: Duration(milliseconds: 300),
+                              child: PickupStep1Widget(
+                                transactionRef: widget.offerRef.transactionRef,
+                              ),
+                            ),
+                          );
+                          return;
+                        } else {
+                          await Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              duration: Duration(milliseconds: 300),
+                              reverseDuration: Duration(milliseconds: 300),
+                              child: ReturnStep2Widget(
+                                transactionRef: widget.offerRef.transactionRef,
+                                offerRef: widget.offerRef.reference,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      text: 'Pickup / Return Page',
+                      options: FFButtonOptions(
+                        width: double.infinity,
+                        height: 60,
+                        color: Color(0xFFDBE2E7),
+                        textStyle:
+                            FlutterFlowTheme.of(context).subtitle2.override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFF262D34),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).secondaryColor,
+                          width: 2,
+                        ),
+                        borderRadius: 40,
+                      ),
+                    );
+                  },
                 ),
               ),
             Padding(

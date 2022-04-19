@@ -5,7 +5,8 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
+import '../offers_page/offers_page_widget.dart';
+import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,7 +24,7 @@ class MakeOfferPageWidget extends StatefulWidget {
 }
 
 class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
-  OffersRecord offerOp;
+  OffersRecord newOffer;
   String dropDownValue1;
   TextEditingController textController;
   String dropDownValue2;
@@ -68,8 +69,8 @@ class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
                             color: FlutterFlowTheme.of(context).tertiaryColor,
                             size: 30,
                           ),
-                          onPressed: () {
-                            print('IconButton pressed ...');
+                          onPressed: () async {
+                            Navigator.pop(context);
                           },
                         ),
                       ),
@@ -95,7 +96,7 @@ class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
           elevation: 2,
         ),
       ),
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      backgroundColor: Color(0xFFEEEEEE),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -234,36 +235,41 @@ class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
                                 ),
                               ),
                               Expanded(
-                                child: TextFormField(
-                                  controller: textController,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    hintText: 'YOUR OFFER PRICE',
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .tertiaryColor,
-                                        width: 1,
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      5, 0, 0, 5),
+                                  child: TextFormField(
+                                    controller: textController,
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      hintText: 'YOUR OFFER PRICE',
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .tertiaryColor,
+                                          width: 1,
+                                        ),
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(4.0),
+                                          topRight: Radius.circular(4.0),
+                                        ),
                                       ),
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(4.0),
-                                        topRight: Radius.circular(4.0),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .tertiaryColor,
+                                          width: 1,
+                                        ),
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(4.0),
+                                          topRight: Radius.circular(4.0),
+                                        ),
                                       ),
                                     ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .tertiaryColor,
-                                        width: 1,
-                                      ),
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(4.0),
-                                        topRight: Radius.circular(4.0),
-                                      ),
-                                    ),
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyText1,
+                                    keyboardType: TextInputType.number,
                                   ),
-                                  style: FlutterFlowTheme.of(context).bodyText1,
-                                  keyboardType: TextInputType.number,
                                 ),
                               ),
                             ],
@@ -288,7 +294,7 @@ class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
                                 child: Align(
                                   alignment: AlignmentDirectional(1, 0),
                                   child: FlutterFlowDropDown(
-                                    options: ['CASH', 'UPI', 'WALLET'].toList(),
+                                    options: ['CASH', 'UPI'].toList(),
                                     onChanged: (val) =>
                                         setState(() => dropDownValue1 = val),
                                     width:
@@ -301,7 +307,8 @@ class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
                                           color: Colors.black,
                                         ),
                                     hintText: 'SELECT',
-                                    fillColor: Color(0x00FFFFFF),
+                                    fillColor: FlutterFlowTheme.of(context)
+                                        .primaryColor,
                                     elevation: 2,
                                     borderColor: Colors.transparent,
                                     borderWidth: 0,
@@ -352,7 +359,8 @@ class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
                                           color: Colors.black,
                                         ),
                                     hintText: 'SELECT',
-                                    fillColor: Color(0x00FFFFFF),
+                                    fillColor: FlutterFlowTheme.of(context)
+                                        .primaryColor,
                                     elevation: 2,
                                     borderColor: Colors.transparent,
                                     borderWidth: 0,
@@ -399,12 +407,12 @@ class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
                         false;
                     if (confirmDialogResponse) {
                       final offersCreateData = createOffersRecordData(
-                        id: functions.randomNum(currentUserUid),
+                        id: random_data.randomInteger(1000, 99999),
                         sentBy: currentUserReference,
                         prodRef: widget.adRef.reference,
                         timestamp: getCurrentTimestamp,
                         status: 'Pending',
-                        price: textController.text,
+                        price: int.parse(textController.text),
                         receivedBy: widget.adRef.uploadedBy,
                         senderName: currentUserDisplayName,
                         receiverName: widget.adRef.ownerName,
@@ -413,13 +421,13 @@ class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
                       );
                       var offersRecordReference = OffersRecord.collection.doc();
                       await offersRecordReference.set(offersCreateData);
-                      offerOp = OffersRecord.getDocumentFromData(
+                      newOffer = OffersRecord.getDocumentFromData(
                           offersCreateData, offersRecordReference);
                       _shouldSetState = true;
 
                       final usersUpdateData = {
                         'offers_sent':
-                            FieldValue.arrayUnion([offerOp.reference]),
+                            FieldValue.arrayUnion([newOffer.reference]),
                       };
                       await currentUserReference.update(usersUpdateData);
                     } else {
@@ -429,15 +437,24 @@ class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
 
                     final usersUpdateData = {
                       'offers_received':
-                          FieldValue.arrayUnion([offerOp.reference]),
+                          FieldValue.arrayUnion([newOffer.reference]),
                     };
                     await widget.adRef.uploadedBy.update(usersUpdateData);
+                    await Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.fade,
+                        duration: Duration(milliseconds: 0),
+                        reverseDuration: Duration(milliseconds: 0),
+                        child: OffersPageWidget(),
+                      ),
+                    );
                     if (_shouldSetState) setState(() {});
                   },
                   text: 'SEND OFFER',
                   options: FFButtonOptions(
-                    width: 250,
-                    height: 50,
+                    width: 300,
+                    height: 60,
                     color: FlutterFlowTheme.of(context).secondaryColor,
                     textStyle: FlutterFlowTheme.of(context).title3.override(
                           fontFamily: 'Open Sans',
