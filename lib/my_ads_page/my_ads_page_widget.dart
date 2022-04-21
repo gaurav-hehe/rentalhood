@@ -1,8 +1,10 @@
+import '../all_transactions/all_transactions_widget.dart';
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../main.dart';
 import '../order_details_page/order_details_page_widget.dart';
 import '../product_detail_page/product_detail_page_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,12 +39,43 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
             size: 30,
           ),
           onPressed: () async {
-            Navigator.pop(context);
+            await Navigator.pushAndRemoveUntil(
+              context,
+              PageTransition(
+                type: PageTransitionType.rightToLeft,
+                duration: Duration(milliseconds: 300),
+                reverseDuration: Duration(milliseconds: 300),
+                child: NavBarPage(initialPage: 'MoreOptionsPage'),
+              ),
+              (r) => false,
+            );
           },
         ),
-        actions: [],
-        centerTitle: true,
-        elevation: 2,
+        actions: [
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
+            child: InkWell(
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.rightToLeft,
+                    duration: Duration(milliseconds: 300),
+                    reverseDuration: Duration(milliseconds: 300),
+                    child: AllTransactionsWidget(),
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.format_list_bulleted,
+                color: FlutterFlowTheme.of(context).secondaryColor,
+                size: 40,
+              ),
+            ),
+          ),
+        ],
+        centerTitle: false,
+        elevation: 1,
       ),
       backgroundColor: Color(0xFFF5F5F5),
       body: SafeArea(
@@ -66,7 +99,10 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                         'My Ads',
                         style: FlutterFlowTheme.of(context).title1.override(
                               fontFamily: 'Open Sans',
+                              color:
+                                  FlutterFlowTheme.of(context).secondaryColor,
                               fontSize: 30,
+                              fontWeight: FontWeight.bold,
                             ),
                       ),
                     ],
@@ -447,11 +483,18 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          containerProductsRecord
-                                                              .status,
+                                                          'Status: ${containerProductsRecord.status}',
                                                           style: FlutterFlowTheme
                                                                   .of(context)
-                                                              .bodyText1,
+                                                              .bodyText1
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Open Sans',
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
                                                         ),
                                                         Align(
                                                           alignment:

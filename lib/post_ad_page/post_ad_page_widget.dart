@@ -392,37 +392,41 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                   ),
                                 ),
                               ),
-                              FlutterFlowPlacePicker(
-                                iOSGoogleMapsApiKey:
-                                    'AIzaSyAMBy4yAjHAzlTm2fMH5qxDwMMZVmB4JBs',
-                                androidGoogleMapsApiKey:
-                                    'AIzaSyBKPbL-SHAE3_r4MNgvxrViJPVmAtbOZjw',
-                                webGoogleMapsApiKey:
-                                    'AIzaSyB7rDPXoN62wvMqAmQPhYJh9ugGBPNA01Q',
-                                onSelect: (place) =>
-                                    setState(() => placePickerValue = place),
-                                defaultText: '',
-                                icon: Icon(
-                                  Icons.place,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                                buttonOptions: FFButtonOptions(
-                                  width: 50,
-                                  height: 50,
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryColor,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Open Sans',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.transparent,
-                                    width: 1,
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                                child: FlutterFlowPlacePicker(
+                                  iOSGoogleMapsApiKey:
+                                      'AIzaSyAMBy4yAjHAzlTm2fMH5qxDwMMZVmB4JBs',
+                                  androidGoogleMapsApiKey:
+                                      'AIzaSyBKPbL-SHAE3_r4MNgvxrViJPVmAtbOZjw',
+                                  webGoogleMapsApiKey:
+                                      'AIzaSyB7rDPXoN62wvMqAmQPhYJh9ugGBPNA01Q',
+                                  onSelect: (place) =>
+                                      setState(() => placePickerValue = place),
+                                  defaultText: '',
+                                  icon: Icon(
+                                    Icons.place,
+                                    color: Colors.white,
+                                    size: 20,
                                   ),
-                                  borderRadius: 12,
+                                  buttonOptions: FFButtonOptions(
+                                    width: 50,
+                                    height: 50,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .subtitle2
+                                        .override(
+                                          fontFamily: 'Open Sans',
+                                          color: Colors.white,
+                                        ),
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                      width: 1,
+                                    ),
+                                    borderRadius: 12,
+                                  ),
                                 ),
                               ),
                             ],
@@ -770,7 +774,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                             ),
                             tileColor: Color(0xFFF5F5F5),
                             activeColor:
-                                FlutterFlowTheme.of(context).primaryColor,
+                                FlutterFlowTheme.of(context).secondaryColor,
                             dense: false,
                             controlAffinity: ListTileControlAffinity.trailing,
                           ),
@@ -789,7 +793,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                             ),
                             tileColor: Color(0xFFF5F5F5),
                             activeColor:
-                                FlutterFlowTheme.of(context).primaryColor,
+                                FlutterFlowTheme.of(context).secondaryColor,
                             dense: false,
                             controlAffinity: ListTileControlAffinity.trailing,
                           ),
@@ -808,7 +812,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                             ),
                             tileColor: Color(0xFFF5F5F5),
                             activeColor:
-                                FlutterFlowTheme.of(context).primaryColor,
+                                FlutterFlowTheme.of(context).secondaryColor,
                             dense: false,
                             controlAffinity: ListTileControlAffinity.trailing,
                           ),
@@ -827,7 +831,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                             ),
                             tileColor: Color(0xFFF5F5F5),
                             activeColor:
-                                FlutterFlowTheme.of(context).primaryColor,
+                                FlutterFlowTheme.of(context).secondaryColor,
                             dense: false,
                             controlAffinity: ListTileControlAffinity.trailing,
                           ),
@@ -846,7 +850,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                             ),
                             tileColor: Color(0xFFF5F5F5),
                             activeColor:
-                                FlutterFlowTheme.of(context).primaryColor,
+                                FlutterFlowTheme.of(context).secondaryColor,
                             dense: false,
                             controlAffinity: ListTileControlAffinity.trailing,
                           ),
@@ -1128,7 +1132,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
 
                                         setState(() {});
                                       },
-                                      text: 'Proceed',
+                                      text: 'POST',
                                       options: FFButtonOptions(
                                         width: 150,
                                         height: 50,

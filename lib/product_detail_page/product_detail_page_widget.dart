@@ -480,7 +480,7 @@ class _ProductDetailPageWidgetState extends State<ProductDetailPageWidget> {
                                           child: Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
-                                                    0, 0, 5, 0),
+                                                    5, 0, 5, 0),
                                             child: StreamBuilder<UsersRecord>(
                                               stream: UsersRecord.getDocument(
                                                   widget.productRef.uploadedBy),
@@ -512,7 +512,9 @@ class _ProductDetailPageWidgetState extends State<ProductDetailPageWidget> {
                                                         fontFamily: 'Open Sans',
                                                         color:
                                                             Color(0xFF0B0B0B),
-                                                        fontSize: 15,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.normal,
                                                       ),
                                                 );
                                               },
@@ -524,7 +526,7 @@ class _ProductDetailPageWidgetState extends State<ProductDetailPageWidget> {
                                           Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
-                                                    5, 0, 5, 0),
+                                                    5, 0, 0, 0),
                                             child: StreamBuilder<UsersRecord>(
                                               stream: UsersRecord.getDocument(
                                                   widget.productRef.uploadedBy),

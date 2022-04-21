@@ -1,4 +1,5 @@
 import '../auth/auth_util.dart';
+import '../backend/backend.dart';
 import '../backend/firebase_storage/storage.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -18,6 +19,9 @@ class RegisterPageWidget extends StatefulWidget {
 }
 
 class _RegisterPageWidgetState extends State<RegisterPageWidget> {
+  LatLng currentUserLocationValue;
+  final formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   String uploadedFileUrl = '';
   TextEditingController nameController;
   TextEditingController emailController;
@@ -28,8 +32,6 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
   bool paswordVisibility;
   TextEditingController confPasswordController;
   bool confPasswordVisibility;
-  final formKey = GlobalKey<FormState>();
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -102,6 +104,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                                     final selectedMedia =
                                         await selectMediaWithSourceBottomSheet(
                                       context: context,
+                                      imageQuality: 100,
                                       allowPhoto: true,
                                     );
                                     if (selectedMedia != null &&
@@ -286,7 +289,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                         ),
                       ),
                       style: FlutterFlowTheme.of(context).subtitle2,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.phone,
                     ),
                   ),
                   Padding(
@@ -375,7 +378,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                         ),
                       ),
                       style: FlutterFlowTheme.of(context).subtitle2,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                   Padding(
@@ -508,6 +511,8 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(20, 50, 20, 0),
                     child: FFButtonWidget(
                       onPressed: () async {
+                        currentUserLocationValue = await getCurrentUserLocation(
+                            defaultLocation: LatLng(0.0, 0.0));
                         if (paswordController.text !=
                             confPasswordController.text) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -528,6 +533,20 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                         if (user == null) {
                           return;
                         }
+
+                        final usersCreateData = createUsersRecordData(
+                          location: currentUserLocationValue,
+                          email: emailController.text,
+                          displayName: nameController.text,
+                          photoUrl: uploadedFileUrl,
+                          createdTime: getCurrentTimestamp,
+                          phoneNumber: phoneNoController.text,
+                          uid: aadhaarNoController.text,
+                          address: addressController.text,
+                        );
+                        await UsersRecord.collection
+                            .doc(user.uid)
+                            .update(usersCreateData);
 
                         await Navigator.push(
                           context,

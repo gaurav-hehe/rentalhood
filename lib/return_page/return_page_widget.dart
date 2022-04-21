@@ -456,6 +456,12 @@ class _ReturnPageWidgetState extends State<ReturnPageWidget> {
                           await widget.offerRef.transactionRef
                               .update(transactionsUpdateData);
 
+                          final offersUpdateData = createOffersRecordData(
+                            status: 'Returning',
+                          );
+                          await widget.offerRef.reference
+                              .update(offersUpdateData);
+
                           final productsUpdateData = createProductsRecordData(
                             status: 'Returning',
                           );

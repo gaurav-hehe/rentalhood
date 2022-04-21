@@ -1,3 +1,4 @@
+import '../all_transactions/all_transactions_widget.dart';
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
@@ -49,7 +50,29 @@ class _MyOrdersPageWidgetState extends State<MyOrdersPageWidget> {
             );
           },
         ),
-        actions: [],
+        actions: [
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
+            child: InkWell(
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.rightToLeft,
+                    duration: Duration(milliseconds: 300),
+                    reverseDuration: Duration(milliseconds: 300),
+                    child: AllTransactionsWidget(),
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.format_list_bulleted,
+                color: FlutterFlowTheme.of(context).secondaryColor,
+                size: 40,
+              ),
+            ),
+          ),
+        ],
         centerTitle: false,
         elevation: 1,
       ),
@@ -75,7 +98,10 @@ class _MyOrdersPageWidgetState extends State<MyOrdersPageWidget> {
                         'My Orders',
                         style: FlutterFlowTheme.of(context).title1.override(
                               fontFamily: 'Open Sans',
+                              color:
+                                  FlutterFlowTheme.of(context).secondaryColor,
                               fontSize: 30,
+                              fontWeight: FontWeight.bold,
                             ),
                       ),
                     ],
@@ -90,11 +116,7 @@ class _MyOrdersPageWidgetState extends State<MyOrdersPageWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                     child: StreamBuilder<List<ProductsRecord>>(
-                      stream: queryProductsRecord(
-                        queryBuilder: (productsRecord) => productsRecord.where(
-                            'rented_by',
-                            isEqualTo: currentUserReference),
-                      ),
+                      stream: queryProductsRecord(),
                       builder: (context, snapshot) {
                         // Customize what your widget looks like when it's loading.
                         if (!snapshot.hasData) {
@@ -118,247 +140,268 @@ class _MyOrdersPageWidgetState extends State<MyOrdersPageWidget> {
                           itemBuilder: (context, listViewIndex) {
                             final listViewProductsRecord =
                                 listViewProductsRecordList[listViewIndex];
-                            return Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(15, 15, 15, 0),
-                              child: StreamBuilder<ProductsRecord>(
-                                stream: ProductsRecord.getDocument(
-                                    listViewProductsRecord.reference),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 50,
-                                        height: 50,
-                                        child: CircularProgressIndicator(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
+                            return Visibility(
+                              visible: (listViewProductsRecord.rentedBy) ==
+                                  (currentUserReference),
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    15, 15, 15, 0),
+                                child: StreamBuilder<ProductsRecord>(
+                                  stream: ProductsRecord.getDocument(
+                                      listViewProductsRecord.reference),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 50,
+                                          height: 50,
+                                          child: CircularProgressIndicator(
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryColor,
+                                          ),
                                         ),
+                                      );
+                                    }
+                                    final containerProductsRecord =
+                                        snapshot.data;
+                                    return Container(
+                                      width: double.infinity,
+                                      height: 150,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 2,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryColor,
+                                            offset: Offset(0, 7),
+                                          )
+                                        ],
+                                        borderRadius: BorderRadius.circular(16),
                                       ),
-                                    );
-                                  }
-                                  final containerProductsRecord = snapshot.data;
-                                  return Container(
-                                    width: double.infinity,
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 2,
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryColor,
-                                          offset: Offset(0, 7),
-                                        )
-                                      ],
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          5, 5, 5, 5),
-                                      child: StreamBuilder<TransactionsRecord>(
-                                        stream: TransactionsRecord.getDocument(
-                                            containerProductsRecord.transRef),
-                                        builder: (context, snapshot) {
-                                          // Customize what your widget looks like when it's loading.
-                                          if (!snapshot.hasData) {
-                                            return Center(
-                                              child: SizedBox(
-                                                width: 50,
-                                                height: 50,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryColor,
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          final rowTransactionsRecord =
-                                              snapshot.data;
-                                          return InkWell(
-                                            onTap: () async {
-                                              await Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  type: PageTransitionType
-                                                      .rightToLeft,
-                                                  duration: Duration(
-                                                      milliseconds: 300),
-                                                  reverseDuration: Duration(
-                                                      milliseconds: 300),
-                                                  child: OrderDetailsPageWidget(
-                                                    transRef:
-                                                        rowTransactionsRecord,
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            5, 5, 5, 5),
+                                        child:
+                                            StreamBuilder<TransactionsRecord>(
+                                          stream:
+                                              TransactionsRecord.getDocument(
+                                                  containerProductsRecord
+                                                      .transRef),
+                                          builder: (context, snapshot) {
+                                            // Customize what your widget looks like when it's loading.
+                                            if (!snapshot.hasData) {
+                                              return Center(
+                                                child: SizedBox(
+                                                  width: 50,
+                                                  height: 50,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryColor,
                                                   ),
                                                 ),
                                               );
-                                            },
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Image.network(
-                                                  containerProductsRecord
-                                                      .image1,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.3,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      1,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                16, 0, 0, 0),
-                                                    child: StreamBuilder<
-                                                        OffersRecord>(
-                                                      stream: OffersRecord
-                                                          .getDocument(
-                                                              rowTransactionsRecord
-                                                                  .offerRef),
-                                                      builder:
-                                                          (context, snapshot) {
-                                                        // Customize what your widget looks like when it's loading.
-                                                        if (!snapshot.hasData) {
-                                                          return Center(
-                                                            child: SizedBox(
-                                                              width: 50,
-                                                              height: 50,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryColor,
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                        final columnOffersRecord =
-                                                            snapshot.data;
-                                                        return Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceAround,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              formatNumber(
-                                                                containerProductsRecord
-                                                                    .price,
-                                                                formatType:
-                                                                    FormatType
-                                                                        .custom,
-                                                                currency:
-                                                                    'Rs. ',
-                                                                format: '',
-                                                                locale: '',
-                                                              ),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .subtitle1
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Lexend Deca',
-                                                                    color: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .secondaryColor,
-                                                                    fontSize:
-                                                                        20,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                  ),
-                                                            ),
-                                                            Text(
-                                                              containerProductsRecord
-                                                                  .name,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .subtitle1
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Lexend Deca',
-                                                                    color: Color(
-                                                                        0xFF090F13),
-                                                                    fontSize:
-                                                                        20,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                            ),
-                                                            Text(
-                                                              containerProductsRecord
-                                                                  .description
-                                                                  .maybeHandleOverflow(
-                                                                maxChars: 5,
-                                                                replacement:
-                                                                    '…',
-                                                              ),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyText1,
-                                                            ),
-                                                            Text(
-                                                              columnOffersRecord
-                                                                  .status,
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodyText1,
-                                                            ),
-                                                            if ((rowTransactionsRecord
-                                                                    .returnDt !=
-                                                                null))
-                                                              Align(
-                                                                alignment:
-                                                                    AlignmentDirectional(
-                                                                        0.85,
-                                                                        0),
-                                                                child: Text(
-                                                                  'Return in Days : ${functions.daysLeft(rowTransactionsRecord.returnDt).toString()}',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .subtitle1
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Lexend Deca',
-                                                                        color: Color(
-                                                                            0xFF090F13),
-                                                                        fontSize:
-                                                                            18,
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
-                                                                      ),
-                                                                ),
-                                                              ),
-                                                          ],
-                                                        );
-                                                      },
+                                            }
+                                            final rowTransactionsRecord =
+                                                snapshot.data;
+                                            return InkWell(
+                                              onTap: () async {
+                                                await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    duration: Duration(
+                                                        milliseconds: 300),
+                                                    reverseDuration: Duration(
+                                                        milliseconds: 300),
+                                                    child:
+                                                        OrderDetailsPageWidget(
+                                                      transRef:
+                                                          rowTransactionsRecord,
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
+                                                );
+                                              },
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Image.network(
+                                                    containerProductsRecord
+                                                        .image1,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.3,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            1,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  16, 0, 0, 0),
+                                                      child: StreamBuilder<
+                                                          OffersRecord>(
+                                                        stream: OffersRecord
+                                                            .getDocument(
+                                                                rowTransactionsRecord
+                                                                    .offerRef),
+                                                        builder: (context,
+                                                            snapshot) {
+                                                          // Customize what your widget looks like when it's loading.
+                                                          if (!snapshot
+                                                              .hasData) {
+                                                            return Center(
+                                                              child: SizedBox(
+                                                                width: 50,
+                                                                height: 50,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .primaryColor,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                          final columnOffersRecord =
+                                                              snapshot.data;
+                                                          return Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceAround,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                formatNumber(
+                                                                  columnOffersRecord
+                                                                      .price,
+                                                                  formatType:
+                                                                      FormatType
+                                                                          .custom,
+                                                                  currency:
+                                                                      'Rs. ',
+                                                                  format: '',
+                                                                  locale: '',
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .subtitle1
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Lexend Deca',
+                                                                      color: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .secondaryColor,
+                                                                      fontSize:
+                                                                          20,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                              ),
+                                                              Text(
+                                                                containerProductsRecord
+                                                                    .name,
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .subtitle1
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Lexend Deca',
+                                                                      color: Color(
+                                                                          0xFF090F13),
+                                                                      fontSize:
+                                                                          20,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                              ),
+                                                              Text(
+                                                                containerProductsRecord
+                                                                    .description
+                                                                    .maybeHandleOverflow(
+                                                                  maxChars: 5,
+                                                                  replacement:
+                                                                      '…',
+                                                                ),
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText1,
+                                                              ),
+                                                              Text(
+                                                                'Status: ${columnOffersRecord.status}',
+                                                                style: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyText1
+                                                                    .override(
+                                                                      fontFamily:
+                                                                          'Open Sans',
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                              ),
+                                                              if ((columnOffersRecord
+                                                                      .status) ==
+                                                                  'Picked Up')
+                                                                Align(
+                                                                  alignment:
+                                                                      AlignmentDirectional(
+                                                                          0.85,
+                                                                          0),
+                                                                  child: Text(
+                                                                    'Return in Days : ${functions.daysLeft(rowTransactionsRecord.returnDt).toString()}',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .subtitle1
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Lexend Deca',
+                                                                          color:
+                                                                              Color(0xFF090F13),
+                                                                          fontSize:
+                                                                              18,
+                                                                          fontWeight:
+                                                                              FontWeight.normal,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
+                                    );
+                                  },
+                                ),
                               ),
                             );
                           },

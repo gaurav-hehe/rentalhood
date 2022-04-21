@@ -252,7 +252,7 @@ class _ReturnStep2WidgetState extends State<ReturnStep2Widget> {
                               ),
                             );
                           },
-                          text: 'DONE',
+                          text: 'STEP 2 - DONE',
                           options: FFButtonOptions(
                             width: 250,
                             height: 50,

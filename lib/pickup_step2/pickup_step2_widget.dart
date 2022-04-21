@@ -234,7 +234,7 @@ class _PickupStep2WidgetState extends State<PickupStep2Widget> {
                               ),
                             );
                           },
-                          text: 'DONE',
+                          text: 'STEP 2 - DONE',
                           options: FFButtonOptions(
                             width: 250,
                             height: 55,

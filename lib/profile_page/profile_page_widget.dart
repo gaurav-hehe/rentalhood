@@ -178,6 +178,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                               color: FlutterFlowTheme.of(context).tertiaryColor,
                               fontSize: 16,
                             ),
+                        keyboardType: TextInputType.name,
                       ),
                     ),
                   ),
@@ -217,6 +218,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                             color: FlutterFlowTheme.of(context).tertiaryColor,
                             fontSize: 16,
                           ),
+                      keyboardType: TextInputType.emailAddress,
                     ),
                   ),
                   Padding(
@@ -226,7 +228,6 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                         controller: textController3,
                         obscureText: false,
                         decoration: InputDecoration(
-                          hintText: 'Fullname',
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0x00000000),
@@ -295,6 +296,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                           color: FlutterFlowTheme.of(context).tertiaryColor,
                           fontSize: 16,
                         ),
+                    keyboardType: TextInputType.number,
                   ),
                   Expanded(
                     child: Align(

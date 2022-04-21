@@ -285,7 +285,7 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                                   },
                                   text: 'Select',
                                   options: FFButtonOptions(
-                                    width: 100,
+                                    width: 70,
                                     height: 30,
                                     color: FlutterFlowTheme.of(context)
                                         .primaryColor,
@@ -432,7 +432,7 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                             .totalPriceCalc(
                                 rentingPageProductsRecord.availability
                                     .toDouble(),
-                                rentingPageProductsRecord.price.toDouble())
+                                widget.offerRef.price.toDouble())
                             .toString(),
                         renterId: currentUserReference,
                         ownerId: rentingPageProductsRecord.uploadedBy,

@@ -152,7 +152,7 @@ class _RenterOfferSheetWidgetState extends State<RenterOfferSheetWidget> {
                   ),
                 ),
               ),
-            if ((widget.offerRef.status) == 'Picking Up')
+            if ((widget.offerRef.status) != 'Pending')
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                 child: StreamBuilder<TransactionsRecord>(
