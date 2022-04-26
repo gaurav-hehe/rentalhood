@@ -93,10 +93,11 @@ abstract class TransactionsRecord
   String get depositItem;
 
   @nullable
-  String get url;
+  String get ipfsHash;
 
   @nullable
-  String get ipfsHash;
+  @BuiltValueField(wireName: 'pdf_url')
+  String get pdfUrl;
 
   @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
@@ -115,8 +116,8 @@ abstract class TransactionsRecord
     ..returnS1 = false
     ..returnS2 = false
     ..depositItem = ''
-    ..url = ''
-    ..ipfsHash = '';
+    ..ipfsHash = ''
+    ..pdfUrl = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('transactions');
@@ -163,8 +164,8 @@ Map<String, dynamic> createTransactionsRecordData({
   DateTime returnAt,
   DocumentReference offerRef,
   String depositItem,
-  String url,
   String ipfsHash,
+  String pdfUrl,
 }) =>
     serializers.toFirestore(
         TransactionsRecord.serializer,
@@ -191,5 +192,5 @@ Map<String, dynamic> createTransactionsRecordData({
           ..returnAt = returnAt
           ..offerRef = offerRef
           ..depositItem = depositItem
-          ..url = url
-          ..ipfsHash = ipfsHash));
+          ..ipfsHash = ipfsHash
+          ..pdfUrl = pdfUrl));

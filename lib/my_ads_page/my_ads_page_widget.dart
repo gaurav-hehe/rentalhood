@@ -5,7 +5,7 @@ import '../components/ad_options_widget.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../more_options_page/more_options_page_widget.dart';
+import '../main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,7 +44,7 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                 type: PageTransitionType.rightToLeft,
                 duration: Duration(milliseconds: 300),
                 reverseDuration: Duration(milliseconds: 300),
-                child: MoreOptionsPageWidget(),
+                child: NavBarPage(initialPage: 'MoreOptionsPage'),
               ),
               (r) => false,
             );

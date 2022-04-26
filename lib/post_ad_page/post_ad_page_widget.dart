@@ -9,7 +9,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/place.dart';
 import '../flutter_flow/upload_media.dart';
-import '../home_page/home_page_widget.dart';
+import '../main.dart';
 import 'dart:io';
 import '../flutter_flow/random_data_util.dart' as random_data;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -1238,7 +1238,8 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                     Duration(milliseconds: 300),
                                                 reverseDuration:
                                                     Duration(milliseconds: 300),
-                                                child: HomePageWidget(),
+                                                child: NavBarPage(
+                                                    initialPage: 'HomePage'),
                                               ),
                                             );
 

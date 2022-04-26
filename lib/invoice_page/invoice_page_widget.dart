@@ -93,7 +93,7 @@ class _InvoicePageWidgetState extends State<InvoicePageWidget> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: FlutterFlowPdfViewer(
-            networkPath: widget.transRef.url,
+            networkPath: widget.transRef.pdfUrl,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 1,
             horizontalScroll: false,

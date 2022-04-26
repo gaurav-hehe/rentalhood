@@ -6,7 +6,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/upload_media.dart';
 import '../invoice_page/invoice_page_widget.dart';
-import '../more_options_page/more_options_page_widget.dart';
+import '../main.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +52,7 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                 type: PageTransitionType.rightToLeft,
                 duration: Duration(milliseconds: 300),
                 reverseDuration: Duration(milliseconds: 300),
-                child: MoreOptionsPageWidget(),
+                child: NavBarPage(initialPage: 'MoreOptionsPage'),
               ),
             );
           },
@@ -72,8 +72,8 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
               padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
               child: InkWell(
                 onTap: () async {
-                  if ((widget.transRef.url != null) &&
-                      (widget.transRef.url != '')) {
+                  if ((widget.transRef.pdfUrl != null) &&
+                      (widget.transRef.pdfUrl != '')) {
                     await Future.delayed(const Duration(milliseconds: 1000));
                   } else {
                     final selectedFile =
@@ -103,7 +103,7 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                     }
 
                     final transactionsUpdateData = createTransactionsRecordData(
-                      url: uploadedFileUrl,
+                      pdfUrl: uploadedFileUrl,
                     );
                     await widget.transRef.reference
                         .update(transactionsUpdateData);

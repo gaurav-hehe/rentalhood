@@ -1,11 +1,11 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../chat_page/chat_page_widget.dart';
-import '../favourites_page/favourites_page_widget.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../main.dart';
 import '../make_offer_page/make_offer_page_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -397,8 +397,9 @@ class _ProductDetailPageWidgetState extends State<ProductDetailPageWidget> {
                                                         milliseconds: 300),
                                                     reverseDuration: Duration(
                                                         milliseconds: 300),
-                                                    child:
-                                                        FavouritesPageWidget(),
+                                                    child: NavBarPage(
+                                                        initialPage:
+                                                            'FavouritesPage'),
                                                   ),
                                                 );
                                               }

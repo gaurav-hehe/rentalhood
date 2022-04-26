@@ -6,7 +6,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/place.dart';
-import '../home_page/home_page_widget.dart';
+import '../main.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -335,7 +335,7 @@ class _FilterSheetWidgetState extends State<FilterSheetWidget> {
                             type: PageTransitionType.fade,
                             duration: Duration(milliseconds: 0),
                             reverseDuration: Duration(milliseconds: 0),
-                            child: HomePageWidget(),
+                            child: NavBarPage(initialPage: 'HomePage'),
                           ),
                         );
                       },
@@ -378,7 +378,7 @@ class _FilterSheetWidgetState extends State<FilterSheetWidget> {
                             type: PageTransitionType.fade,
                             duration: Duration(milliseconds: 0),
                             reverseDuration: Duration(milliseconds: 0),
-                            child: HomePageWidget(),
+                            child: NavBarPage(initialPage: 'HomePage'),
                           ),
                         );
                       },
