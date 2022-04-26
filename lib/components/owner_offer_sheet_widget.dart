@@ -5,6 +5,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../pickup_step2/pickup_step2_widget.dart';
 import '../return_step1/return_step1_widget.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -105,7 +106,7 @@ class _OwnerOfferSheetWidgetState extends State<OwnerOfferSheetWidget> {
                   ),
                 ),
               ),
-            if ((widget.offerRef.status) != 'Pending')
+            if (functions.visiblityPRpage(widget.offerRef.status) ?? true)
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                 child: StreamBuilder<TransactionsRecord>(

@@ -109,6 +109,7 @@ class _PickupStep2WidgetState extends State<PickupStep2Widget> {
                               color:
                                   FlutterFlowTheme.of(context).secondaryColor,
                               fontSize: 22,
+                              fontWeight: FontWeight.w600,
                             ),
                       ),
                     ),

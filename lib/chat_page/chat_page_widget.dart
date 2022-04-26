@@ -6,6 +6,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ChatPageWidget extends StatefulWidget {
   const ChatPageWidget({
@@ -123,20 +124,7 @@ class _ChatPageWidgetState extends State<ChatPageWidget> {
                   size: 25,
                 ),
                 onPressed: () async {
-                  await showDialog(
-                    context: context,
-                    builder: (alertDialogContext) {
-                      return AlertDialog(
-                        title: Text('Call on This Number'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(alertDialogContext),
-                            child: Text('Ok'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  await Share.share(widget.chatUser.phoneNumber);
                 },
               ),
             ],

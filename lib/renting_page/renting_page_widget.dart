@@ -399,115 +399,141 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                     ),
                   ),
                 ),
-                FFButtonWidget(
-                  onPressed: () async {
-                    var _shouldSetState = false;
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: Text('ARE YOU SURE TO RENT THE PRODUCT?'),
-                              content: Text('This action is not reversable.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: Text('Confirm'),
-                                ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      final transactionsCreateData =
-                          createTransactionsRecordData(
-                        renterName: currentUserDisplayName,
-                        price: functions
-                            .totalPriceCalc(
-                                rentingPageProductsRecord.availability
-                                    .toDouble(),
-                                widget.offerRef.price.toDouble())
-                            .toString(),
-                        renterId: currentUserReference,
-                        ownerId: rentingPageProductsRecord.uploadedBy,
-                        pickupDt: datePicked,
-                        ownerName: rentingPageProductsRecord.ownerName,
-                        productRef: rentingPageProductsRecord.reference,
-                        paymentMode: widget.offerRef.paymentMode,
-                        id: random_data.randomInteger(1000, 99999).toString(),
-                        offerRef: widget.offerRef.reference,
-                      );
-                      var transactionsRecordReference =
-                          TransactionsRecord.collection.doc();
-                      await transactionsRecordReference
-                          .set(transactionsCreateData);
-                      transactionRef = TransactionsRecord.getDocumentFromData(
-                          transactionsCreateData, transactionsRecordReference);
-                      _shouldSetState = true;
-
-                      final usersUpdateData = {
-                        'my_orders': FieldValue.arrayUnion(
-                            [rentingPageProductsRecord.reference]),
-                      };
-                      await currentUserReference.update(usersUpdateData);
-
-                      final offersUpdateData = createOffersRecordData(
-                        status: 'Picking Up',
-                        transactionRef: transactionRef.reference,
-                      );
-                      await widget.offerRef.reference.update(offersUpdateData);
-
-                      final productsUpdateData = {
-                        ...createProductsRecordData(
-                          rentedBy: currentUserReference,
-                          transRef: transactionRef.reference,
-                          status: 'Not Available',
+                StreamBuilder<UsersRecord>(
+                  stream: UsersRecord.getDocument(currentUserReference),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            color: FlutterFlowTheme.of(context).primaryColor,
+                          ),
                         ),
-                        'allTransactions':
-                            FieldValue.arrayUnion([transactionRef.reference]),
-                      };
-                      await rentingPageProductsRecord.reference
-                          .update(productsUpdateData);
-                    } else {
-                      if (_shouldSetState) setState(() {});
-                      return;
+                      );
                     }
+                    final buttonUsersRecord = snapshot.data;
+                    return FFButtonWidget(
+                      onPressed: () async {
+                        var _shouldSetState = false;
+                        var confirmDialogResponse = await showDialog<bool>(
+                              context: context,
+                              builder: (alertDialogContext) {
+                                return AlertDialog(
+                                  title:
+                                      Text('ARE YOU SURE TO RENT THE PRODUCT?'),
+                                  content:
+                                      Text('This action is not reversable.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, false),
+                                      child: Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, true),
+                                      child: Text('Confirm'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ) ??
+                            false;
+                        if (confirmDialogResponse) {
+                          final transactionsCreateData =
+                              createTransactionsRecordData(
+                            renterName: buttonUsersRecord.displayName,
+                            price: functions
+                                .totalPriceCalc(
+                                    rentingPageProductsRecord.availability
+                                        .toDouble(),
+                                    widget.offerRef.price.toDouble())
+                                .toString(),
+                            renterId: buttonUsersRecord.reference,
+                            ownerId: rentingPageProductsRecord.uploadedBy,
+                            pickupDt: datePicked,
+                            ownerName: rentingPageProductsRecord.ownerName,
+                            productRef: rentingPageProductsRecord.reference,
+                            paymentMode: widget.offerRef.paymentMode,
+                            id: random_data
+                                .randomInteger(1000, 99999)
+                                .toString(),
+                            offerRef: widget.offerRef.reference,
+                          );
+                          var transactionsRecordReference =
+                              TransactionsRecord.collection.doc();
+                          await transactionsRecordReference
+                              .set(transactionsCreateData);
+                          transactionRef =
+                              TransactionsRecord.getDocumentFromData(
+                                  transactionsCreateData,
+                                  transactionsRecordReference);
+                          _shouldSetState = true;
 
-                    await Navigator.pushAndRemoveUntil(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.rightToLeft,
-                        duration: Duration(milliseconds: 300),
-                        reverseDuration: Duration(milliseconds: 300),
-                        child: CompletionPageWidget(),
-                      ),
-                      (r) => false,
-                    );
-                    if (_shouldSetState) setState(() {});
-                  },
-                  text: 'RENT IT !',
-                  options: FFButtonOptions(
-                    width: 300,
-                    height: 60,
-                    color: FlutterFlowTheme.of(context).secondaryColor,
-                    textStyle: FlutterFlowTheme.of(context).title2.override(
-                          fontFamily: 'Open Sans',
-                          color: Color(0xFFEEEEEE),
-                          fontWeight: FontWeight.bold,
+                          final usersUpdateData = {
+                            'my_orders': FieldValue.arrayUnion(
+                                [rentingPageProductsRecord.reference]),
+                          };
+                          await buttonUsersRecord.reference
+                              .update(usersUpdateData);
+
+                          final offersUpdateData = createOffersRecordData(
+                            status: 'Picking Up',
+                            transactionRef: transactionRef.reference,
+                          );
+                          await widget.offerRef.reference
+                              .update(offersUpdateData);
+
+                          final productsUpdateData = {
+                            ...createProductsRecordData(
+                              rentedBy: buttonUsersRecord.reference,
+                              transRef: transactionRef.reference,
+                              status: 'Not Available',
+                            ),
+                            'allTransactions': FieldValue.arrayUnion(
+                                [transactionRef.reference]),
+                          };
+                          await rentingPageProductsRecord.reference
+                              .update(productsUpdateData);
+                        } else {
+                          if (_shouldSetState) setState(() {});
+                          return;
+                        }
+
+                        await Navigator.pushAndRemoveUntil(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 300),
+                            reverseDuration: Duration(milliseconds: 300),
+                            child: CompletionPageWidget(),
+                          ),
+                          (r) => false,
+                        );
+                        if (_shouldSetState) setState(() {});
+                      },
+                      text: 'RENT IT !',
+                      options: FFButtonOptions(
+                        width: 300,
+                        height: 60,
+                        color: FlutterFlowTheme.of(context).secondaryColor,
+                        textStyle: FlutterFlowTheme.of(context).title2.override(
+                              fontFamily: 'Open Sans',
+                              color: Color(0xFFEEEEEE),
+                              fontWeight: FontWeight.bold,
+                            ),
+                        elevation: 3,
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1,
                         ),
-                    elevation: 3,
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                      width: 1,
-                    ),
-                    borderRadius: 8,
-                  ),
+                        borderRadius: 8,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

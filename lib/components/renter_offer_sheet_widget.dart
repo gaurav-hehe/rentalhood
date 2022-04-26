@@ -7,6 +7,7 @@ import '../pickup_step1/pickup_step1_widget.dart';
 import '../renting_page/renting_page_widget.dart';
 import '../return_page/return_page_widget.dart';
 import '../return_step2/return_step2_widget.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -152,7 +153,7 @@ class _RenterOfferSheetWidgetState extends State<RenterOfferSheetWidget> {
                   ),
                 ),
               ),
-            if ((widget.offerRef.status) != 'Pending')
+            if (functions.visiblityPRpage(widget.offerRef.status) ?? true)
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                 child: StreamBuilder<TransactionsRecord>(

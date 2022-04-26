@@ -108,6 +108,7 @@ class _ReturnStep2WidgetState extends State<ReturnStep2Widget> {
                               color:
                                   FlutterFlowTheme.of(context).secondaryColor,
                               fontSize: 22,
+                              fontWeight: FontWeight.w600,
                             ),
                       ),
                     ),

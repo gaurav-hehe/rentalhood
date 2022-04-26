@@ -97,15 +97,19 @@ class _ChecklistPageWidgetState extends State<ChecklistPageWidget> {
               color: Color(0xFFEEEEEE),
             ),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(15, 0, 15, 30),
+              padding: EdgeInsetsDirectional.fromSTEB(15, 10, 15, 30),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    'Please assess the condition of the product and fill the checklist accordingly',
-                    textAlign: TextAlign.start,
-                    style: FlutterFlowTheme.of(context).bodyText2,
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: Text(
+                      'Please assess the condition of the product and fill the checklist accordingly',
+                      textAlign: TextAlign.start,
+                      style: FlutterFlowTheme.of(context).bodyText2,
+                    ),
                   ),
                   Expanded(
                     child: Theme(

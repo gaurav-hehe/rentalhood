@@ -11,7 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePageWidget extends StatefulWidget {
-  const ProfilePageWidget({Key key}) : super(key: key);
+  const ProfilePageWidget({
+    Key key,
+    this.userRef,
+  }) : super(key: key);
+
+  final UsersRecord userRef;
 
   @override
   _ProfilePageWidgetState createState() => _ProfilePageWidgetState();
@@ -28,10 +33,10 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
   @override
   void initState() {
     super.initState();
-    textController1 = TextEditingController(text: currentUserDisplayName);
-    textController2 = TextEditingController(text: currentUserEmail);
-    textController3 = TextEditingController(text: currentPhoneNumber);
-    textController4 = TextEditingController(text: currentUserUid);
+    textController1 = TextEditingController(text: widget.userRef.displayName);
+    textController2 = TextEditingController(text: widget.userRef.email);
+    textController3 = TextEditingController(text: widget.userRef.phoneNumber);
+    textController4 = TextEditingController(text: widget.userRef.uid);
   }
 
   @override
@@ -143,43 +148,40 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                   ),
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 10),
-                    child: AuthUserStreamWidget(
-                      child: TextFormField(
-                        controller: textController1,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(4.0),
-                              topRight: Radius.circular(4.0),
-                            ),
+                    child: TextFormField(
+                      controller: textController1,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
                           ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(4.0),
-                              topRight: Radius.circular(4.0),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Color(0xFF5D5E60),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
                           ),
                         ),
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Open Sans',
-                              color: FlutterFlowTheme.of(context).tertiaryColor,
-                              fontSize: 16,
-                            ),
-                        keyboardType: TextInputType.name,
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Color(0xFF5D5E60),
+                        ),
                       ),
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Open Sans',
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                            fontSize: 16,
+                          ),
                     ),
                   ),
                   Padding(
@@ -223,43 +225,41 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                   ),
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                    child: AuthUserStreamWidget(
-                      child: TextFormField(
-                        controller: textController3,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(4.0),
-                              topRight: Radius.circular(4.0),
-                            ),
+                    child: TextFormField(
+                      controller: textController3,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
                           ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0x00000000),
-                              width: 1,
-                            ),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(4.0),
-                              topRight: Radius.circular(4.0),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.phone_sharp,
-                            color: Color(0xFF5D5E60),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
                           ),
                         ),
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Open Sans',
-                              color: FlutterFlowTheme.of(context).tertiaryColor,
-                              fontSize: 16,
-                            ),
-                        keyboardType: TextInputType.phone,
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.phone_sharp,
+                          color: Color(0xFF5D5E60),
+                        ),
                       ),
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Open Sans',
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                            fontSize: 16,
+                          ),
+                      keyboardType: TextInputType.phone,
                     ),
                   ),
                   TextFormField(
@@ -312,12 +312,14 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                               uid: textController4.text,
                               photoUrl: uploadedFileUrl,
                             );
-                            await currentUserReference.update(usersUpdateData);
+                            await widget.userRef.reference
+                                .update(usersUpdateData);
+                            Navigator.pop(context);
                           },
                           text: 'Update',
                           options: FFButtonOptions(
-                            width: double.infinity,
-                            height: 40,
+                            width: 250,
+                            height: 50,
                             color: FlutterFlowTheme.of(context).secondaryColor,
                             textStyle:
                                 FlutterFlowTheme.of(context).subtitle2.override(
@@ -326,9 +328,8 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                                     ),
                             borderSide: BorderSide(
                               color: FlutterFlowTheme.of(context).tertiaryColor,
-                              width: 1,
                             ),
-                            borderRadius: 5,
+                            borderRadius: 0,
                           ),
                         ),
                       ),

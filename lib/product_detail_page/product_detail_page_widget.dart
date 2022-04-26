@@ -1,11 +1,11 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../chat_page/chat_page_widget.dart';
+import '../favourites_page/favourites_page_widget.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
 import '../make_offer_page/make_offer_page_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -397,9 +397,8 @@ class _ProductDetailPageWidgetState extends State<ProductDetailPageWidget> {
                                                         milliseconds: 300),
                                                     reverseDuration: Duration(
                                                         milliseconds: 300),
-                                                    child: NavBarPage(
-                                                        initialPage:
-                                                            'FavouritesPage'),
+                                                    child:
+                                                        FavouritesPageWidget(),
                                                   ),
                                                 );
                                               }
@@ -426,41 +425,37 @@ class _ProductDetailPageWidgetState extends State<ProductDetailPageWidget> {
                                   child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         10, 10, 10, 16),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Align(
-                                          alignment:
-                                              AlignmentDirectional(-1, 0),
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    5, 0, 0, 0),
-                                            child: StreamBuilder<UsersRecord>(
-                                              stream: UsersRecord.getDocument(
-                                                  widget.productRef.uploadedBy),
-                                              builder: (context, snapshot) {
-                                                // Customize what your widget looks like when it's loading.
-                                                if (!snapshot.hasData) {
-                                                  return Center(
-                                                    child: SizedBox(
-                                                      width: 50,
-                                                      height: 50,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                                final circleImageUsersRecord =
-                                                    snapshot.data;
-                                                return Container(
+                                    child: StreamBuilder<UsersRecord>(
+                                      stream: UsersRecord.getDocument(
+                                          widget.productRef.uploadedBy),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50,
+                                              height: 50,
+                                              child: CircularProgressIndicator(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryColor,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        final rowUsersRecord = snapshot.data;
+                                        return Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Align(
+                                              alignment:
+                                                  AlignmentDirectional(-1, 0),
+                                              child: Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(5, 0, 0, 0),
+                                                child: Container(
                                                   width: 40,
                                                   height: 40,
                                                   clipBehavior: Clip.antiAlias,
@@ -468,43 +463,17 @@ class _ProductDetailPageWidgetState extends State<ProductDetailPageWidget> {
                                                     shape: BoxShape.circle,
                                                   ),
                                                   child: Image.network(
-                                                    circleImageUsersRecord
-                                                        .photoUrl,
+                                                    rowUsersRecord.photoUrl,
                                                   ),
-                                                );
-                                              },
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    5, 0, 5, 0),
-                                            child: StreamBuilder<UsersRecord>(
-                                              stream: UsersRecord.getDocument(
-                                                  widget.productRef.uploadedBy),
-                                              builder: (context, snapshot) {
-                                                // Customize what your widget looks like when it's loading.
-                                                if (!snapshot.hasData) {
-                                                  return Center(
-                                                    child: SizedBox(
-                                                      width: 50,
-                                                      height: 50,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                                final textUsersRecord =
-                                                    snapshot.data;
-                                                return AutoSizeText(
-                                                  textUsersRecord.displayName,
+                                            Expanded(
+                                              child: Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(5, 0, 5, 0),
+                                                child: AutoSizeText(
+                                                  rowUsersRecord.displayName,
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .subtitle2
@@ -516,94 +485,103 @@ class _ProductDetailPageWidgetState extends State<ProductDetailPageWidget> {
                                                         fontWeight:
                                                             FontWeight.normal,
                                                       ),
-                                                );
-                                              },
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        if ((currentUserReference) !=
-                                            (widget.productRef.uploadedBy))
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    5, 0, 0, 0),
-                                            child: StreamBuilder<UsersRecord>(
-                                              stream: UsersRecord.getDocument(
-                                                  widget.productRef.uploadedBy),
-                                              builder: (context, snapshot) {
-                                                // Customize what your widget looks like when it's loading.
-                                                if (!snapshot.hasData) {
-                                                  return Center(
-                                                    child: SizedBox(
-                                                      width: 50,
-                                                      height: 50,
-                                                      child:
-                                                          CircularProgressIndicator(
+                                            if ((currentUserReference) !=
+                                                (widget.productRef.uploadedBy))
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(5, 0, 0, 0),
+                                                child:
+                                                    StreamBuilder<UsersRecord>(
+                                                  stream:
+                                                      UsersRecord.getDocument(
+                                                          widget.productRef
+                                                              .uploadedBy),
+                                                  builder: (context, snapshot) {
+                                                    // Customize what your widget looks like when it's loading.
+                                                    if (!snapshot.hasData) {
+                                                      return Center(
+                                                        child: SizedBox(
+                                                          width: 50,
+                                                          height: 50,
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .primaryColor,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                    final rentButtonUsersRecord =
+                                                        snapshot.data;
+                                                    return FFButtonWidget(
+                                                      onPressed: () async {
+                                                        await Navigator.push(
+                                                          context,
+                                                          PageTransition(
+                                                            type:
+                                                                PageTransitionType
+                                                                    .rightToLeft,
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    300),
+                                                            reverseDuration:
+                                                                Duration(
+                                                                    milliseconds:
+                                                                        300),
+                                                            child:
+                                                                MakeOfferPageWidget(
+                                                              adRef: widget
+                                                                  .productRef,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      text: 'RENT',
+                                                      icon: Icon(
+                                                        Icons
+                                                            .shopping_bag_outlined,
+                                                        size: 20,
+                                                      ),
+                                                      options: FFButtonOptions(
+                                                        width: 100,
+                                                        height: 50,
                                                         color:
                                                             FlutterFlowTheme.of(
                                                                     context)
-                                                                .primaryColor,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                                final rentButtonUsersRecord =
-                                                    snapshot.data;
-                                                return FFButtonWidget(
-                                                  onPressed: () async {
-                                                    await Navigator.push(
-                                                      context,
-                                                      PageTransition(
-                                                        type: PageTransitionType
-                                                            .rightToLeft,
-                                                        duration: Duration(
-                                                            milliseconds: 300),
-                                                        reverseDuration:
-                                                            Duration(
-                                                                milliseconds:
-                                                                    300),
-                                                        child:
-                                                            MakeOfferPageWidget(
-                                                          adRef:
-                                                              widget.productRef,
+                                                                .secondaryColor,
+                                                        textStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .subtitle2
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Lexend Deca',
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                        elevation: 3,
+                                                        borderSide: BorderSide(
+                                                          color: Colors
+                                                              .transparent,
+                                                          width: 1,
                                                         ),
+                                                        borderRadius: 30,
                                                       ),
                                                     );
                                                   },
-                                                  text: 'RENT',
-                                                  icon: Icon(
-                                                    Icons.shopping_bag_outlined,
-                                                    size: 20,
-                                                  ),
-                                                  options: FFButtonOptions(
-                                                    width: 100,
-                                                    height: 50,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryColor,
-                                                    textStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .subtitle2
-                                                        .override(
-                                                          fontFamily:
-                                                              'Lexend Deca',
-                                                          color: Colors.white,
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                    elevation: 3,
-                                                    borderSide: BorderSide(
-                                                      color: Colors.transparent,
-                                                      width: 1,
-                                                    ),
-                                                    borderRadius: 30,
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                      ],
+                                                ),
+                                              ),
+                                          ],
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),

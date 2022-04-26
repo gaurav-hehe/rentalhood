@@ -90,6 +90,7 @@ class _ReturnStep1WidgetState extends State<ReturnStep1Widget> {
                           fontFamily: 'Open Sans',
                           color: FlutterFlowTheme.of(context).secondaryColor,
                           fontSize: 22,
+                          fontWeight: FontWeight.w600,
                         ),
                   ),
                 ),
@@ -322,7 +323,7 @@ class _ReturnStep1WidgetState extends State<ReturnStep1Widget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           0, 10, 0, 10),
                                       child: Text(
-                                        'Once verified the information to be true, you may now hand over the security deposit back to its ownerand ask for the cost of renting for completing transaction.',
+                                        'Once verified the information to be true, you may now hand over the security deposit back to its owne rand ask for the cost of renting for completing transaction.',
                                         textAlign: TextAlign.start,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyText2

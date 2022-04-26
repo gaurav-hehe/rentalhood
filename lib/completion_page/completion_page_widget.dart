@@ -41,7 +41,7 @@ class _CompletionPageWidgetState extends State<CompletionPageWidget> {
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 25, 0, 25),
                   child: Text(
-                    'Transaction Successful',
+                    ' Successful',
                     style: FlutterFlowTheme.of(context).title1.override(
                           fontFamily: 'Lexend Deca',
                           color: FlutterFlowTheme.of(context).secondaryColor,

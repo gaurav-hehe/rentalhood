@@ -90,6 +90,7 @@ class _PickupStep1WidgetState extends State<PickupStep1Widget> {
                           fontFamily: 'Open Sans',
                           color: FlutterFlowTheme.of(context).secondaryColor,
                           fontSize: 22,
+                          fontWeight: FontWeight.w600,
                         ),
                   ),
                 ),

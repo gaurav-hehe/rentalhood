@@ -107,7 +107,9 @@ class _MoreOptionsPageWidgetState extends State<MoreOptionsPageWidget> {
                                   type: PageTransitionType.rightToLeft,
                                   duration: Duration(milliseconds: 300),
                                   reverseDuration: Duration(milliseconds: 300),
-                                  child: ProfilePageWidget(),
+                                  child: ProfilePageWidget(
+                                    userRef: moreOptionsPageUsersRecord,
+                                  ),
                                 ),
                               );
                             },

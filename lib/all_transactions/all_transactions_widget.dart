@@ -92,152 +92,178 @@ class _AllTransactionsWidgetState extends State<AllTransactionsWidget> {
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 1,
-            decoration: BoxDecoration(
-              color: Color(0xFFEEEEEE),
-            ),
-            child: StreamBuilder<List<TransactionsRecord>>(
-              stream: queryTransactionsRecord(
-                queryBuilder: (transactionsRecord) => transactionsRecord
-                    .where('renter_id', isEqualTo: currentUserReference)
-                    .where('owner_id', isEqualTo: currentUserReference),
-              ),
-              builder: (context, snapshot) {
-                // Customize what your widget looks like when it's loading.
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator(
-                        color: FlutterFlowTheme.of(context).primaryColor,
-                      ),
+          child: StreamBuilder<UsersRecord>(
+            stream: UsersRecord.getDocument(currentUserReference),
+            builder: (context, snapshot) {
+              // Customize what your widget looks like when it's loading.
+              if (!snapshot.hasData) {
+                return Center(
+                  child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(
+                      color: FlutterFlowTheme.of(context).primaryColor,
                     ),
-                  );
-                }
-                List<TransactionsRecord> listViewTransactionsRecordList =
-                    snapshot.data;
-                return ListView.builder(
-                  padding: EdgeInsets.zero,
-                  scrollDirection: Axis.vertical,
-                  itemCount: listViewTransactionsRecordList.length,
-                  itemBuilder: (context, listViewIndex) {
-                    final listViewTransactionsRecord =
-                        listViewTransactionsRecordList[listViewIndex];
-                    return StreamBuilder<TransactionsRecord>(
-                      stream: TransactionsRecord.getDocument(
-                          listViewTransactionsRecord.reference),
-                      builder: (context, snapshot) {
-                        // Customize what your widget looks like when it's loading.
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: CircularProgressIndicator(
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
-                              ),
-                            ),
-                          );
-                        }
-                        final containerTransactionsRecord = snapshot.data;
-                        return Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFEEEEEE),
+                  ),
+                );
+              }
+              final containerUsersRecord = snapshot.data;
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 1,
+                decoration: BoxDecoration(
+                  color: Color(0xFFEEEEEE),
+                ),
+                child: StreamBuilder<List<TransactionsRecord>>(
+                  stream: queryTransactionsRecord(
+                    queryBuilder: (transactionsRecord) => transactionsRecord
+                        .where('renter_id',
+                            isEqualTo: containerUsersRecord.reference)
+                        .where('owner_id',
+                            isEqualTo: containerUsersRecord.reference),
+                  ),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            color: FlutterFlowTheme.of(context).primaryColor,
                           ),
-                          child: InkWell(
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  duration: Duration(milliseconds: 300),
-                                  reverseDuration: Duration(milliseconds: 300),
-                                  child: OrderDetailsPageWidget(
-                                    transRef: containerTransactionsRecord,
+                        ),
+                      );
+                    }
+                    List<TransactionsRecord> listViewTransactionsRecordList =
+                        snapshot.data;
+                    return ListView.builder(
+                      padding: EdgeInsets.zero,
+                      scrollDirection: Axis.vertical,
+                      itemCount: listViewTransactionsRecordList.length,
+                      itemBuilder: (context, listViewIndex) {
+                        final listViewTransactionsRecord =
+                            listViewTransactionsRecordList[listViewIndex];
+                        return StreamBuilder<TransactionsRecord>(
+                          stream: TransactionsRecord.getDocument(
+                              listViewTransactionsRecord.reference),
+                          builder: (context, snapshot) {
+                            // Customize what your widget looks like when it's loading.
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: CircularProgressIndicator(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
                                   ),
                                 ),
                               );
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Stack(
+                            }
+                            final containerTransactionsRecord = snapshot.data;
+                            return Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFEEEEEE),
+                              ),
+                              child: InkWell(
+                                onTap: () async {
+                                  await Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      duration: Duration(milliseconds: 300),
+                                      reverseDuration:
+                                          Duration(milliseconds: 300),
+                                      child: OrderDetailsPageWidget(
+                                        transRef: containerTransactionsRecord,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
-                                    if ((containerTransactionsRecord.ownerId) ==
-                                        (currentUserReference))
-                                      Icon(
-                                        Icons.arrow_upward,
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryColor,
-                                        size: 40,
-                                      ),
-                                    if ((containerTransactionsRecord
-                                            .renterId) ==
-                                        (currentUserReference))
-                                      Icon(
-                                        Icons.arrow_downward,
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryColor,
-                                        size: 40,
-                                      ),
-                                  ],
-                                ),
-                                StreamBuilder<ProductsRecord>(
-                                  stream: ProductsRecord.getDocument(
-                                      containerTransactionsRecord.productRef),
-                                  builder: (context, snapshot) {
-                                    // Customize what your widget looks like when it's loading.
-                                    if (!snapshot.hasData) {
-                                      return Center(
-                                        child: SizedBox(
-                                          width: 50,
-                                          height: 50,
-                                          child: CircularProgressIndicator(
+                                    Stack(
+                                      children: [
+                                        if ((containerTransactionsRecord
+                                                .ownerId) ==
+                                            (containerUsersRecord.reference))
+                                          Icon(
+                                            Icons.arrow_upward,
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryColor,
+                                                .secondaryColor,
+                                            size: 40,
                                           ),
-                                        ),
-                                      );
-                                    }
-                                    final textProductsRecord = snapshot.data;
-                                    return Text(
-                                      'Product: ${textProductsRecord.name}',
+                                        if ((containerTransactionsRecord
+                                                .renterId) ==
+                                            (containerUsersRecord.reference))
+                                          Icon(
+                                            Icons.arrow_downward,
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryColor,
+                                            size: 40,
+                                          ),
+                                      ],
+                                    ),
+                                    StreamBuilder<ProductsRecord>(
+                                      stream: ProductsRecord.getDocument(
+                                          containerTransactionsRecord
+                                              .productRef),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50,
+                                              height: 50,
+                                              child: CircularProgressIndicator(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryColor,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        final textProductsRecord =
+                                            snapshot.data;
+                                        return Text(
+                                          'Product: ${textProductsRecord.name}',
+                                          style: FlutterFlowTheme.of(context)
+                                              .title3
+                                              .override(
+                                                fontFamily: 'Open Sans',
+                                                fontSize: 18,
+                                              ),
+                                        );
+                                      },
+                                    ),
+                                    Text(
+                                      dateTimeFormat('d/M/y',
+                                          containerTransactionsRecord.pickupDt),
                                       style: FlutterFlowTheme.of(context)
                                           .title3
                                           .override(
                                             fontFamily: 'Open Sans',
-                                            fontSize: 18,
+                                            fontSize: 16,
                                           ),
-                                    );
-                                  },
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  dateTimeFormat('d/M/y',
-                                      containerTransactionsRecord.pickupDt),
-                                  style: FlutterFlowTheme.of(context)
-                                      .title3
-                                      .override(
-                                        fontFamily: 'Open Sans',
-                                        fontSize: 16,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
                         );
                       },
                     );
                   },
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),

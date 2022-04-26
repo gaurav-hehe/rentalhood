@@ -1,9 +1,14 @@
+import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../backend/firebase_storage/storage.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../main.dart';
+import '../flutter_flow/upload_media.dart';
+import '../invoice_page/invoice_page_widget.dart';
+import '../more_options_page/more_options_page_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,6 +25,7 @@ class OrderDetailsPageWidget extends StatefulWidget {
 }
 
 class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
+  String uploadedFileUrl = '';
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -46,7 +52,7 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                 type: PageTransitionType.rightToLeft,
                 duration: Duration(milliseconds: 300),
                 reverseDuration: Duration(milliseconds: 300),
-                child: NavBarPage(initialPage: 'MoreOptionsPage'),
+                child: MoreOptionsPageWidget(),
               ),
             );
           },
@@ -59,7 +65,71 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                 fontSize: 22,
               ),
         ),
-        actions: [],
+        actions: [
+          Visibility(
+            visible: (widget.transRef.pickupS1) == true,
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
+              child: InkWell(
+                onTap: () async {
+                  if ((widget.transRef.url != null) &&
+                      (widget.transRef.url != '')) {
+                    await Future.delayed(const Duration(milliseconds: 1000));
+                  } else {
+                    final selectedFile =
+                        await selectFile(allowedExtensions: ['pdf']);
+                    if (selectedFile != null) {
+                      showUploadMessage(
+                        context,
+                        'Uploading file...',
+                        showLoading: true,
+                      );
+                      final downloadUrl = await uploadData(
+                          selectedFile.storagePath, selectedFile.bytes);
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      if (downloadUrl != null) {
+                        setState(() => uploadedFileUrl = downloadUrl);
+                        showUploadMessage(
+                          context,
+                          'Success!',
+                        );
+                      } else {
+                        showUploadMessage(
+                          context,
+                          'Failed to upload file',
+                        );
+                        return;
+                      }
+                    }
+
+                    final transactionsUpdateData = createTransactionsRecordData(
+                      url: uploadedFileUrl,
+                    );
+                    await widget.transRef.reference
+                        .update(transactionsUpdateData);
+                  }
+
+                  await Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      duration: Duration(milliseconds: 300),
+                      reverseDuration: Duration(milliseconds: 300),
+                      child: InvoicePageWidget(
+                        transRef: widget.transRef,
+                      ),
+                    ),
+                  );
+                },
+                child: Icon(
+                  Icons.picture_as_pdf,
+                  color: FlutterFlowTheme.of(context).secondaryColor,
+                  size: 40,
+                ),
+              ),
+            ),
+          ),
+        ],
         centerTitle: true,
         elevation: 2,
       ),
@@ -501,7 +571,7 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                               children: [
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
-                                      2, 2, 2, 2),
+                                      0, 2, 0, 2),
                                   child: StreamBuilder<OffersRecord>(
                                     stream: OffersRecord.getDocument(
                                         widget.transRef.offerRef),
@@ -528,263 +598,232 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Expanded(
-                                            child:
-                                                StreamBuilder<ProductsRecord>(
-                                              stream:
-                                                  ProductsRecord.getDocument(
-                                                      rowOffersRecord.prodRef),
-                                              builder: (context, snapshot) {
-                                                // Customize what your widget looks like when it's loading.
-                                                if (!snapshot.hasData) {
-                                                  return Center(
-                                                    child: SizedBox(
-                                                      width: 50,
-                                                      height: 50,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                                final columnProductsRecord =
-                                                    snapshot.data;
-                                                return Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0, 0, 0, 5),
-                                                      child: Text(
-                                                        'PROD NAME',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText1
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Open Sans',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      columnProductsRecord.name,
-                                                      style:
+                                          StreamBuilder<ProductsRecord>(
+                                            stream: ProductsRecord.getDocument(
+                                                rowOffersRecord.prodRef),
+                                            builder: (context, snapshot) {
+                                              // Customize what your widget looks like when it's loading.
+                                              if (!snapshot.hasData) {
+                                                return Center(
+                                                  child: SizedBox(
+                                                    width: 50,
+                                                    height: 50,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .bodyText1,
+                                                              .primaryColor,
                                                     ),
-                                                  ],
+                                                  ),
                                                 );
-                                              },
-                                            ),
+                                              }
+                                              final columnProductsRecord =
+                                                  snapshot.data;
+                                              return Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                0, 0, 0, 5),
+                                                    child: Text(
+                                                      'PROD NAME',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyText1
+                                                          .override(
+                                                            fontFamily:
+                                                                'Open Sans',
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    columnProductsRecord.name,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText1,
+                                                  ),
+                                                ],
+                                              );
+                                            },
                                           ),
-                                          Expanded(
-                                            child:
-                                                StreamBuilder<ProductsRecord>(
-                                              stream:
-                                                  ProductsRecord.getDocument(
-                                                      rowOffersRecord.prodRef),
-                                              builder: (context, snapshot) {
-                                                // Customize what your widget looks like when it's loading.
-                                                if (!snapshot.hasData) {
-                                                  return Center(
-                                                    child: SizedBox(
-                                                      width: 50,
-                                                      height: 50,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                                final columnProductsRecord =
-                                                    snapshot.data;
-                                                return Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0, 0, 0, 5),
-                                                      child: Text(
-                                                        'PRICE',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText1
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Open Sans',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      '${formatNumber(
-                                                        rowOffersRecord.price,
-                                                        formatType:
-                                                            FormatType.custom,
-                                                        currency: 'Rs.',
-                                                        format: '',
-                                                        locale: '',
-                                                      )}/day',
-                                                      style:
+                                          StreamBuilder<ProductsRecord>(
+                                            stream: ProductsRecord.getDocument(
+                                                rowOffersRecord.prodRef),
+                                            builder: (context, snapshot) {
+                                              // Customize what your widget looks like when it's loading.
+                                              if (!snapshot.hasData) {
+                                                return Center(
+                                                  child: SizedBox(
+                                                    width: 50,
+                                                    height: 50,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .bodyText1,
+                                                              .primaryColor,
                                                     ),
-                                                  ],
+                                                  ),
                                                 );
-                                              },
-                                            ),
+                                              }
+                                              final columnProductsRecord =
+                                                  snapshot.data;
+                                              return Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                0, 0, 0, 5),
+                                                    child: Text(
+                                                      'PRICE',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyText1
+                                                          .override(
+                                                            fontFamily:
+                                                                'Open Sans',
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '${formatNumber(
+                                                      rowOffersRecord.price,
+                                                      formatType:
+                                                          FormatType.custom,
+                                                      currency: 'Rs.',
+                                                      format: '',
+                                                      locale: '',
+                                                    )}/day',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText1,
+                                                  ),
+                                                ],
+                                              );
+                                            },
                                           ),
-                                          Expanded(
-                                            child:
-                                                StreamBuilder<ProductsRecord>(
-                                              stream:
-                                                  ProductsRecord.getDocument(
-                                                      rowOffersRecord.prodRef),
-                                              builder: (context, snapshot) {
-                                                // Customize what your widget looks like when it's loading.
-                                                if (!snapshot.hasData) {
-                                                  return Center(
-                                                    child: SizedBox(
-                                                      width: 50,
-                                                      height: 50,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                                final columnProductsRecord =
-                                                    snapshot.data;
-                                                return Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0, 0, 0, 5),
-                                                      child: Text(
-                                                        'AVAIL.',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText1
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Open Sans',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      '${columnProductsRecord.availability.toString()} Days',
-                                                      style:
+                                          StreamBuilder<ProductsRecord>(
+                                            stream: ProductsRecord.getDocument(
+                                                rowOffersRecord.prodRef),
+                                            builder: (context, snapshot) {
+                                              // Customize what your widget looks like when it's loading.
+                                              if (!snapshot.hasData) {
+                                                return Center(
+                                                  child: SizedBox(
+                                                    width: 50,
+                                                    height: 50,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .bodyText1,
+                                                              .primaryColor,
                                                     ),
-                                                  ],
+                                                  ),
                                                 );
-                                              },
-                                            ),
+                                              }
+                                              final columnProductsRecord =
+                                                  snapshot.data;
+                                              return Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                0, 0, 0, 5),
+                                                    child: Text(
+                                                      'AVAIL.',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyText1
+                                                          .override(
+                                                            fontFamily:
+                                                                'Open Sans',
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '${columnProductsRecord.availability.toString()} Days',
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText1,
+                                                  ),
+                                                ],
+                                              );
+                                            },
                                           ),
-                                          Expanded(
-                                            child:
-                                                StreamBuilder<ProductsRecord>(
-                                              stream:
-                                                  ProductsRecord.getDocument(
-                                                      rowOffersRecord.prodRef),
-                                              builder: (context, snapshot) {
-                                                // Customize what your widget looks like when it's loading.
-                                                if (!snapshot.hasData) {
-                                                  return Center(
-                                                    child: SizedBox(
-                                                      width: 50,
-                                                      height: 50,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                                final columnProductsRecord =
-                                                    snapshot.data;
-                                                return Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0, 0, 0, 5),
-                                                      child: Text(
-                                                        'TOTAL',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyText1
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Open Sans',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      formatNumber(
-                                                        rowOffersRecord.price,
-                                                        formatType:
-                                                            FormatType.custom,
-                                                        currency: 'Rs. ',
-                                                        format: '',
-                                                        locale: '',
-                                                      ),
-                                                      style:
+                                          StreamBuilder<ProductsRecord>(
+                                            stream: ProductsRecord.getDocument(
+                                                rowOffersRecord.prodRef),
+                                            builder: (context, snapshot) {
+                                              // Customize what your widget looks like when it's loading.
+                                              if (!snapshot.hasData) {
+                                                return Center(
+                                                  child: SizedBox(
+                                                    width: 50,
+                                                    height: 50,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .bodyText1,
+                                                              .primaryColor,
                                                     ),
-                                                  ],
+                                                  ),
                                                 );
-                                              },
-                                            ),
+                                              }
+                                              final columnProductsRecord =
+                                                  snapshot.data;
+                                              return Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                0, 0, 0, 5),
+                                                    child: Text(
+                                                      'TOTAL',
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyText1
+                                                          .override(
+                                                            fontFamily:
+                                                                'Open Sans',
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    widget.transRef.price,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily:
+                                                              'Open Sans',
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
                                           ),
                                         ],
                                       );
@@ -806,7 +845,7 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                                 ),
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
-                                      2, 2, 2, 0),
+                                      2, 0, 2, 0),
                                   child: Text(
                                     'TERMS:',
                                     style: FlutterFlowTheme.of(context)
@@ -865,7 +904,7 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                           elevation: 5,
                           child: Container(
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.18,
+                            height: MediaQuery.of(context).size.height * 0.19,
                             decoration: BoxDecoration(
                               color: Color(0xFFEEEEEE),
                               border: Border.all(

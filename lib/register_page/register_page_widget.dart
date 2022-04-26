@@ -193,7 +193,6 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                         ),
                       ),
                       style: FlutterFlowTheme.of(context).subtitle2,
-                      keyboardType: TextInputType.name,
                       validator: (val) {
                         if (val.isEmpty) {
                           return 'Field is required';
@@ -330,7 +329,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                         ),
                       ),
                       style: FlutterFlowTheme.of(context).subtitle2,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.multiline,
                       validator: (val) {
                         if (val.isEmpty) {
                           return 'Field is required';

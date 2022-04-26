@@ -48,3 +48,8 @@ int daysLeft(DateTime returnDate) {
   int days = returnDate.difference(DateTime.now()).inDays;
   return days; // Add your function code here!
 }
+
+bool visiblityPRpage(String status) {
+  return true;
+  // Add your function code here!
+}
