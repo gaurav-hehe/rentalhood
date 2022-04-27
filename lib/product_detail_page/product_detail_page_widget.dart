@@ -484,7 +484,7 @@ class _ProductDetailPageWidgetState extends State<ProductDetailPageWidget> {
                                                             Color(0xFF0B0B0B),
                                                         fontSize: 16,
                                                         fontWeight:
-                                                            FontWeight.normal,
+                                                            FontWeight.w500,
                                                       ),
                                                 ),
                                               ),

@@ -4,7 +4,6 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../my_ads_page/my_ads_page_widget.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -225,15 +224,7 @@ class _PickupStep2WidgetState extends State<PickupStep2Widget> {
                                 );
                               },
                             );
-                            await Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                duration: Duration(milliseconds: 300),
-                                reverseDuration: Duration(milliseconds: 300),
-                                child: MyAdsPageWidget(),
-                              ),
-                            );
+                            Navigator.pop(context);
                           },
                           text: 'STEP 2 - DONE',
                           options: FFButtonOptions(

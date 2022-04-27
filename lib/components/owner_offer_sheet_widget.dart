@@ -16,7 +16,7 @@ class OwnerOfferSheetWidget extends StatefulWidget {
     this.offerRef,
   }) : super(key: key);
 
-  final OffersRecord offerRef;
+  final DocumentReference offerRef;
 
   @override
   _OwnerOfferSheetWidgetState createState() => _OwnerOfferSheetWidgetState();
@@ -25,110 +25,114 @@ class OwnerOfferSheetWidget extends StatefulWidget {
 class _OwnerOfferSheetWidgetState extends State<OwnerOfferSheetWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 350,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 5,
-            color: Color(0x3B1D2429),
-            offset: Offset(0, -3),
-          )
-        ],
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(0),
-          bottomRight: Radius.circular(0),
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
-      ),
-      child: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            if ((widget.offerRef.status) == 'Pending')
-              FFButtonWidget(
-                onPressed: () async {
-                  final offersUpdateData = createOffersRecordData(
-                    status: 'Accepted',
-                  );
-                  await widget.offerRef.reference.update(offersUpdateData);
-                  Navigator.pop(context);
-                },
-                text: 'Accept Offer',
-                options: FFButtonOptions(
-                  width: double.infinity,
-                  height: 60,
-                  color: Color(0xFFDBE2E7),
-                  textStyle: FlutterFlowTheme.of(context).subtitle2.override(
-                        fontFamily: 'Lexend Deca',
-                        color: Color(0xFF262D34),
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                      ),
-                  borderSide: BorderSide(
-                    color: Color(0xFF00BF14),
-                    width: 2,
-                  ),
-                  borderRadius: 40,
-                ),
+    return StreamBuilder<OffersRecord>(
+      stream: OffersRecord.getDocument(widget.offerRef),
+      builder: (context, snapshot) {
+        // Customize what your widget looks like when it's loading.
+        if (!snapshot.hasData) {
+          return Center(
+            child: SizedBox(
+              width: 50,
+              height: 50,
+              child: CircularProgressIndicator(
+                color: FlutterFlowTheme.of(context).primaryColor,
               ),
-            if ((widget.offerRef.status) == 'Pending')
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                child: FFButtonWidget(
-                  onPressed: () async {
-                    final offersUpdateData = createOffersRecordData(
-                      status: 'Declined',
-                    );
-                    await widget.offerRef.reference.update(offersUpdateData);
-                    Navigator.pop(context);
-                  },
-                  text: 'Declined Offer',
-                  options: FFButtonOptions(
-                    width: double.infinity,
-                    height: 60,
-                    color: Color(0xFFDBE2E7),
-                    textStyle: FlutterFlowTheme.of(context).subtitle2.override(
-                          fontFamily: 'Lexend Deca',
-                          color: Color(0xFF262D34),
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        ),
-                    borderSide: BorderSide(
-                      color: Color(0xFFB82023),
-                      width: 2,
-                    ),
-                    borderRadius: 40,
-                  ),
-                ),
-              ),
-            if (functions.visiblityPRpage(widget.offerRef.status) ?? true)
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                child: StreamBuilder<TransactionsRecord>(
-                  stream: TransactionsRecord.getDocument(
-                      widget.offerRef.transactionRef),
-                  builder: (context, snapshot) {
-                    // Customize what your widget looks like when it's loading.
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: CircularProgressIndicator(
-                            color: FlutterFlowTheme.of(context).primaryColor,
-                          ),
-                        ),
+            ),
+          );
+        }
+        final containerOffersRecord = snapshot.data;
+        return Container(
+          width: double.infinity,
+          height: 350,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 5,
+                color: Color(0x3B1D2429),
+                offset: Offset(0, -3),
+              )
+            ],
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(0),
+              bottomRight: Radius.circular(0),
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                if ((containerOffersRecord.status) == 'Pending')
+                  FFButtonWidget(
+                    onPressed: () async {
+                      final offersUpdateData = createOffersRecordData(
+                        status: 'Accepted',
                       );
-                    }
-                    final buttonTransactionsRecord = snapshot.data;
-                    return FFButtonWidget(
+                      await containerOffersRecord.reference
+                          .update(offersUpdateData);
+                      Navigator.pop(context);
+                    },
+                    text: 'Accept Offer',
+                    options: FFButtonOptions(
+                      width: double.infinity,
+                      height: 60,
+                      color: Color(0xFFDBE2E7),
+                      textStyle:
+                          FlutterFlowTheme.of(context).subtitle2.override(
+                                fontFamily: 'Lexend Deca',
+                                color: Color(0xFF262D34),
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                              ),
+                      borderSide: BorderSide(
+                        color: Color(0xFF00BF14),
+                        width: 2,
+                      ),
+                      borderRadius: 40,
+                    ),
+                  ),
+                if ((containerOffersRecord.status) == 'Pending')
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    child: FFButtonWidget(
                       onPressed: () async {
-                        if ((buttonTransactionsRecord.pickupS2) == true) {
+                        final offersUpdateData = createOffersRecordData(
+                          status: 'Declined',
+                        );
+                        await containerOffersRecord.reference
+                            .update(offersUpdateData);
+                        Navigator.pop(context);
+                      },
+                      text: 'Declined Offer',
+                      options: FFButtonOptions(
+                        width: double.infinity,
+                        height: 60,
+                        color: Color(0xFFDBE2E7),
+                        textStyle:
+                            FlutterFlowTheme.of(context).subtitle2.override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFF262D34),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                        borderSide: BorderSide(
+                          color: Color(0xFFB82023),
+                          width: 2,
+                        ),
+                        borderRadius: 40,
+                      ),
+                    ),
+                  ),
+                if (functions.visiblityPRpage(containerOffersRecord.status) ??
+                    true)
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        if ((containerOffersRecord.status) == 'Returning') {
                           await Navigator.push(
                             context,
                             PageTransition(
@@ -136,25 +140,27 @@ class _OwnerOfferSheetWidgetState extends State<OwnerOfferSheetWidget> {
                               duration: Duration(milliseconds: 300),
                               reverseDuration: Duration(milliseconds: 300),
                               child: ReturnStep1Widget(
-                                transactionRef: widget.offerRef.transactionRef,
+                                transactionRef:
+                                    containerOffersRecord.transactionRef,
                               ),
                             ),
                           );
-                          return;
                         } else {
-                          await Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              duration: Duration(milliseconds: 300),
-                              reverseDuration: Duration(milliseconds: 300),
-                              child: PickupStep2Widget(
-                                transactionrRef: widget.offerRef.transactionRef,
-                                offerRef: widget.offerRef.reference,
+                          if ((containerOffersRecord.status) == 'Picking Up') {
+                            await Navigator.push(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                duration: Duration(milliseconds: 300),
+                                reverseDuration: Duration(milliseconds: 300),
+                                child: PickupStep2Widget(
+                                  transactionrRef:
+                                      containerOffersRecord.transactionRef,
+                                  offerRef: containerOffersRecord.reference,
+                                ),
                               ),
-                            ),
-                          );
-                          return;
+                            );
+                          }
                         }
                       },
                       text: 'Pickup / Return Page',
@@ -175,38 +181,39 @@ class _OwnerOfferSheetWidgetState extends State<OwnerOfferSheetWidget> {
                         ),
                         borderRadius: 40,
                       ),
-                    );
-                  },
-                ),
-              ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-              child: FFButtonWidget(
-                onPressed: () async {
-                  Navigator.pop(context);
-                },
-                text: 'Back',
-                options: FFButtonOptions(
-                  width: double.infinity,
-                  height: 60,
-                  color: Colors.white,
-                  textStyle: FlutterFlowTheme.of(context).subtitle2.override(
-                        fontFamily: 'Lexend Deca',
-                        color: Color(0xFF57636C),
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                      ),
-                  borderSide: BorderSide(
-                    color: FlutterFlowTheme.of(context).tertiaryColor,
-                    width: 2,
+                    ),
                   ),
-                  borderRadius: 40,
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                  child: FFButtonWidget(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                    },
+                    text: 'Back',
+                    options: FFButtonOptions(
+                      width: double.infinity,
+                      height: 60,
+                      color: Colors.white,
+                      textStyle:
+                          FlutterFlowTheme.of(context).subtitle2.override(
+                                fontFamily: 'Lexend Deca',
+                                color: Color(0xFF57636C),
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                              ),
+                      borderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).tertiaryColor,
+                        width: 2,
+                      ),
+                      borderRadius: 40,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

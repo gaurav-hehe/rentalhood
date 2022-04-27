@@ -383,12 +383,12 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
                     child: TextFormField(
+                      controller: paswordController,
                       onChanged: (_) => EasyDebounce.debounce(
                         'paswordController',
                         Duration(milliseconds: 2000),
                         () => setState(() {}),
                       ),
-                      controller: paswordController,
                       obscureText: !paswordVisibility,
                       decoration: InputDecoration(
                         hintText: 'Password',
@@ -540,8 +540,8 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                           photoUrl: uploadedFileUrl,
                           createdTime: getCurrentTimestamp,
                           phoneNumber: phoneNoController.text,
-                          uid: aadhaarNoController.text,
                           address: addressController.text,
+                          uid: aadhaarNoController.text,
                         );
                         await UsersRecord.collection
                             .doc(user.uid)

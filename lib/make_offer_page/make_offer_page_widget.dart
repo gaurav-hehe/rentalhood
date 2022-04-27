@@ -381,91 +381,112 @@ class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                child: FFButtonWidget(
-                  onPressed: () async {
-                    var _shouldSetState = false;
-                    var confirmDialogResponse = await showDialog<bool>(
-                          context: context,
-                          builder: (alertDialogContext) {
-                            return AlertDialog(
-                              title: Text('ARE YOU SURE TO SEND THE OFFER?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: Text('YES'),
-                                ),
-                              ],
-                            );
-                          },
-                        ) ??
-                        false;
-                    if (confirmDialogResponse) {
-                      final offersCreateData = createOffersRecordData(
-                        id: random_data.randomInteger(1000, 99999),
-                        sentBy: currentUserReference,
-                        prodRef: widget.adRef.reference,
-                        timestamp: getCurrentTimestamp,
-                        status: 'Pending',
-                        price: int.parse(textController.text),
-                        receivedBy: widget.adRef.uploadedBy,
-                        senderName: currentUserDisplayName,
-                        receiverName: widget.adRef.ownerName,
-                        paymentMode: dropDownValue1,
-                        deposit: dropDownValue2,
+                child: StreamBuilder<UsersRecord>(
+                  stream: UsersRecord.getDocument(currentUserReference),
+                  builder: (context, snapshot) {
+                    // Customize what your widget looks like when it's loading.
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            color: FlutterFlowTheme.of(context).primaryColor,
+                          ),
+                        ),
                       );
-                      var offersRecordReference = OffersRecord.collection.doc();
-                      await offersRecordReference.set(offersCreateData);
-                      newOffer = OffersRecord.getDocumentFromData(
-                          offersCreateData, offersRecordReference);
-                      _shouldSetState = true;
-
-                      final usersUpdateData = {
-                        'offers_sent':
-                            FieldValue.arrayUnion([newOffer.reference]),
-                      };
-                      await currentUserReference.update(usersUpdateData);
-                    } else {
-                      if (_shouldSetState) setState(() {});
-                      return;
                     }
+                    final buttonUsersRecord = snapshot.data;
+                    return FFButtonWidget(
+                      onPressed: () async {
+                        var _shouldSetState = false;
+                        var confirmDialogResponse = await showDialog<bool>(
+                              context: context,
+                              builder: (alertDialogContext) {
+                                return AlertDialog(
+                                  title:
+                                      Text('ARE YOU SURE TO SEND THE OFFER?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, false),
+                                      child: Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          alertDialogContext, true),
+                                      child: Text('YES'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ) ??
+                            false;
+                        if (confirmDialogResponse) {
+                          final offersCreateData = createOffersRecordData(
+                            id: random_data.randomInteger(1000, 99999),
+                            sentBy: buttonUsersRecord.reference,
+                            prodRef: widget.adRef.reference,
+                            timestamp: getCurrentTimestamp,
+                            status: 'Pending',
+                            price: int.parse(textController.text),
+                            receivedBy: widget.adRef.uploadedBy,
+                            senderName: buttonUsersRecord.displayName,
+                            receiverName: widget.adRef.ownerName,
+                            paymentMode: dropDownValue1,
+                            deposit: dropDownValue2,
+                          );
+                          var offersRecordReference =
+                              OffersRecord.collection.doc();
+                          await offersRecordReference.set(offersCreateData);
+                          newOffer = OffersRecord.getDocumentFromData(
+                              offersCreateData, offersRecordReference);
+                          _shouldSetState = true;
 
-                    final usersUpdateData = {
-                      'offers_received':
-                          FieldValue.arrayUnion([newOffer.reference]),
-                    };
-                    await widget.adRef.uploadedBy.update(usersUpdateData);
-                    await Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 0),
-                        reverseDuration: Duration(milliseconds: 0),
-                        child: OffersPageWidget(),
+                          final usersUpdateData = {
+                            'offers_sent':
+                                FieldValue.arrayUnion([newOffer.reference]),
+                          };
+                          await buttonUsersRecord.reference
+                              .update(usersUpdateData);
+                        } else {
+                          if (_shouldSetState) setState(() {});
+                          return;
+                        }
+
+                        final usersUpdateData = {
+                          'offers_received':
+                              FieldValue.arrayUnion([newOffer.reference]),
+                        };
+                        await widget.adRef.uploadedBy.update(usersUpdateData);
+                        await Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: Duration(milliseconds: 0),
+                            reverseDuration: Duration(milliseconds: 0),
+                            child: OffersPageWidget(),
+                          ),
+                        );
+                        if (_shouldSetState) setState(() {});
+                      },
+                      text: 'SEND OFFER',
+                      options: FFButtonOptions(
+                        width: 300,
+                        height: 60,
+                        color: FlutterFlowTheme.of(context).secondaryColor,
+                        textStyle: FlutterFlowTheme.of(context).title3.override(
+                              fontFamily: 'Open Sans',
+                              color: Color(0xFFEEEEEE),
+                            ),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1,
+                        ),
+                        borderRadius: 15,
                       ),
                     );
-                    if (_shouldSetState) setState(() {});
                   },
-                  text: 'SEND OFFER',
-                  options: FFButtonOptions(
-                    width: 300,
-                    height: 60,
-                    color: FlutterFlowTheme.of(context).secondaryColor,
-                    textStyle: FlutterFlowTheme.of(context).title3.override(
-                          fontFamily: 'Open Sans',
-                          color: Color(0xFFEEEEEE),
-                        ),
-                    borderSide: BorderSide(
-                      color: Colors.transparent,
-                      width: 1,
-                    ),
-                    borderRadius: 15,
-                  ),
                 ),
               ),
             ],

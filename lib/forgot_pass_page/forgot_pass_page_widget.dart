@@ -91,12 +91,12 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(20, 50, 20, 0),
                     child: TextFormField(
+                      controller: emailController,
                       onChanged: (_) => EasyDebounce.debounce(
                         'emailController',
                         Duration(milliseconds: 2000),
                         () => setState(() {}),
                       ),
-                      controller: emailController,
                       obscureText: false,
                       decoration: InputDecoration(
                         hintText: 'Email',

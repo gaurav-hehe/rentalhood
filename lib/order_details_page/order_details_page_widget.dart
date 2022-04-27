@@ -6,7 +6,6 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/upload_media.dart';
 import '../invoice_page/invoice_page_widget.dart';
-import '../main.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -46,15 +45,7 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
             size: 30,
           ),
           onPressed: () async {
-            await Navigator.push(
-              context,
-              PageTransition(
-                type: PageTransitionType.rightToLeft,
-                duration: Duration(milliseconds: 300),
-                reverseDuration: Duration(milliseconds: 300),
-                child: NavBarPage(initialPage: 'MoreOptionsPage'),
-              ),
-            );
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -345,7 +336,7 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
                               child: Row(
-                                mainAxisSize: MainAxisSize.max,
+                                mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -439,7 +430,7 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                                                       .bodyText1
                                                       .override(
                                                         fontFamily: 'Open Sans',
-                                                        fontSize: 13,
+                                                        fontSize: 12,
                                                       ),
                                             ),
                                           ],
@@ -536,7 +527,7 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                                                       .bodyText1
                                                       .override(
                                                         fontFamily: 'Open Sans',
-                                                        fontSize: 13,
+                                                        fontSize: 12,
                                                       ),
                                             ),
                                           ],
@@ -920,72 +911,75 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 0, 2),
-                                        child: Text(
-                                          'PICKUP SCHEDULE',
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 0, 0, 2),
+                                          child: Text(
+                                            'PICKUP SCHEDULE',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText1
+                                                .override(
+                                                  fontFamily: 'Open Sans',
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          ),
+                                        ),
+                                        Text(
+                                          'DATE: ${dateTimeFormat('d/M/y', widget.transRef.pickupDt)}',
                                           style: FlutterFlowTheme.of(context)
                                               .bodyText1
                                               .override(
                                                 fontFamily: 'Open Sans',
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
+                                                fontSize: 13,
                                               ),
                                         ),
-                                      ),
-                                      Text(
-                                        'DATE: ${dateTimeFormat('d/M/y', widget.transRef.pickupDt)}',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              fontSize: 13,
-                                            ),
-                                      ),
-                                      Text(
-                                        'TIME: ${dateTimeFormat('jm', widget.transRef.pickupDt)}',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              fontSize: 13,
-                                            ),
-                                      ),
-                                      Text(
-                                        'ACTUAL PICKUP AT: ',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              fontSize: 13,
-                                            ),
-                                      ),
-                                      Text(
-                                        dateTimeFormat('d/M h:mm a',
-                                            widget.transRef.pickedAt),
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              fontSize: 13,
-                                            ),
-                                      ),
-                                      Text(
-                                        'Actual date and time of pickup\nmay differ from scheduled one.',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              fontSize: 11,
-                                            ),
-                                      ),
-                                    ],
+                                        Text(
+                                          'TIME: ${dateTimeFormat('jm', widget.transRef.pickupDt)}',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Open Sans',
+                                                fontSize: 13,
+                                              ),
+                                        ),
+                                        Text(
+                                          'ACTUAL PICKUP AT: ',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Open Sans',
+                                                fontSize: 13,
+                                              ),
+                                        ),
+                                        Text(
+                                          dateTimeFormat('d/M h:mm a',
+                                              widget.transRef.pickedAt),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Open Sans',
+                                                fontSize: 13,
+                                              ),
+                                        ),
+                                        Text(
+                                          'Actual date and time of pickup\nmay differ from scheduled one.',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Open Sans',
+                                                fontSize: 11,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   Column(
                                     mainAxisSize: MainAxisSize.max,

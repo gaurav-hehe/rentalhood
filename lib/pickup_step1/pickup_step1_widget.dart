@@ -4,7 +4,6 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../my_orders_page/my_orders_page_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -366,18 +365,7 @@ class _PickupStep1WidgetState extends State<PickupStep1Widget> {
                                                 );
                                               },
                                             );
-                                            await Navigator.push(
-                                              context,
-                                              PageTransition(
-                                                type: PageTransitionType
-                                                    .rightToLeft,
-                                                duration:
-                                                    Duration(milliseconds: 300),
-                                                reverseDuration:
-                                                    Duration(milliseconds: 300),
-                                                child: MyOrdersPageWidget(),
-                                              ),
-                                            );
+                                            Navigator.pop(context);
                                           },
                                           text: 'STEP 1 - DONE',
                                           options: FFButtonOptions(

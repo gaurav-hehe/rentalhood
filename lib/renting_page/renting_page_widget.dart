@@ -7,6 +7,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import '../flutter_flow/random_data_util.dart' as random_data;
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -26,6 +27,7 @@ class RentingPageWidget extends StatefulWidget {
 
 class _RentingPageWidgetState extends State<RentingPageWidget> {
   DateTime datePicked;
+  TextEditingController textController;
   TransactionsRecord transactionRef;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -243,8 +245,8 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Text(
-                                'ADD: ${rentingPageProductsRecord.address}',
+                              AutoSizeText(
+                                'ADD : ',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -252,6 +254,27 @@ class _RentingPageWidgetState extends State<RentingPageWidget> {
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500,
                                     ),
+                              ),
+                              Expanded(
+                                child: TextFormField(
+                                  controller: textController ??=
+                                      TextEditingController(
+                                    text: rentingPageProductsRecord.address,
+                                  ),
+                                  readOnly: true,
+                                  obscureText: false,
+                                  decoration: InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                  ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        fontSize: 16,
+                                      ),
+                                  maxLines: 2,
+                                ),
                               ),
                             ],
                           ),

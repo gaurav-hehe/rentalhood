@@ -114,14 +114,8 @@ class _AllTransactionsWidgetState extends State<AllTransactionsWidget> {
                 decoration: BoxDecoration(
                   color: Color(0xFFEEEEEE),
                 ),
-                child: StreamBuilder<List<TransactionsRecord>>(
-                  stream: queryTransactionsRecord(
-                    queryBuilder: (transactionsRecord) => transactionsRecord
-                        .where('renter_id',
-                            isEqualTo: containerUsersRecord.reference)
-                        .where('owner_id',
-                            isEqualTo: containerUsersRecord.reference),
-                  ),
+                child: FutureBuilder<List<TransactionsRecord>>(
+                  future: queryTransactionsRecordOnce(),
                   builder: (context, snapshot) {
                     // Customize what your widget looks like when it's loading.
                     if (!snapshot.hasData) {

@@ -131,41 +131,23 @@ class _MyOrdersPageWidgetState extends State<MyOrdersPageWidget> {
                     Expanded(
                       child: Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                        child: StreamBuilder<List<ProductsRecord>>(
-                          stream: queryProductsRecord(
-                            queryBuilder: (productsRecord) =>
-                                productsRecord.where('rented_by',
-                                    isEqualTo: containerUsersRecord.reference),
-                          ),
-                          builder: (context, snapshot) {
-                            // Customize what your widget looks like when it's loading.
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: CircularProgressIndicator(
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryColor,
-                                  ),
-                                ),
-                              );
-                            }
-                            List<ProductsRecord> listViewProductsRecordList =
-                                snapshot.data;
+                        child: Builder(
+                          builder: (context) {
+                            final ads = containerUsersRecord.myOrders
+                                    .toList()
+                                    ?.toList() ??
+                                [];
                             return ListView.builder(
                               padding: EdgeInsets.zero,
                               scrollDirection: Axis.vertical,
-                              itemCount: listViewProductsRecordList.length,
-                              itemBuilder: (context, listViewIndex) {
-                                final listViewProductsRecord =
-                                    listViewProductsRecordList[listViewIndex];
+                              itemCount: ads.length,
+                              itemBuilder: (context, adsIndex) {
+                                final adsItem = ads[adsIndex];
                                 return Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       15, 15, 15, 0),
                                   child: StreamBuilder<ProductsRecord>(
-                                    stream: ProductsRecord.getDocument(
-                                        listViewProductsRecord.reference),
+                                    stream: ProductsRecord.getDocument(adsItem),
                                     builder: (context, snapshot) {
                                       // Customize what your widget looks like when it's loading.
                                       if (!snapshot.hasData) {
@@ -359,7 +341,8 @@ class _MyOrdersPageWidgetState extends State<MyOrdersPageWidget> {
                                                                   containerProductsRecord
                                                                       .description
                                                                       .maybeHandleOverflow(
-                                                                    maxChars: 5,
+                                                                    maxChars:
+                                                                        25,
                                                                     replacement:
                                                                         '…',
                                                                   ),

@@ -38,7 +38,7 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
             size: 30,
           ),
           onPressed: () async {
-            await Navigator.pushAndRemoveUntil(
+            await Navigator.push(
               context,
               PageTransition(
                 type: PageTransitionType.rightToLeft,
@@ -46,7 +46,6 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                 reverseDuration: Duration(milliseconds: 300),
                 child: NavBarPage(initialPage: 'MoreOptionsPage'),
               ),
-              (r) => false,
             );
           },
         ),
@@ -131,22 +130,41 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                     Expanded(
                       child: Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                        child: Builder(
-                          builder: (context) {
-                            final ads =
-                                containerUsersRecord.myAds.toList()?.toList() ??
-                                    [];
+                        child: StreamBuilder<List<ProductsRecord>>(
+                          stream: queryProductsRecord(
+                            queryBuilder: (productsRecord) =>
+                                productsRecord.where('uploaded_by',
+                                    isEqualTo: containerUsersRecord.reference),
+                          ),
+                          builder: (context, snapshot) {
+                            // Customize what your widget looks like when it's loading.
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: CircularProgressIndicator(
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
+                                  ),
+                                ),
+                              );
+                            }
+                            List<ProductsRecord> listViewProductsRecordList =
+                                snapshot.data;
                             return ListView.builder(
                               padding: EdgeInsets.zero,
                               scrollDirection: Axis.vertical,
-                              itemCount: ads.length,
-                              itemBuilder: (context, adsIndex) {
-                                final adsItem = ads[adsIndex];
+                              itemCount: listViewProductsRecordList.length,
+                              itemBuilder: (context, listViewIndex) {
+                                final listViewProductsRecord =
+                                    listViewProductsRecordList[listViewIndex];
                                 return Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       5, 15, 5, 0),
                                   child: StreamBuilder<ProductsRecord>(
-                                    stream: ProductsRecord.getDocument(adsItem),
+                                    stream: ProductsRecord.getDocument(
+                                        listViewProductsRecord.reference),
                                     builder: (context, snapshot) {
                                       // Customize what your widget looks like when it's loading.
                                       if (!snapshot.hasData) {
@@ -184,238 +202,96 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   5, 5, 5, 5),
-                                          child:
-                                              StreamBuilder<TransactionsRecord>(
-                                            stream:
-                                                TransactionsRecord.getDocument(
-                                                    containerProductsRecord
-                                                        .transRef),
-                                            builder: (context, snapshot) {
-                                              // Customize what your widget looks like when it's loading.
-                                              if (!snapshot.hasData) {
-                                                return Center(
-                                                  child: SizedBox(
-                                                    width: 50,
-                                                    height: 50,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primaryColor,
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                              final rowTransactionsRecord =
-                                                  snapshot.data;
-                                              return InkWell(
-                                                onTap: () async {
-                                                  await showModalBottomSheet(
-                                                    isScrollControlled: true,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return Padding(
-                                                        padding: MediaQuery.of(
-                                                                context)
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                context: context,
+                                                builder: (context) {
+                                                  return Padding(
+                                                    padding:
+                                                        MediaQuery.of(context)
                                                             .viewInsets,
-                                                        child: AdOptionsWidget(
-                                                          adRef:
-                                                              containerProductsRecord,
-                                                        ),
-                                                      );
-                                                    },
+                                                    child: AdOptionsWidget(
+                                                      adRef:
+                                                          containerProductsRecord,
+                                                    ),
                                                   );
                                                 },
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Image.network(
-                                                      containerProductsRecord
-                                                          .image1,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.35,
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height *
-                                                              1,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                    Expanded(
-                                                      child: Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(10, 0,
-                                                                    0, 0),
-                                                        child: Column(
+                                              );
+                                            },
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Image.network(
+                                                  containerProductsRecord
+                                                      .image1,
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.35,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      1,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .fromSTEB(
+                                                                10, 0, 0, 0),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
                                                           mainAxisSize:
                                                               MainAxisSize.max,
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
-                                                                  .spaceAround,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                                  .spaceBetween,
                                                           children: [
-                                                            Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                  formatNumber(
-                                                                    containerProductsRecord
-                                                                        .price,
-                                                                    formatType:
-                                                                        FormatType
-                                                                            .custom,
-                                                                    currency:
-                                                                        'Rs. ',
-                                                                    format: '',
-                                                                    locale: '',
-                                                                  ),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .start,
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .subtitle1
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'Lexend Deca',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .secondaryColor,
-                                                                        fontSize:
-                                                                            20,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                      ),
-                                                                ),
-                                                                Padding(
-                                                                  padding: EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0,
-                                                                          0,
-                                                                          10,
-                                                                          0),
-                                                                  child: StreamBuilder<
-                                                                      ProductsRecord>(
-                                                                    stream: ProductsRecord.getDocument(
-                                                                        containerProductsRecord
-                                                                            .reference),
-                                                                    builder:
-                                                                        (context,
-                                                                            snapshot) {
-                                                                      // Customize what your widget looks like when it's loading.
-                                                                      if (!snapshot
-                                                                          .hasData) {
-                                                                        return Center(
-                                                                          child:
-                                                                              SizedBox(
-                                                                            width:
-                                                                                50,
-                                                                            height:
-                                                                                50,
-                                                                            child:
-                                                                                CircularProgressIndicator(
-                                                                              color: FlutterFlowTheme.of(context).primaryColor,
-                                                                            ),
-                                                                          ),
-                                                                        );
-                                                                      }
-                                                                      final iconProductsRecord =
-                                                                          snapshot
-                                                                              .data;
-                                                                      return InkWell(
-                                                                        onTap:
-                                                                            () async {
-                                                                          if ((iconProductsRecord.status) ==
-                                                                              'Available') {
-                                                                            var confirmDialogResponse = await showDialog<bool>(
-                                                                                  context: context,
-                                                                                  builder: (alertDialogContext) {
-                                                                                    return AlertDialog(
-                                                                                      title: Text('Confirm Delete?'),
-                                                                                      content: Text('The product will be deleted from your products list.'),
-                                                                                      actions: [
-                                                                                        TextButton(
-                                                                                          onPressed: () => Navigator.pop(alertDialogContext, false),
-                                                                                          child: Text('Cancel'),
-                                                                                        ),
-                                                                                        TextButton(
-                                                                                          onPressed: () => Navigator.pop(alertDialogContext, true),
-                                                                                          child: Text('Confirm'),
-                                                                                        ),
-                                                                                      ],
-                                                                                    );
-                                                                                  },
-                                                                                ) ??
-                                                                                false;
-                                                                            if (confirmDialogResponse) {
-                                                                              final usersUpdateData = {
-                                                                                'my_ads': FieldValue.arrayRemove([
-                                                                                  iconProductsRecord.reference
-                                                                                ]),
-                                                                              };
-                                                                              await containerUsersRecord.reference.update(usersUpdateData);
-                                                                              await containerProductsRecord.reference.delete();
-                                                                            }
-                                                                          } else {
-                                                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                                              SnackBar(
-                                                                                content: Text(
-                                                                                  'Product on Rent, Cannot Delete.',
-                                                                                  style: TextStyle(),
-                                                                                ),
-                                                                                duration: Duration(milliseconds: 4000),
-                                                                                backgroundColor: Color(0x00000000),
-                                                                              ),
-                                                                            );
-                                                                          }
-                                                                        },
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .delete_forever,
-                                                                          color:
-                                                                              Color(0xFFC80C0D),
-                                                                          size:
-                                                                              30,
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
                                                             Text(
-                                                              containerProductsRecord
-                                                                  .name,
+                                                              formatNumber(
+                                                                containerProductsRecord
+                                                                    .price,
+                                                                formatType:
+                                                                    FormatType
+                                                                        .custom,
+                                                                currency:
+                                                                    'Rs. ',
+                                                                format: '',
+                                                                locale: '',
+                                                              ),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .subtitle1
                                                                   .override(
                                                                     fontFamily:
                                                                         'Lexend Deca',
-                                                                    color: Color(
-                                                                        0xFF090F13),
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .secondaryColor,
                                                                     fontSize:
                                                                         20,
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .w500,
+                                                                            .bold,
                                                                   ),
                                                             ),
                                                             Padding(
@@ -423,19 +299,148 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                                                   EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0,
-                                                                          4,
                                                                           0,
+                                                                          10,
                                                                           0),
-                                                              child: Text(
-                                                                containerProductsRecord
-                                                                    .description,
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyText1,
+                                                              child: InkWell(
+                                                                onTap:
+                                                                    () async {
+                                                                  if ((containerProductsRecord
+                                                                          .status) ==
+                                                                      'Available') {
+                                                                    var confirmDialogResponse =
+                                                                        await showDialog<bool>(
+                                                                              context: context,
+                                                                              builder: (alertDialogContext) {
+                                                                                return AlertDialog(
+                                                                                  title: Text('Confirm Delete?'),
+                                                                                  content: Text('The product will be deleted from your products list.'),
+                                                                                  actions: [
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, false),
+                                                                                      child: Text('Cancel'),
+                                                                                    ),
+                                                                                    TextButton(
+                                                                                      onPressed: () => Navigator.pop(alertDialogContext, true),
+                                                                                      child: Text('Confirm'),
+                                                                                    ),
+                                                                                  ],
+                                                                                );
+                                                                              },
+                                                                            ) ??
+                                                                            false;
+                                                                    if (confirmDialogResponse) {
+                                                                      final usersUpdateData =
+                                                                          {
+                                                                        'my_ads':
+                                                                            FieldValue.arrayRemove([
+                                                                          containerProductsRecord
+                                                                              .reference
+                                                                        ]),
+                                                                      };
+                                                                      await containerUsersRecord
+                                                                          .reference
+                                                                          .update(
+                                                                              usersUpdateData);
+                                                                      await containerProductsRecord
+                                                                          .reference
+                                                                          .delete();
+                                                                    }
+                                                                  } else {
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                      SnackBar(
+                                                                        content:
+                                                                            Text(
+                                                                          'Product on Rent, Cannot Delete.',
+                                                                          style:
+                                                                              TextStyle(),
+                                                                        ),
+                                                                        duration:
+                                                                            Duration(milliseconds: 4000),
+                                                                        backgroundColor:
+                                                                            Color(0x00000000),
+                                                                      ),
+                                                                    );
+                                                                  }
+                                                                },
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .delete_forever,
+                                                                  color: Color(
+                                                                      0xFFC80C0D),
+                                                                  size: 30,
+                                                                ),
                                                               ),
                                                             ),
-                                                            Text(
-                                                              'Status: ${containerProductsRecord.status}',
+                                                          ],
+                                                        ),
+                                                        Text(
+                                                          containerProductsRecord
+                                                              .name,
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .subtitle1
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Lexend Deca',
+                                                                color: Color(
+                                                                    0xFF090F13),
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(0,
+                                                                      4, 0, 0),
+                                                          child: Text(
+                                                            containerProductsRecord
+                                                                .description
+                                                                .maybeHandleOverflow(
+                                                              maxChars: 25,
+                                                              replacement: '…',
+                                                            ),
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodyText1,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          'Status: ${containerProductsRecord.status}',
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyText1
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Open Sans',
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
+                                                        ),
+                                                        Align(
+                                                          alignment:
+                                                              AlignmentDirectional(
+                                                                  1, 0),
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                        0,
+                                                                        4,
+                                                                        0,
+                                                                        0),
+                                                            child: Text(
+                                                              dateTimeFormat(
+                                                                  'relative',
+                                                                  containerProductsRecord
+                                                                      .uploadedAt),
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .bodyText1
@@ -446,40 +451,17 @@ class _MyAdsPageWidgetState extends State<MyAdsPageWidget> {
                                                                         16,
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .w600,
+                                                                            .w500,
                                                                   ),
                                                             ),
-                                                            Align(
-                                                              alignment:
-                                                                  AlignmentDirectional(
-                                                                      1, 0),
-                                                              child: Padding(
-                                                                padding:
-                                                                    EdgeInsetsDirectional
-                                                                        .fromSTEB(
-                                                                            0,
-                                                                            4,
-                                                                            0,
-                                                                            0),
-                                                                child: Text(
-                                                                  dateTimeFormat(
-                                                                      'relative',
-                                                                      containerProductsRecord
-                                                                          .uploadedAt),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyText1,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
+                                                          ),
                                                         ),
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              );
-                                            },
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       );

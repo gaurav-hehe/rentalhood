@@ -182,7 +182,8 @@ class _OffersPageWidgetState extends State<OffersPageWidget> {
                                                             child:
                                                                 RenterOfferSheetWidget(
                                                               offerRef:
-                                                                  containerOffersRecord,
+                                                                  containerOffersRecord
+                                                                      .reference,
                                                             ),
                                                           );
                                                         },
@@ -466,7 +467,8 @@ class _OffersPageWidgetState extends State<OffersPageWidget> {
                                                             child:
                                                                 OwnerOfferSheetWidget(
                                                               offerRef:
-                                                                  containerOffersRecord,
+                                                                  containerOffersRecord
+                                                                      .reference,
                                                             ),
                                                           );
                                                         },

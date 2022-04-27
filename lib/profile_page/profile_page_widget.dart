@@ -28,6 +28,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
   TextEditingController textController2;
   TextEditingController textController3;
   TextEditingController textController4;
+  TextEditingController textController5;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -37,6 +38,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
     textController2 = TextEditingController(text: widget.userRef.email);
     textController3 = TextEditingController(text: widget.userRef.phoneNumber);
     textController4 = TextEditingController(text: widget.userRef.uid);
+    textController5 = TextEditingController(text: widget.userRef.address);
   }
 
   @override
@@ -262,8 +264,47 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                       keyboardType: TextInputType.phone,
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                    child: TextFormField(
+                      controller: textController4,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4.0),
+                            topRight: Radius.circular(4.0),
+                          ),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.location_history_outlined,
+                          color: Color(0xFF5D5E60),
+                        ),
+                      ),
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Open Sans',
+                            color: FlutterFlowTheme.of(context).tertiaryColor,
+                            fontSize: 16,
+                          ),
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
                   TextFormField(
-                    controller: textController4,
+                    controller: textController5,
                     obscureText: false,
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
@@ -296,7 +337,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                           color: FlutterFlowTheme.of(context).tertiaryColor,
                           fontSize: 16,
                         ),
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.multiline,
                   ),
                   Expanded(
                     child: Align(
@@ -311,6 +352,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                               phoneNumber: textController3.text,
                               uid: textController4.text,
                               photoUrl: uploadedFileUrl,
+                              address: textController5.text,
                             );
                             await widget.userRef.reference
                                 .update(usersUpdateData);

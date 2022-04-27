@@ -5,21 +5,18 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'auth/firebase_user_provider.dart';
 import 'auth/auth_util.dart';
 
-import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
+import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/internationalization.dart';
-import 'package:rental_hood/login_page/login_page_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
-import 'home_page/home_page_widget.dart';
-import 'favourites_page/favourites_page_widget.dart';
-import 'post_ad_page/post_ad_page_widget.dart';
-import 'messages_page/messages_page_widget.dart';
-import 'more_options_page/more_options_page_widget.dart';
+import 'index.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  FFAppState(); // Initialize FFAppState
 
   runApp(MyApp());
 }
@@ -27,7 +24,7 @@ void main() async {
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 
   static _MyAppState of(BuildContext context) =>
       context.findAncestorStateOfType<_MyAppState>();
@@ -36,15 +33,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Locale _locale;
   ThemeMode _themeMode = ThemeMode.system;
+
   Stream<RentalHoodFirebaseUser> userStream;
   RentalHoodFirebaseUser initialUser;
   bool displaySplashImage = true;
-  final authUserSub = authenticatedUserStream.listen((_) {});
 
-  void setLocale(Locale value) => setState(() => _locale = value);
-  void setThemeMode(ThemeMode mode) => setState(() {
-        _themeMode = mode;
-      });
+  final authUserSub = authenticatedUserStream.listen((_) {});
 
   @override
   void initState() {
@@ -52,7 +46,9 @@ class _MyAppState extends State<MyApp> {
     userStream = rentalHoodFirebaseUserStream()
       ..listen((user) => initialUser ?? setState(() => initialUser = user));
     Future.delayed(
-        Duration(seconds: 1), () => setState(() => displaySplashImage = false));
+      Duration(seconds: 1),
+      () => setState(() => displaySplashImage = false),
+    );
   }
 
   @override
@@ -61,6 +57,11 @@ class _MyAppState extends State<MyApp> {
 
     super.dispose();
   }
+
+  void setLocale(Locale value) => setState(() => _locale = value);
+  void setThemeMode(ThemeMode mode) => setState(() {
+        _themeMode = mode;
+      });
 
   @override
   Widget build(BuildContext context) {

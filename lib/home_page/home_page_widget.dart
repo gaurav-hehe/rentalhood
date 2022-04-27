@@ -481,7 +481,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                               containerProductsRecord
                                                                   .description
                                                                   .maybeHandleOverflow(
-                                                                maxChars: 30,
+                                                                maxChars: 50,
                                                                 replacement:
                                                                     '…',
                                                               ),

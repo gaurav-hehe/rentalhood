@@ -50,6 +50,9 @@ int daysLeft(DateTime returnDate) {
 }
 
 bool visiblityPRpage(String status) {
-  return true;
-  // Add your function code here!
+  if (status == "Picking Up" || status == "Returning") {
+    return true;
+  } else {
+    return false;
+  } // Add your function code here!
 }
