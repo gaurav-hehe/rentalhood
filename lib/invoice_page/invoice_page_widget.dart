@@ -38,8 +38,8 @@ class _InvoicePageWidgetState extends State<InvoicePageWidget> {
             color: FlutterFlowTheme.of(context).tertiaryColor,
             size: 30,
           ),
-          onPressed: () {
-            print('IconButton pressed ...');
+          onPressed: () async {
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -57,21 +57,32 @@ class _InvoicePageWidgetState extends State<InvoicePageWidget> {
               padding: EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
               child: InkWell(
                 onTap: () async {
-                  await showDialog(
-                    context: context,
-                    builder: (alertDialogContext) {
-                      return AlertDialog(
-                        title: Text('Your IPFS hash is'),
-                        content: Text('0xx'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(alertDialogContext),
-                            child: Text('Ok'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  var confirmDialogResponse = await showDialog<bool>(
+                        context: context,
+                        builder: (alertDialogContext) {
+                          return AlertDialog(
+                            title: Text('IPFS HASH'),
+                            content: Text('0xx'),
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(alertDialogContext, false),
+                                child: Text('OK'),
+                              ),
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(alertDialogContext, true),
+                                child: Text('OPEN LINK'),
+                              ),
+                            ],
+                          );
+                        },
+                      ) ??
+                      false;
+                  if (confirmDialogResponse) {
+                    await launchURL(
+                        'https://${widget.transRef.ipfsHash}.ipfs.nftstorage.link');
+                  }
                 },
                 child: Text(
                   'IPFS',
@@ -88,15 +99,20 @@ class _InvoicePageWidgetState extends State<InvoicePageWidget> {
         centerTitle: true,
         elevation: 2,
       ),
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      backgroundColor: FlutterFlowTheme.of(context).primaryColor,
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: FlutterFlowPdfViewer(
-            networkPath: widget.transRef.pdfUrl,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 1,
-            horizontalScroll: false,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              FlutterFlowPdfViewer(
+                networkPath: widget.transRef.pdfUrl,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.8,
+                horizontalScroll: false,
+              ),
+            ],
           ),
         ),
       ),

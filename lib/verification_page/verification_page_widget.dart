@@ -15,8 +15,8 @@ class VerificationPageWidget extends StatefulWidget {
 }
 
 class _VerificationPageWidgetState extends State<VerificationPageWidget> {
-  TextEditingController phoneNoController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController phoneNoController;
 
   @override
   void initState() {

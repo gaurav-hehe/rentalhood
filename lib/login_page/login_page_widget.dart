@@ -17,10 +17,10 @@ class LoginPageWidget extends StatefulWidget {
 }
 
 class _LoginPageWidgetState extends State<LoginPageWidget> {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController emailController;
   TextEditingController passwordController;
   bool passwordVisibility;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {

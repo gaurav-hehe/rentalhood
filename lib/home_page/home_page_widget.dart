@@ -19,8 +19,8 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  TextEditingController textController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController textController;
 
   @override
   void initState() {

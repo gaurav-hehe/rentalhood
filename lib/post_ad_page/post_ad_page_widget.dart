@@ -25,13 +25,10 @@ class PostAdPageWidget extends StatefulWidget {
 }
 
 class _PostAdPageWidgetState extends State<PostAdPageWidget> {
-  ProductsRecord newAd;
-  String uploadedFileUrl1 = '';
-  String uploadedFileUrl2 = '';
   String choiceChipsValue;
   String dropDownValue;
-  TextEditingController addressController;
   var placePickerValue = FFPlace();
+  TextEditingController addressController;
   TextEditingController descriptionController;
   TextEditingController priceController;
   TextEditingController titleController;
@@ -42,6 +39,9 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
   bool checkboxListTileValue3;
   bool checkboxListTileValue4;
   bool checkboxListTileValue5;
+  String uploadedFileUrl1 = '';
+  String uploadedFileUrl2 = '';
+  ProductsRecord newAd;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -722,12 +722,12 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                       child: Material(
                         color: Colors.transparent,
                         elevation: 5,
                         child: Container(
-                          width: double.infinity,
+                          width: MediaQuery.of(context).size.width * 0.95,
                           height: 300,
                           decoration: BoxDecoration(
                             color: Color(0xFFEEEEEE),
@@ -739,7 +739,7 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(5, 5, 5, 10),
                             child: Column(
-                              mainAxisSize: MainAxisSize.max,
+                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
@@ -1046,17 +1046,22 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                           'Uploading file...',
                                                           showLoading: true,
                                                         );
-                                                        final downloadUrls = await Future
-                                                            .wait(selectedMedia
-                                                                .map((m) async =>
+                                                        final downloadUrls = (await Future.wait(
+                                                                selectedMedia.map((m) async =>
                                                                     await uploadData(
                                                                         m.storagePath,
-                                                                        m.bytes)));
+                                                                        m.bytes))))
+                                                            .where((u) => u != null)
+                                                            .toList();
                                                         ScaffoldMessenger.of(
                                                                 context)
                                                             .hideCurrentSnackBar();
                                                         if (downloadUrls !=
-                                                            null) {
+                                                                null &&
+                                                            downloadUrls
+                                                                    .length ==
+                                                                selectedMedia
+                                                                    .length) {
                                                           setState(() =>
                                                               uploadedFileUrl1 =
                                                                   downloadUrls
@@ -1123,17 +1128,22 @@ class _PostAdPageWidgetState extends State<PostAdPageWidget> {
                                                           'Uploading file...',
                                                           showLoading: true,
                                                         );
-                                                        final downloadUrls = await Future
-                                                            .wait(selectedMedia
-                                                                .map((m) async =>
+                                                        final downloadUrls = (await Future.wait(
+                                                                selectedMedia.map((m) async =>
                                                                     await uploadData(
                                                                         m.storagePath,
-                                                                        m.bytes)));
+                                                                        m.bytes))))
+                                                            .where((u) => u != null)
+                                                            .toList();
                                                         ScaffoldMessenger.of(
                                                                 context)
                                                             .hideCurrentSnackBar();
                                                         if (downloadUrls !=
-                                                            null) {
+                                                                null &&
+                                                            downloadUrls
+                                                                    .length ==
+                                                                selectedMedia
+                                                                    .length) {
                                                           setState(() =>
                                                               uploadedFileUrl2 =
                                                                   downloadUrls

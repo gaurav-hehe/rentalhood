@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:collection/collection.dart';
 
 import 'flutter_flow_widgets.dart';
 import 'lat_lng.dart';
@@ -56,10 +57,10 @@ class _FFPlacePickerState extends State<FlutterFlowPlacePicker> {
 
   @override
   Widget build(BuildContext context) => FFButtonWidget(
-        text: _selectedPlace ?? widget.defaultText ?? "Search places",
+        text: _selectedPlace ?? widget.defaultText ?? 'Search places',
         icon: widget.icon,
         onPressed: () async {
-          Prediction p = await PlacesAutocomplete.show(
+          final p = await PlacesAutocomplete.show(
             context: context,
             apiKey: googleMapsApiKey,
             onError: (response) =>
@@ -81,12 +82,16 @@ class _FFPlacePickerState extends State<FlutterFlowPlacePicker> {
     if (p == null) {
       return;
     }
+    final placeId = p.placeId;
+    if (placeId == null) {
+      return;
+    }
     GoogleMapsPlaces _places = GoogleMapsPlaces(
       apiKey: googleMapsApiKey,
       baseUrl: widget.proxyBaseUrl,
       apiHeaders: await const GoogleApiHeaders().getHeaders(),
     );
-    PlacesDetailsResponse detail = await _places.getDetailsByPlaceId(p.placeId);
+    PlacesDetailsResponse detail = await _places.getDetailsByPlaceId(placeId);
     setState(() {
       _selectedPlace = detail.result.name;
     });
@@ -94,29 +99,31 @@ class _FFPlacePickerState extends State<FlutterFlowPlacePicker> {
     widget.onSelect(
       FFPlace(
         latLng: LatLng(
-          detail.result.geometry.location.lat,
-          detail.result.geometry.location.lng,
+          detail.result.geometry?.location.lat ?? 0,
+          detail.result.geometry?.location.lng ?? 0,
         ),
         name: detail.result.name,
-        address: detail.result.formattedAddress,
+        address: detail.result.formattedAddress ?? '',
         city: detail.result.addressComponents
-            .firstWhere((element) => element.types.contains('locality'),
-                orElse: () => null)
-            ?.shortName,
+                .firstWhereOrNull(
+                    (element) => element.types.contains('locality'))
+                ?.shortName ??
+            '',
         state: detail.result.addressComponents
-            .firstWhere(
-                (element) =>
-                    element.types.contains('administrative_area_level_1'),
-                orElse: () => null)
-            ?.shortName,
+                .firstWhereOrNull((element) =>
+                    element.types.contains('administrative_area_level_1'))
+                ?.shortName ??
+            '',
         country: detail.result.addressComponents
-            .firstWhere((element) => element.types.contains('country'),
-                orElse: () => null)
-            ?.shortName,
+                .firstWhereOrNull(
+                    (element) => element.types.contains('country'))
+                ?.shortName ??
+            '',
         zipCode: detail.result.addressComponents
-            .firstWhere((element) => element.types.contains('postal_code'),
-                orElse: () => null)
-            ?.shortName,
+                .firstWhereOrNull(
+                    (element) => element.types.contains('postal_code'))
+                ?.shortName ??
+            '',
       ),
     );
   }

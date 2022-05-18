@@ -1,13 +1,9 @@
-import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../backend/firebase_storage/storage.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/upload_media.dart';
 import '../invoice_page/invoice_page_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,7 +20,6 @@ class OrderDetailsPageWidget extends StatefulWidget {
 }
 
 class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
-  String uploadedFileUrl = '';
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -63,43 +58,6 @@ class _OrderDetailsPageWidgetState extends State<OrderDetailsPageWidget> {
               padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
               child: InkWell(
                 onTap: () async {
-                  if ((widget.transRef.pdfUrl != null) &&
-                      (widget.transRef.pdfUrl != '')) {
-                    await Future.delayed(const Duration(milliseconds: 1000));
-                  } else {
-                    final selectedFile =
-                        await selectFile(allowedExtensions: ['pdf']);
-                    if (selectedFile != null) {
-                      showUploadMessage(
-                        context,
-                        'Uploading file...',
-                        showLoading: true,
-                      );
-                      final downloadUrl = await uploadData(
-                          selectedFile.storagePath, selectedFile.bytes);
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      if (downloadUrl != null) {
-                        setState(() => uploadedFileUrl = downloadUrl);
-                        showUploadMessage(
-                          context,
-                          'Success!',
-                        );
-                      } else {
-                        showUploadMessage(
-                          context,
-                          'Failed to upload file',
-                        );
-                        return;
-                      }
-                    }
-
-                    final transactionsUpdateData = createTransactionsRecordData(
-                      pdfUrl: uploadedFileUrl,
-                    );
-                    await widget.transRef.reference
-                        .update(transactionsUpdateData);
-                  }
-
                   await Navigator.push(
                     context,
                     PageTransition(

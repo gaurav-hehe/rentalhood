@@ -17,9 +17,9 @@ class ForgotPassPageWidget extends StatefulWidget {
 }
 
 class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
-  TextEditingController emailController;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController emailController;
 
   @override
   void initState() {
@@ -144,7 +144,7 @@ class _ForgotPassPageWidgetState extends State<ForgotPassPageWidget> {
                       style: FlutterFlowTheme.of(context).subtitle2,
                       keyboardType: TextInputType.emailAddress,
                       validator: (val) {
-                        if (val.isEmpty) {
+                        if (val == null || val.isEmpty) {
                           return 'Field is required';
                         }
 

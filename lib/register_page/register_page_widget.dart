@@ -116,13 +116,17 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                                         'Uploading file...',
                                         showLoading: true,
                                       );
-                                      final downloadUrls = await Future.wait(
-                                          selectedMedia.map((m) async =>
-                                              await uploadData(
-                                                  m.storagePath, m.bytes)));
+                                      final downloadUrls = (await Future.wait(
+                                              selectedMedia.map((m) async =>
+                                                  await uploadData(
+                                                      m.storagePath, m.bytes))))
+                                          .where((u) => u != null)
+                                          .toList();
                                       ScaffoldMessenger.of(context)
                                           .hideCurrentSnackBar();
-                                      if (downloadUrls != null) {
+                                      if (downloadUrls != null &&
+                                          downloadUrls.length ==
+                                              selectedMedia.length) {
                                         setState(() => uploadedFileUrl =
                                             downloadUrls.first);
                                         showUploadMessage(
@@ -194,7 +198,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       ),
                       style: FlutterFlowTheme.of(context).subtitle2,
                       validator: (val) {
-                        if (val.isEmpty) {
+                        if (val == null || val.isEmpty) {
                           return 'Field is required';
                         }
 
@@ -242,7 +246,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       style: FlutterFlowTheme.of(context).subtitle2,
                       keyboardType: TextInputType.emailAddress,
                       validator: (val) {
-                        if (val.isEmpty) {
+                        if (val == null || val.isEmpty) {
                           return 'Field is required';
                         }
 
@@ -331,7 +335,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       style: FlutterFlowTheme.of(context).subtitle2,
                       keyboardType: TextInputType.multiline,
                       validator: (val) {
-                        if (val.isEmpty) {
+                        if (val == null || val.isEmpty) {
                           return 'Field is required';
                         }
 
@@ -437,7 +441,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       style: FlutterFlowTheme.of(context).subtitle2,
                       keyboardType: TextInputType.visiblePassword,
                       validator: (val) {
-                        if (val.isEmpty) {
+                        if (val == null || val.isEmpty) {
                           return 'Field is required';
                         }
 
@@ -498,7 +502,7 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                       style: FlutterFlowTheme.of(context).subtitle2,
                       keyboardType: TextInputType.visiblePassword,
                       validator: (val) {
-                        if (val.isEmpty) {
+                        if (val == null || val.isEmpty) {
                           return 'Field is required';
                         }
 

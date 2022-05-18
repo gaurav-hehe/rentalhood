@@ -24,10 +24,10 @@ class MakeOfferPageWidget extends StatefulWidget {
 }
 
 class _MakeOfferPageWidgetState extends State<MakeOfferPageWidget> {
-  OffersRecord newOffer;
   String dropDownValue1;
   TextEditingController textController;
   String dropDownValue2;
+  OffersRecord newOffer;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
